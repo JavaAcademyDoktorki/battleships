@@ -5,7 +5,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.statki.start_window.HeaderController">
+            fx:controller="com.battleships.start_window.HeaderController">
     <columnConstraints>
         <ColumnConstraints percentWidth="100"/>
     </columnConstraints>

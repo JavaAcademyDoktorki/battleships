@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.statki.start_window.RoomListController"
+          fx:controller="com.battleships.start_window.RoomListController"
             >
     <VBox alignment="TOP_CENTER" style="-fx-padding: 8 8 8 8">
         <Label fx:id="roomListLabel"/>

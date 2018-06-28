@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.statki.start_window.StartWindow"
+            fx:controller="com.battleships.start_window.StartWindow"
             style="-fx-padding: 16 16 16 16">
     <top>
         <fx:include source="header_controller.fxml" style="-fx-padding: 4 4 4 4"/>

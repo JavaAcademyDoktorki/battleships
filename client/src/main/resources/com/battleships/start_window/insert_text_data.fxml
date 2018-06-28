@@ -4,7 +4,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.statki.start_window.InsertData.InsertTextData">
+            fx:controller="com.battleships.start_window.InsertData.InsertTextData">
     <TextField fx:id="ipTextField" text="127.0.0.1:5000" promptText="127.0.0.1:5000" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <Button fx:id="connectToServer" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
     <HBox alignment="TOP_CENTER" style="-fx-background-color: #f34ff0" GridPane.rowIndex="2">

@@ -1,6 +1,6 @@
-package com.statki.start_window.InsertData;
+package com.battleships.start_window.InsertData;
 
-import com.statki.Translator;
+import com.battleships.Translator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;

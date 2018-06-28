@@ -1,6 +1,6 @@
-package com.statki.start_window;
+package com.battleships.start_window;
 
-import com.statki.Translator;
+import com.battleships.Translator;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;

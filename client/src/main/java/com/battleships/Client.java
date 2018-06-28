@@ -1,4 +1,4 @@
-package com.statki;
+package com.battleships;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class Client extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("start_window/start_window.fxml"));
         Parent root = loader.load();
-        primaryStage.setTitle("statki");
+        primaryStage.setTitle("battleships");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }

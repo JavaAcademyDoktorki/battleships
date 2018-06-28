@@ -1,5 +1,5 @@
-package com.statki.start_window.InsertData;
-import com.statki.Translator;
+package com.battleships.start_window.InsertData;
+import com.battleships.Translator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

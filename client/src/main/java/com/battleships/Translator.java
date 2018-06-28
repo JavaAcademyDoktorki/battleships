@@ -1,4 +1,4 @@
-package com.statki;
+package com.battleships;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;

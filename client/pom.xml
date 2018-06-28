@@ -25,7 +25,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <groupId>com.statki</groupId>
+    <groupId>com.battleships</groupId>
     <artifactId>client</artifactId>
     <version>0.0.1</version>
     <name>Battleship game client</name>
@@ -60,7 +60,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.statki.Client</mainClass>
+                            <mainClass>com.battleships.Client</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
