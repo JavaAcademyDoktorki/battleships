@@ -10,7 +10,6 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println(getClass().getResource("start_window/start_window.fxml").toString());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("start_window/start_window.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("battleships");

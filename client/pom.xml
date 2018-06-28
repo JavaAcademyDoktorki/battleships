@@ -60,7 +60,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.battleship.Main</mainClass>
+                            <mainClass>com.battleships.Client</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

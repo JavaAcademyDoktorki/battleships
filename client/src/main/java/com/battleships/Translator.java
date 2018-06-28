@@ -18,7 +18,7 @@ public class Translator {
         locale.addListener(((observable, oldValue, newValue) -> Locale.setDefault(newValue)));
     }
 
-    public static List<Locale> getSupportedLocales() {
+    static List<Locale> getSupportedLocales() {
         return new ArrayList<>(Arrays.asList(
                 new Locale("pl"),
                 new Locale("en")));

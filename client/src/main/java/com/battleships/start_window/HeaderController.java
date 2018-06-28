@@ -8,7 +8,8 @@ public class HeaderController {
     @FXML
     private Label settingsLabel;
 
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
         Translator.bind(settingsLabel, "choose_settings");
     }
 }

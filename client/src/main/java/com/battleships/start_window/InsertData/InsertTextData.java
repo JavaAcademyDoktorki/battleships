@@ -10,7 +10,8 @@ public class InsertTextData {
     @FXML
     private TextField nameTextField;
 
-    @FXML public void initialize(){
+    @FXML
+    public void initialize(){
         Translator.bind(connectToServer, "connect");
         nameTextField.promptTextProperty().bind(Translator.createStringBinding("player_name"));
     }
