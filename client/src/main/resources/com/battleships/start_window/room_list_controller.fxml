@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.battleships.start_window.RoomListController"
+            >
+    <VBox alignment="TOP_CENTER" style="-fx-padding: 8 8 8 8">
+        <Label fx:id="roomListLabel"/>
+        <ListView fx:id="roomsList"/>
+        <Button fx:id="selectRoomButton"/>
+        <Button fx:id="createRoomButton"/>
+    </VBox>
+</GridPane>
