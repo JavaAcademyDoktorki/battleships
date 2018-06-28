@@ -26,7 +26,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <groupId>com.battleships</groupId>
+    <groupId>com.statki</groupId>
     <artifactId>server</artifactId>
     <version>0.0.1</version>
     <name>Battleship game server</name>

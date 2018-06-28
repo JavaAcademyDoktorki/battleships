@@ -1,6 +1,6 @@
-package com.battleships.start_window;
+package com.statki.start_window;
 
-import com.battleships.Translator;
+import com.statki.Translator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
