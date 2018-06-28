@@ -6,13 +6,17 @@ import javafx.scene.control.TextField;
 
 public class InsertTextData {
     @FXML
-    private Button connectToServer;
+    private Button connectToServerButton;
     @FXML
     private TextField nameTextField;
 
     @FXML
     public void initialize(){
-        Translator.bind(connectToServer, "connect");
+        bindTextFieldsWithTranslation();
+    }
+
+    private void bindTextFieldsWithTranslation() {
+        Translator.bind(connectToServerButton, "connect");
         nameTextField.promptTextProperty().bind(Translator.createStringBinding("player_name"));
     }
 

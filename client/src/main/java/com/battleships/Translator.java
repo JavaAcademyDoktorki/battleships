@@ -19,8 +19,7 @@ public class Translator {
         locale.addListener(((observable, oldValue, newValue) -> Locale.setDefault(newValue)));
     }
 
-    private Translator() {
-    }
+    private Translator() { }
 
     private static Locale getLocale() {
         return locale.get();
