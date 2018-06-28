@@ -26,7 +26,7 @@ public class SeekBarsDataInserter {
     }
 
     private void initRowsProgressBar() {
-        Translator.bind(rowsTextLabel, "row_count");
+        Translator.bind(rowsTextLabel, "rows_count");
         rowsProgressBar.valueProperty()
                 .addListener((observableValue, oldValue, newValue) ->
                         rowsAmountDisplayer.setText(String.valueOf(newValue.intValue())));

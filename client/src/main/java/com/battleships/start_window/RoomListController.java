@@ -9,14 +9,14 @@ public class RoomListController {
     @FXML
     private Label roomListLabel;
     @FXML
-    private Button createRoom;
+    private Button createRoomButton;
     @FXML
-    private Button selectRoom;
+    private Button selectRoomButton;
 
     @FXML
     public void initialize(){
-        Translator.bind(selectRoom, "select_room");
-        Translator.bind(createRoom, "create_room");
-        Translator.bind(roomListLabel, "room_list");
+        Translator.bind(selectRoomButton, "select_room");
+        Translator.bind(createRoomButton, "create_room");
+        Translator.bind(roomListLabel, "rooms_list");
     }
 }

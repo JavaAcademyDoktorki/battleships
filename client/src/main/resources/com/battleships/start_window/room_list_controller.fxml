@@ -12,7 +12,7 @@
     <VBox alignment="TOP_CENTER" style="-fx-padding: 8 8 8 8">
         <Label fx:id="roomListLabel"/>
         <ListView fx:id="roomsList"/>
-        <Button fx:id="selectRoom"/>
-        <Button fx:id="createRoom"/>
+        <Button fx:id="selectRoomButton"/>
+        <Button fx:id="createRoomButton"/>
     </VBox>
 </GridPane>
