@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 public class InsertSeekBarData {
-    // Count Progress Bars // TODO try to group these 3 elements to a new class
     @FXML
     private Label rowsTextLabel;
     @FXML

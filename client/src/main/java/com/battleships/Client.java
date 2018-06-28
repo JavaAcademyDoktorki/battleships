@@ -13,7 +13,6 @@ public class Client extends Application {
         System.out.println(getClass().getResource("start_window/start_window.fxml").toString());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("start_window/start_window.fxml"));
         Parent root = loader.load();
-//        root.getStylesheets().add(getClass().getResource("style.css").toString());
         primaryStage.setTitle("battleships");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();

@@ -7,10 +7,10 @@
         <columnConstraints>
             <ColumnConstraints percentWidth="100"/>
         </columnConstraints>
-        <VBox style="-fx-background-color: #43fff4" prefHeight="100" prefWidth="100" GridPane.rowIndex="1" GridPane.columnSpan="1">
+        <VBox  prefHeight="100" prefWidth="100" GridPane.rowIndex="1" GridPane.columnSpan="1">
             <fx:include source="insert_text_data.fxml" />
         </VBox>
-        <VBox style="-fx-background-color: #e6f483" prefHeight="100" prefWidth="100" GridPane.rowIndex="2" GridPane.columnSpan="1">
+        <VBox prefWidth="100" GridPane.rowIndex="2" GridPane.columnSpan="1">
             <fx:include source="insert_seek_bar_data.fxml" />
         </VBox>
 </GridPane>
