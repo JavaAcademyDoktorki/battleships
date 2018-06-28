@@ -19,19 +19,27 @@ public class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info("server up and running...");
         clients = new CopyOnWriteArrayList<>();
-        acceptClients();
+        tryAcceptClientsLoop();
+    }
+
+    private void tryAcceptClientsLoop() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    acceptClients();
+                } catch (IOException e) {
+                    logger.error(e.getStackTrace());
+                }
+            }
+        }).start();
     }
 
     private void acceptClients() throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        String command = "";
-        while (!"halt".equalsIgnoreCase(command)) {
-            Socket socket = serverSocket.accept();
-            Client client = Client.of(socket);
-            logger.info(String.format("registration of user: %d", clients.size() + 1));
-            registerCLient(client);
-            new Thread(() -> handleClients(client)).start();
-        }
+        Socket socket = serverSocket.accept();
+        Client client = Client.of(socket);
+        logger.info(String.format("registration of user: %d", clients.size() + 1));
+        registerCLient(client);
+        new Thread(() -> handleClients(client)).start();
     }
 
     private void handleClients(Client client) {
