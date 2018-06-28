@@ -9,5 +9,6 @@
 ### How to run client app 
 1. Download project: git clone git@github.com:JavaAcademyDoktorki/battleships.git
 2. cd battleships
-3. ./run.sh
-3. Enjoy!
+3. ./run_server.sh
+4. 2 X ./run_client.sh
+5. Enjoy!
