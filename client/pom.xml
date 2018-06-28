@@ -25,7 +25,6 @@
         <version>0.0.1</version>
     </parent>
 
-    <groupId>com.battleships</groupId>
     <artifactId>client</artifactId>
     <version>0.0.1</version>
     <name>Battleship game client</name>
