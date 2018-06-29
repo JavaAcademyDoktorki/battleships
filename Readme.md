@@ -12,3 +12,7 @@
 3. ./run_server.sh
 4. 2 X ./run_client.sh
 5. Enjoy!
+
+Demo 29.06.2018:
++ \+ uzycie ObjectProperty javafx do tłumaczen
++ \+ includy w javafx

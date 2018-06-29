@@ -1,6 +1,7 @@
 package com.battleships.start_window.connection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,7 @@ public enum Connection {
     private Socket socket;
     private PrintWriter socketWriter;
     private Scanner socketScanner;
-    private static Logger logger = Logger.getLogger(Connection.class);
+    private static Logger logger = LogManager.getLogger(Connection.class);
 
     public boolean isConnected() {
         return socket != null && socket.isConnected();

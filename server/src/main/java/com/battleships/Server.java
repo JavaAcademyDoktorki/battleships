@@ -1,6 +1,7 @@
 package com.battleships;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,7 +10,7 @@ import java.net.Socket;
 class Server {
     private final ServerSocket serverSocket;
     private final ConnectedPlayers connectedPlayers;
-    private static Logger logger = Logger.getLogger(Server.class);
+    private static Logger logger = LogManager.getLogger(Server.class.getName());
 
     Server() throws IOException {
         logger.info("próba odpalenia serwera");
@@ -34,7 +35,7 @@ class Server {
     private void acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
         Player player = Player.of(socket);
-        player.setName(player.getNextMessage());
+        player.setName(player.nextMessage());
         logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
         registerPlayer(player);
         new Thread(() -> handlePlayerMessagesUntilClose(player)).start();
@@ -42,7 +43,7 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        String name = player.getNextMessage();
+        String name = player.nextMessage();
         player.sendMessage("Serwer wita: " + name);
     }
 
@@ -55,7 +56,7 @@ class Server {
         String command = "";
         while (!"quit".equalsIgnoreCase(command)) {
             if (player.hasNextMessage()) {
-                command = player.getNextMessage();
+                command = player.nextMessage();
                 logger.info(command);
             }
         }

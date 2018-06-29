@@ -1,8 +1,11 @@
 package com.battleships.start_window.data_insertion;
 import com.battleships.Translator;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+
+import java.awt.event.KeyEvent;
 
 public class SeekBarsDataInserter {
     @FXML

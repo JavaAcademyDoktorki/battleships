@@ -30,7 +30,7 @@ class Player {
         return clientInput.hasNextLine();
     }
 
-    String getNextMessage() {
+    String nextMessage() {
         return clientInput.nextLine();
     }
 
