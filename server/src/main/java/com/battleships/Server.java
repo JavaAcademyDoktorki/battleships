@@ -5,28 +5,25 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Server {
+class Server {
     private final ServerSocket serverSocket;
-    private final List<Client> clients;
+    private final ConnectedPlayers connectedPlayers;
     private static Logger logger = Logger.getLogger(Server.class);
 
-    public Server() throws IOException {
-        logger.info("attempt to start server");
+    Server() throws IOException {
+        logger.info("attempt to stlart server");
         this.serverSocket = new ServerSocket(50000);
         logger.info("server up and running...");
-        clients = new CopyOnWriteArrayList<>();
-        tryAcceptClientsLoop();
+        connectedPlayers = new ConnectedPlayers();
+        tryAcceptPlayersLoop();
     }
 
-    private void tryAcceptClientsLoop() {
+    private void tryAcceptPlayersLoop() {
         new Thread(() -> {
             while (true) {
                 try {
-                    acceptClients();
+                    acceptPlayer();
                 } catch (IOException e) {
                     logger.error(e.getStackTrace());
                 }
@@ -34,37 +31,39 @@ public class Server {
         }).start();
     }
 
-    private void acceptClients() throws IOException {
+    private void acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
-        Client client = Client.of(socket);
-        logger.info(String.format("registration of user: %d", clients.size() + 1));
-        registerCLient(client);
-        new Thread(() -> handleClients(client)).start();
+        Player player = Player.of(socket);
+        player.setName(player.getNextMessage());
+        logger.info(String.format("Registration of user: %s", player));
+        registerPlayer(player);
+        new Thread(() -> handlePlayers(player)).start();
     }
 
-    private void handleClients(Client client) {
+    private void registerPlayer(Player player) {
+        connectedPlayers.add(player);
+        String name = player.getNextMessage();
+        player.sendMessage("hello from server: " + name);
+    }
+
+    private void handlePlayers(Player player) {
         String command = "";
         while (!"quit".equalsIgnoreCase(command)) {
-            if (client.hasNextMessage()) {
-                command = client.getNextMessage();
+            if (player.hasNextMessage()) {
+                command = player.getNextMessage();
                 logger.info(command);
             }
         }
         try {
-            disconnect(client);
+            disconnect(player);
         } catch (IOException e) {
             logger.info(e.getMessage());
         }
     }
 
-    private void disconnect(Client client) throws IOException {
-        clients.remove(client);
-        client.disconnect();
-        logger.info("client disconnected");
-    }
-
-    private void registerCLient(Client client) {
-        clients.add(client);
-        client.writeMessage("hello from server");
+    private void disconnect(Player player) throws IOException {
+        connectedPlayers.remove(player);
+        player.disconnect();
+        logger.info("player disconnected");
     }
 }

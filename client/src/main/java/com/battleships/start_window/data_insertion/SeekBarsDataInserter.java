@@ -1,4 +1,4 @@
-package com.battleships.start_window.InsertData;
+package com.battleships.start_window.data_insertion;
 import com.battleships.Translator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

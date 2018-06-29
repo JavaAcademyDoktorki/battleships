@@ -25,9 +25,9 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>client</artifactId>
+    <artifactId>player</artifactId>
     <version>0.0.1</version>
-    <name>Battleship game client</name>
+    <name>Battleship game player</name>
     <description>Battleship game in Java</description>
     <url>https://github.com/JavaAcademyDoktorki/battleships</url>
 
@@ -59,7 +59,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.battleships.Client</mainClass>
+                            <mainClass>com.battleships.Player</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
