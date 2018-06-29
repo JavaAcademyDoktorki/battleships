@@ -15,7 +15,7 @@
 
     <modules>
         <module>common</module>
-        <module>player</module>
+        <module>client</module>
         <module>server</module>
     </modules>
 

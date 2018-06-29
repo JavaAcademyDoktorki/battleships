@@ -6,7 +6,7 @@
 * JRE 1.8 must be installed on your machine (http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 * maven installed (mvn)
 
-### How to run player app 
+### How to run server and two clients 
 1. Download project: git clone git@github.com:JavaAcademyDoktorki/battleships.git
 2. cd battleships
 3. ./run_server.sh

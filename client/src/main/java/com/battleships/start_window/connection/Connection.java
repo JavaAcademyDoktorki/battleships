@@ -1,5 +1,7 @@
 package com.battleships.start_window.connection;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -11,6 +13,7 @@ public enum Connection {
     private Socket socket;
     private PrintWriter socketWriter;
     private Scanner socketScanner;
+    private static Logger logger = Logger.getLogger(Connection.class);
 
     public boolean isConnected() {
         return socket != null && socket.isConnected();
@@ -22,8 +25,7 @@ public enum Connection {
                 sendToServer("quit");
                 socket.close();
             } catch (IOException e) {
-                // TODO obsluzyc
-                e.printStackTrace();
+               logger.error("problem z rozłączeniem od serwera: " + e.getMessage());
             } finally {
                 socket = null;
             }
@@ -38,8 +40,7 @@ public enum Connection {
                 socketScanner = new Scanner(socket.getInputStream());
                 sendToServer(name);
             } catch (IOException e) {
-                System.err.println(String.format("Couldnt connect to %s:%d", connectInfo.ip, connectInfo.port)); // TODO zalogować
-                e.printStackTrace();
+                logger.error(String.format("Nie można podłączyć do serwera: %s:%d", connectInfo.ip, connectInfo.port));
             }
         }
     }

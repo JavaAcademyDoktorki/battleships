@@ -12,9 +12,9 @@ class Server {
     private static Logger logger = Logger.getLogger(Server.class);
 
     Server() throws IOException {
-        logger.info("attempt to stlart server");
+        logger.info("próba odpalenia serwera");
         this.serverSocket = new ServerSocket(50000);
-        logger.info("server up and running...");
+        logger.info("serwer odpalony i działa... :)");
         connectedPlayers = new ConnectedPlayers();
         tryAcceptPlayersLoop();
     }
@@ -35,18 +35,23 @@ class Server {
         Socket socket = serverSocket.accept();
         Player player = Player.of(socket);
         player.setName(player.getNextMessage());
-        logger.info(String.format("Registration of user: %s", player));
+        logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
         registerPlayer(player);
-        new Thread(() -> handlePlayers(player)).start();
+        new Thread(() -> handlePlayerMessagesUntilClose(player)).start();
     }
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
         String name = player.getNextMessage();
-        player.sendMessage("hello from server: " + name);
+        player.sendMessage("Serwer wita: " + name);
     }
 
-    private void handlePlayers(Player player) {
+    private void handlePlayerMessagesUntilClose(Player player) {
+        proceedWithPlayerMesseges(player);
+        tryToDisconnectPlayer(player);
+    }
+
+    private void proceedWithPlayerMesseges(Player player) {
         String command = "";
         while (!"quit".equalsIgnoreCase(command)) {
             if (player.hasNextMessage()) {
@@ -54,6 +59,10 @@ class Server {
                 logger.info(command);
             }
         }
+    }
+
+    private void tryToDisconnectPlayer(Player player) {
+        logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
         try {
             disconnect(player);
         } catch (IOException e) {
@@ -64,6 +73,6 @@ class Server {
     private void disconnect(Player player) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
-        logger.info("player disconnected");
+        logger.info("Gracz rozłączony");
     }
 }

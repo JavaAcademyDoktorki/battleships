@@ -13,6 +13,7 @@
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
         <jacoco.version>0.8.1</jacoco.version>
+        <log4j.version>1.2.17</log4j.version>
         <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
     </properties>
@@ -25,9 +26,9 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>player</artifactId>
+    <artifactId>client</artifactId>
     <version>0.0.1</version>
-    <name>Battleship game player</name>
+    <name>Battleship game client</name>
     <description>Battleship game in Java</description>
     <url>https://github.com/JavaAcademyDoktorki/battleships</url>
 
@@ -37,6 +38,11 @@
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
     </dependencies>
 
