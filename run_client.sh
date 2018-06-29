@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar player/target/player-0.0.1.jar
+java -jar player/target/client-0.0.1-jar-with-dependencies.jar
