@@ -46,4 +46,8 @@ class Player {
     public String toString() {
         return playerName;
     }
+
+    public boolean isNamed(String name) {
+        return playerName.equals(name);
+    }
 }

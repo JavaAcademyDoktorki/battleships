@@ -17,4 +17,17 @@ class ConnectedPlayers {
     void remove(Player player) {
         playerList.remove(player);
     }
+
+    boolean isNameAvailable(String name){
+        for (Player player : playerList){
+            if (player.isNamed(name)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    String generateNewName(){
+        return "Player" + playerList.size();
+    }
 }

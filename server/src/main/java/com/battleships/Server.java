@@ -24,7 +24,7 @@ class Server {
         new Thread(() -> {
             while (true) {
                 try {
-                    acceptPlayer();
+                    addPlayerToTheGame();
                 } catch (IOException e) {
                     logger.error(e.getStackTrace());
                 }
@@ -32,23 +32,36 @@ class Server {
         }).start();
     }
 
-    private Thread thread;
-    private void acceptPlayer() throws IOException {
-        Socket socket = serverSocket.accept();
-        Player player = Player.of(socket);
-        player.setName(player.nextMessage()); // todo hasNextMessage?
+
+    private void addPlayerToTheGame() throws IOException {
+        Player player = acceptPlayer();
+        assignNameToNewUser(player);
         logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
+        player.sendMessage(String.format("Dostałeś nick: %s", player));
         registerPlayer(player);
-        thread = new Thread(() -> handlePlayerMessagesUntilClose(player));
-        thread.start();
+        new Thread(() -> handlePlayerMessagesUntilDisconnected(player)).start();
+    }
+
+    private Player acceptPlayer() throws IOException {
+        Socket socket = serverSocket.accept();
+        return Player.of(socket);
+    }
+
+    private void assignNameToNewUser(Player player) {
+        String providedName = player.nextMessage();
+        if (connectedPlayers.isNameAvailable(providedName) && !providedName.trim().equals("")) {
+            player.setName(providedName);
+        } else {
+            player.setName(connectedPlayers.generateNewName());
+        }
     }
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendMessage("Serwer wita: " + player); // TODO not working ?
+        player.sendMessage("Serwer wita: " + player);
     }
 
-    private void handlePlayerMessagesUntilClose(Player player) {
+    private void handlePlayerMessagesUntilDisconnected(Player player) {
         proceedWithPlayerMesseges(player);
         tryToDisconnectPlayer(player);
     }
@@ -75,6 +88,6 @@ class Server {
     private void disconnect(Player player) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
-        logger.info(String.format("Gracz rozłączył się z serwerem: %s", player));
+        logger.info(String.format("Rozłączyłem gracza: %s", player));
     }
 }
