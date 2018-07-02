@@ -41,9 +41,27 @@ public enum Connection {
                 socketWriter = new PrintWriter(socket.getOutputStream());
                 socketScanner = new Scanner(socket.getInputStream());
                 sendToServer(name);
+                initReadingMessagesFromServer();
             } catch (IOException e) {
                 logger.error(String.format("Nie można podłączyć do serwera: %s:%d", connectInfo.ip, connectInfo.port));
             }
+        }
+    }
+
+    private void initReadingMessagesFromServer() {
+        new Thread(() ->{
+            tryThreadSleep(100);
+            if (socketScanner.hasNextLine()){
+                logger.info(socketScanner.nextLine());
+            }
+        }).start();
+    }
+
+    private void tryThreadSleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
