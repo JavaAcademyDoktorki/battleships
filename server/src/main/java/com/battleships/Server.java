@@ -10,12 +10,12 @@ import java.net.Socket;
 class Server {
     private final ServerSocket serverSocket;
     private final ConnectedPlayers connectedPlayers;
-    private static Logger logger = LogManager.getLogger(Server.class.getName());
+    private static final Logger logger = LogManager.getLogger(Server.class.getName());
 
     Server() throws IOException {
-        logger.info("próba odpalenia serwera");
+        logger.info("Próba odpalenia serwera");
         this.serverSocket = new ServerSocket(50000);
-        logger.info("serwer odpalony i działa... :)");
+        logger.info("Serwer odpalony... :)");
         connectedPlayers = new ConnectedPlayers();
         tryAcceptPlayersLoop();
     }
@@ -26,7 +26,7 @@ class Server {
                 try {
                     addPlayerToTheGame();
                 } catch (IOException e) {
-                    logger.error(e.getStackTrace());
+                    logger.error("Wystąpił problem przy próbie dodania nowego gracza", e.getStackTrace());
                 }
             }
         }).start();

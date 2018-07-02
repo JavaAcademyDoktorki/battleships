@@ -14,11 +14,7 @@ public enum Connection {
     private Socket socket;
     private PrintWriter socketWriter;
     private Scanner socketScanner;
-    private static Logger logger = LogManager.getLogger(Connection.class);
-
-    public boolean isConnected() {
-        return socket != null && socket.isConnected();
-    }
+    private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void disconnect() {
         if (isConnected()) {
@@ -32,6 +28,10 @@ public enum Connection {
                 socket = null;
             }
         }
+    }
+
+    private boolean isConnected() {
+        return socket != null && socket.isConnected();
     }
 
     public void connect(ConnectInfo connectInfo, String name) {
@@ -65,7 +65,7 @@ public enum Connection {
         }
     }
 
-    public void sendToServer(String message) {
+    private void sendToServer(String message) {
         if (isConnected()) {
             socketWriter.println(message);
             socketWriter.flush();
