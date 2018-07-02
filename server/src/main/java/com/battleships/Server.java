@@ -32,19 +32,20 @@ class Server {
         }).start();
     }
 
+    private Thread thread;
     private void acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
         Player player = Player.of(socket);
-        player.setName(player.nextMessage());
+        player.setName(player.nextMessage()); // todo hasNextMessage?
         logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
         registerPlayer(player);
-        new Thread(() -> handlePlayerMessagesUntilClose(player)).start();
+        thread = new Thread(() -> handlePlayerMessagesUntilClose(player));
+        thread.start();
     }
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        String name = player.nextMessage();
-        player.sendMessage("Serwer wita: " + name);
+        player.sendMessage("Serwer wita: " + player); // TODO not working ?
     }
 
     private void handlePlayerMessagesUntilClose(Player player) {
@@ -57,23 +58,23 @@ class Server {
         while (!"quit".equalsIgnoreCase(command)) {
             if (player.hasNextMessage()) {
                 command = player.nextMessage();
-                logger.info(command);
+                logger.info(String.format("Gracz %s wysłał komendę: %s", player, command));
             }
         }
     }
 
     private void tryToDisconnectPlayer(Player player) {
-        logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
         try {
             disconnect(player);
         } catch (IOException e) {
-            logger.info(e.getMessage());
+            String logMessage = String.format("Nieudana próba rozłączenia gracza \"%s\" z serwerem", player);
+            logger.info(logMessage, e.getMessage());
         }
     }
 
     private void disconnect(Player player) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
-        logger.info("Gracz rozłączony");
+        logger.info(String.format("Gracz rozłączył się z serwerem: %s", player));
     }
 }

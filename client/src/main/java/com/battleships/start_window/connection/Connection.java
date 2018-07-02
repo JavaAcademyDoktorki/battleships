@@ -25,6 +25,7 @@ public enum Connection {
             try {
                 sendToServer("quit");
                 socket.close();
+                logger.error("Rozłączony z serwerem na żądanie gracza");
             } catch (IOException e) {
                logger.error("problem z rozłączeniem od serwera: " + e.getMessage());
             } finally {
