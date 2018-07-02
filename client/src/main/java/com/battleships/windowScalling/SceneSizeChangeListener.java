@@ -9,12 +9,12 @@ import javafx.scene.transform.Scale;
 
 class SceneSizeChangeListener implements ChangeListener<Number> {
     private final Scene scene;
-    private final ScallingParams scallingParams;
+    private final ScalingParams scalingParams;
     private final Parent contentPane;
 
-    public SceneSizeChangeListener(Scene scene, ScallingParams scallingParams, Parent contentPane) {
+    public SceneSizeChangeListener(Scene scene, ScalingParams scalingParams, Parent contentPane) {
         this.scene = scene;
-        this.scallingParams = scallingParams;
+        this.scalingParams = scalingParams;
         this.contentPane = contentPane;
     }
 
@@ -29,14 +29,14 @@ class SceneSizeChangeListener implements ChangeListener<Number> {
             contentPane.prefWidth(scene.getWidth() / scaleFactor);
             contentPane.prefHeight(scene.getHeight() / scaleFactor);
         } else {
-            contentPane.prefWidth(Math.max(scallingParams.width, scene.getWidth()));
-            contentPane.prefHeight(Math.max(scallingParams.height, scene.getHeight()));
+            contentPane.prefWidth(Math.max(scalingParams.width, scene.getWidth()));
+            contentPane.prefHeight(Math.max(scalingParams.height, scene.getHeight()));
         }
     }
 
     private double calculateScaleFactor(double newWidth, double newHeight) {
-        return newWidth / newHeight > scallingParams.ratio
-                ? newHeight / scallingParams.height
-                : newWidth / scallingParams.width;
+        return newWidth / newHeight > scalingParams.ratio
+                ? newHeight / scalingParams.height
+                : newWidth / scalingParams.width;
     }
 }
