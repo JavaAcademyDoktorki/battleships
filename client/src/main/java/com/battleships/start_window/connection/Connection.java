@@ -27,6 +27,9 @@ public enum Connection {
             } catch (IOException e) {
                logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
             }
+            finally {
+                socket = Optional.empty();
+            }
         }
     }
 
@@ -34,13 +37,13 @@ public enum Connection {
         return socket.isPresent() && socket.get().isConnected();
     }
 
-    public void connect(ConnectionInfo connectionInfo, String name) {
+    public void connect(ConnectionInfo connectionInfo, String playerName) {
         if (!isConnected()) {
             try {
                 socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
                 socketWriter = new PrintWriter(socket.get().getOutputStream());
                 socketScanner = new Scanner(socket.get().getInputStream());
-                sendToServer(name);
+                sendToServer(playerName);
                 initReadingMessagesFromServer();
             } catch (IOException e) {
                 logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
