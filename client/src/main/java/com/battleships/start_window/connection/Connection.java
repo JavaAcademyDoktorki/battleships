@@ -1,5 +1,6 @@
 package com.battleships.start_window.connection;
 
+import com.battleships.Commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +20,7 @@ public enum Connection {
     public void disconnect() {
         if (isConnected()) {
             try {
-                sendToServer("quit");
+                sendToServer(Commands.STOP_PLAYING.name());
                 socket.close();
                 logger.error("Rozłączony z serwerem na żądanie gracza");
             } catch (IOException e) {

@@ -67,10 +67,11 @@ class Server {
     }
 
     private void proceedWithPlayerMesseges(Player player) {
-        String command = "";
-        while (!"quit".equalsIgnoreCase(command)) {
+        // TODO THINK ABOUT A PROTOCOL...
+        Commands command = Commands.GO_PLAYING;
+        while (!command.equals(Commands.STOP_PLAYING)) {
             if (player.hasNextMessage()) {
-                command = player.nextMessage();
+                command = Commands.valueOf(player.nextMessage()); // TODO try send a object, or use some protocol here
                 logger.info(String.format("Gracz %s wysłał komendę: %s", player, command));
             }
         }
