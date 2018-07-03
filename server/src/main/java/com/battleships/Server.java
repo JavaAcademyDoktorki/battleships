@@ -1,5 +1,6 @@
 package com.battleships;
 
+import com.battleships.Messages.LogMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,9 +14,9 @@ class Server {
     private static final Logger logger = LogManager.getLogger(Server.class.getName());
 
     Server() throws IOException {
-        logger.info("Próba odpalenia serwera");
+        logger.info(LogMessages.TRY_TO_RUN_SERVER);
         this.serverSocket = new ServerSocket(50000);
-        logger.info("Serwer odpalony... :)");
+        logger.info(LogMessages.SERVER_RUNS);
         connectedPlayers = new ConnectedPlayers();
         tryAcceptPlayersLoop();
     }
@@ -26,7 +27,7 @@ class Server {
                 try {
                     addPlayerToTheGame();
                 } catch (IOException e) {
-                    logger.error("Wystąpił problem przy próbie dodania nowego gracza", e.getStackTrace());
+                    logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER, e.getStackTrace());
                 }
             }
         }).start();
@@ -36,8 +37,8 @@ class Server {
     private void addPlayerToTheGame() throws IOException {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
-        logger.info(String.format("Nowy gracz połączył się do serwera: %s", player));
-        player.sendMessage(String.format("Dostałeś nick: %s", player));
+        logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
+        player.sendMessage(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
         registerPlayer(player);
         new Thread(() -> handlePlayerMessagesUntilDisconnected(player)).start();
     }
@@ -58,7 +59,7 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendMessage("Serwer wita: " + player);
+        player.sendMessage("Serwer wita: " + player); // TODO protocol to send commands
     }
 
     private void handlePlayerMessagesUntilDisconnected(Player player) {
@@ -72,7 +73,7 @@ class Server {
         while (!command.equals(Commands.STOP_PLAYING)) {
             if (player.hasNextMessage()) {
                 command = Commands.valueOf(player.nextMessage()); // TODO try send a object, or use some protocol here
-                logger.info(String.format("Gracz %s wysłał komendę: %s", player, command));
+                logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command));
             }
         }
     }
@@ -81,7 +82,7 @@ class Server {
         try {
             disconnect(player);
         } catch (IOException e) {
-            String logMessage = String.format("Nieudana próba rozłączenia gracza \"%s\" z serwerem", player);
+            String logMessage = String.format(LogMessages.UNSUCCESFUL_TRY_TO_DISCONNECT_PLAYER, player);
             logger.info(logMessage, e.getMessage());
         }
     }
@@ -89,6 +90,6 @@ class Server {
     private void disconnect(Player player) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
-        logger.info(String.format("Rozłączyłem gracza: %s", player));
+        logger.info(String.format(LogMessages.DISCONNECT_PLAYER, player));
     }
 }

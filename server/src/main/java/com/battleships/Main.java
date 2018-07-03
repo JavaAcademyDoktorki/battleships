@@ -1,5 +1,6 @@
 package com.battleships;
 
+import com.battleships.Messages.LogMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +13,7 @@ class Main {
         try {
             new Server();
         } catch (IOException e) {
-            logger.error("Problem przy próbie odpalenia serwera.", e);
+            logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_RUN_SERVER, e);
         }
     }
 }

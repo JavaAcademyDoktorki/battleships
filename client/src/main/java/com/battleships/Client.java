@@ -37,7 +37,7 @@ public class Client extends Application {
             primaryStage.show();
         }
         else{
-            logger.error("Nie mogłem załadować głownego widoku fxml, nie odpaliłem aplikacji.");
+            logger.error(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW);
         }
     }
 
@@ -52,7 +52,7 @@ public class Client extends Application {
         try {
             root = Optional.of(loader.load());
         } catch (IOException e) {
-            logger.error(String.format("Nie mogłem załadować głównego pliku xml aplikacji ze ścieżki %s", mainFxmlPath), e.getMessage());
+            logger.error(String.format(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW_FROM_PATH, mainFxmlPath), e.getMessage());
         }
         finally {
             return root;

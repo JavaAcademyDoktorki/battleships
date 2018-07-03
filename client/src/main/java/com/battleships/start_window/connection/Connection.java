@@ -1,6 +1,7 @@
 package com.battleships.start_window.connection;
 
 import com.battleships.Commands;
+import com.battleships.LogMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,9 +23,9 @@ public enum Connection {
             try {
                 sendToServer(Commands.STOP_PLAYING.name());
                 socket.close();
-                logger.error("Rozłączony z serwerem na żądanie gracza");
+                logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
             } catch (IOException e) {
-               logger.error("Problem z rozłączeniem serwera: " + e.getMessage());
+               logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
             } finally {
                 socket = null;
             }
@@ -44,7 +45,7 @@ public enum Connection {
                 sendToServer(name);
                 initReadingMessagesFromServer();
             } catch (IOException e) {
-                logger.error(String.format("Nie można podłączyć do serwera: %s:%d", connectionInfo.getIp(), connectionInfo.getPort()));
+                logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
             }
         }
     }
