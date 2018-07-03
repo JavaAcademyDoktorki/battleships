@@ -17,6 +17,7 @@ public enum Connection {
     private PrintWriter socketWriter;
     private Scanner socketScanner;
     private final static Logger logger = LogManager.getLogger(Connection.class);
+    private Thread readMessagesFromUserThread;
 
     public void disconnect() {
         if (isConnected()) {
@@ -26,8 +27,7 @@ public enum Connection {
                 logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
             } catch (IOException e) {
                logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
-            }
-            finally {
+            } finally {
                 socket = Optional.empty();
             }
         }
@@ -44,20 +44,27 @@ public enum Connection {
                 socketWriter = new PrintWriter(socket.get().getOutputStream());
                 socketScanner = new Scanner(socket.get().getInputStream());
                 sendToServer(playerName);
-                initReadingMessagesFromServer();
+                initThreadReadingMessagesFromServer();
+                startThreadReadingMessagesFromServer();
             } catch (IOException e) {
                 logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
             }
         }
     }
 
-    private void initReadingMessagesFromServer() {
-        new Thread(() ->{
-            tryThreadSleep(100);
-            if (socketScanner.hasNextLine()){
-                logger.info(socketScanner.nextLine());
+    private void initThreadReadingMessagesFromServer() {
+        readMessagesFromUserThread = new Thread(() ->{
+            while (isConnected()) {
+                tryThreadSleep(100);
+                if (socketScanner.hasNextLine()) {
+                    logger.info(socketScanner.nextLine());
+                }
             }
-        }).start();
+        });
+    }
+
+    private void startThreadReadingMessagesFromServer() {
+        readMessagesFromUserThread.start();
     }
 
     private void tryThreadSleep(int ms) {
