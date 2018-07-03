@@ -24,7 +24,7 @@ public enum Connection {
             try {
                 sendToServer(Commands.STOP_PLAYING.name());
                 socket.get().close();
-                logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
+                logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
             } catch (IOException e) {
                logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
             } finally {
@@ -79,6 +79,9 @@ public enum Connection {
         if (isConnected()) {
             socketWriter.println(message);
             socketWriter.flush();
+        }
+        else{
+            logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, message));
         }
     }
 }
