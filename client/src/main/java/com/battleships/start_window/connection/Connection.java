@@ -8,12 +8,12 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.Scanner;
 
 public enum Connection {
     INSTANCE;
-
-    private Socket socket;
+    private Optional<Socket> socket = Optional.empty();
     private PrintWriter socketWriter;
     private Scanner socketScanner;
     private final static Logger logger = LogManager.getLogger(Connection.class);
@@ -22,26 +22,24 @@ public enum Connection {
         if (isConnected()) {
             try {
                 sendToServer(Commands.STOP_PLAYING.name());
-                socket.close();
+                socket.get().close();
                 logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
             } catch (IOException e) {
                logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
-            } finally {
-                socket = null;
             }
         }
     }
 
     private boolean isConnected() {
-        return socket != null && socket.isConnected();
+        return socket.isPresent() && socket.get().isConnected();
     }
 
     public void connect(ConnectionInfo connectionInfo, String name) {
         if (!isConnected()) {
             try {
-                socket = new Socket(connectionInfo.getIp(), connectionInfo.getPort());
-                socketWriter = new PrintWriter(socket.getOutputStream());
-                socketScanner = new Scanner(socket.getInputStream());
+                socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
+                socketWriter = new PrintWriter(socket.get().getOutputStream());
+                socketScanner = new Scanner(socket.get().getInputStream());
                 sendToServer(name);
                 initReadingMessagesFromServer();
             } catch (IOException e) {
