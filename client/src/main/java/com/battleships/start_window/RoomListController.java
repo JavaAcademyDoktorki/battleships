@@ -15,8 +15,8 @@ public class RoomListController {
 
     @FXML
     public void initialize(){
-        Translator.bind(selectRoomButton, "select_room");
-        Translator.bind(createRoomButton, "create_room");
-        Translator.bind(roomListLabel, "rooms_list");
+        Translator.bind(selectRoomButton.textProperty(), "select_room");
+        Translator.bind(createRoomButton.textProperty(), "create_room");
+        Translator.bind(roomListLabel.textProperty(), "rooms_list");
     }
 }

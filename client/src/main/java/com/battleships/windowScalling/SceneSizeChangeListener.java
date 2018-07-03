@@ -20,7 +20,7 @@ class SceneSizeChangeListener implements ChangeListener<Number> {
 
     @Override
     public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-        double scaleFactor = calculateScaleFactor(scene.getWidth(), scene.getHeight());
+        double scaleFactor = scalingParams.calculateScaleFactor(scene.getWidth(), scene.getHeight());
         if (scaleFactor >= 1) {
             Scale scale = new Scale(scaleFactor, scaleFactor);
             scale.setPivotX(0);
@@ -29,14 +29,8 @@ class SceneSizeChangeListener implements ChangeListener<Number> {
             contentPane.prefWidth(scene.getWidth() / scaleFactor);
             contentPane.prefHeight(scene.getHeight() / scaleFactor);
         } else {
-            contentPane.prefWidth(Math.max(scalingParams.width, scene.getWidth()));
-            contentPane.prefHeight(Math.max(scalingParams.height, scene.getHeight()));
+            contentPane.prefWidth(Math.max(scalingParams.getWidth(), scene.getWidth()));
+            contentPane.prefHeight(Math.max(scalingParams.getHeight(), scene.getHeight()));
         }
-    }
-
-    private double calculateScaleFactor(double newWidth, double newHeight) {
-        return newWidth / newHeight > scalingParams.ratio
-                ? newHeight / scalingParams.height
-                : newWidth / scalingParams.width;
     }
 }

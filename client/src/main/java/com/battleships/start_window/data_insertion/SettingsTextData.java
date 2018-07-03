@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 
 import java.util.Optional;
 
-public class InsertTextData {
+public class SettingsTextData {
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -38,26 +38,28 @@ public class InsertTextData {
     }
 
     private void setOnActionToButtons() {
-        String ip = getIPIfUserInsertedProperly().get();
-        int port = extractPortIfPlayerInserted().get();
-        ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
-        connectToServerButton.setOnAction(e -> Connection.INSTANCE.connect(connectionInfo, nameTextField.getText()));
+        connectToServerButton.setOnAction(e -> connectToServerButtonAction());
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
     }
 
-    // todo not insertTextData
+    private void connectToServerButtonAction() {
+        String ip = getIPIfUserInsertedProperly().get();
+        int port = extractPortIfPlayerInserted().get();
+        ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
+        Connection.INSTANCE.connect(connectionInfo, nameTextField.getText());
+    }
+
     private Optional<String> getIPIfUserInsertedProperly() {
         // TODO REGEX validation
-        Optional<String> result = Optional.empty();
-        result = Optional.of(ipTextField.getText().split(":")[0]); // TODO convert to IP class
+        Optional<String> result = Optional.empty(); // TODO redundand ?
+        result = Optional.of(ipTextField.textProperty().get().split(":")[0]); // TODO convert to IP class? Not simple integer? Because IP can be v4 and v6
         return result;
     }
 
-    // todo not insertTextData
     private Optional<Integer> extractPortIfPlayerInserted(){
         // TODO REGEX validation
-        // TODO is INTEGER
-        Optional<Integer> IP_Value = Optional.empty();
+        Optional<Integer> IP_Value = Optional.empty(); // TODO redundand ?
+        // TODO check if IP_Value.get() is INTEGER
         IP_Value = Optional.of(Integer.valueOf(ipTextField.getText().split(":")[1]));
         return IP_Value;
     }

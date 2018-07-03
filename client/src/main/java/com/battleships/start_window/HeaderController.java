@@ -10,6 +10,6 @@ public class HeaderController {
 
     @FXML
     public void initialize() {
-        Translator.bind(settingsLabel, "choose_settings");
+        Translator.bind(settingsLabel.textProperty(), "choose_settings");
     }
 }

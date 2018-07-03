@@ -39,8 +39,7 @@ public class Translator {
         return Bindings.createStringBinding(() -> getTranslation(key, args), locale);
     }
 
-    public static void bind(Labeled settingsLabel, String key, Object... args) {
-        StringProperty labelStringProperty = settingsLabel.textProperty();
-        labelStringProperty.bind(createStringBinding(key, args));
+    public static void bind(StringProperty stringProperty, String key, Object... args) {
+        stringProperty.bind(createStringBinding(key, args));
     }
 }

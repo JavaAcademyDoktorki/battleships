@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
-public class SeekBarsDataInserter {
+public class SettingsSeekBarsData {
     @FXML
     private Label rowsTextLabel;
     @FXML
