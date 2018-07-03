@@ -1,7 +1,7 @@
 package com.battleships.start_window.data_insertion;
 
 import com.battleships.Translator;
-import com.battleships.start_window.connection.ConnectInfo;
+import com.battleships.start_window.connection.ConnectionInfo;
 import com.battleships.start_window.connection.Connection;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -34,12 +34,12 @@ public class InsertTextData {
         disconnectButton.setOnAction(e -> Connection.INSTANCE.disconnect());
     }
 
-    private ConnectInfo getConnectInfo() {
-        ConnectInfo connectInfo = new ConnectInfo();
+    private ConnectionInfo getConnectInfo() {
         String[] ipAndPort = ipTextField.getText().split(":");
-        connectInfo.ip = ipAndPort[0];
-        connectInfo.port = Integer.valueOf(ipAndPort[1]);
-        return connectInfo;
+        String ipAdress = ipAndPort[0];
+        int port = Integer.valueOf(ipAndPort[1]);
+
+        return new ConnectionInfo(ipAdress, port);
     }
 
 }

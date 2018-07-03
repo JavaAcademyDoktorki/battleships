@@ -34,16 +34,16 @@ public enum Connection {
         return socket != null && socket.isConnected();
     }
 
-    public void connect(ConnectInfo connectInfo, String name) {
+    public void connect(ConnectionInfo connectionInfo, String name) {
         if (!isConnected()) {
             try {
-                socket = new Socket(connectInfo.ip, connectInfo.port);
+                socket = new Socket(connectionInfo.getIp(), connectionInfo.getPort());
                 socketWriter = new PrintWriter(socket.getOutputStream());
                 socketScanner = new Scanner(socket.getInputStream());
                 sendToServer(name);
                 initReadingMessagesFromServer();
             } catch (IOException e) {
-                logger.error(String.format("Nie można podłączyć do serwera: %s:%d", connectInfo.ip, connectInfo.port));
+                logger.error(String.format("Nie można podłączyć do serwera: %s:%d", connectionInfo.getIp(), connectionInfo.getPort()));
             }
         }
     }
