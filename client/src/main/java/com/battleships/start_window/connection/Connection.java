@@ -27,7 +27,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            sendToServer(Commands.STOP_PLAYING.name());
+            sendToServer(Commands.STOP_PLAYING);
             disconnectPlayerOrLogIfFailed();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
@@ -39,7 +39,7 @@ public enum Connection {
     private void disconnectPlayerOrLogIfFailed() throws IOException {
         if (socket.isPresent()) {
             socket.get().close();
-            logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
+            logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
         }
@@ -60,7 +60,7 @@ public enum Connection {
             socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
             socketWriter = new PrintWriter(socket.get().getOutputStream());
             socketScanner = new Scanner(socket.get().getInputStream());
-            sendToServer(playerName);
+            sendToServer(Commands.SET_NAME, playerName);
             initThreadReadingCommandsFromServer();
             startThreadReadingCommandsFromServer();
         } catch (IOException e) {
@@ -98,12 +98,20 @@ public enum Connection {
         }
     }
 
-    private void sendToServer(String command) {
+    private void sendToServer(Commands command) {
+        sendToServer(command, "");
+    }
+
+    private void sendToServer(Commands command, String commandValue) {
         if (isConnected()) {
-            socketWriter.println(command);
+            socketWriter.println(convertToProtocol(command, commandValue));
             socketWriter.flush();
         } else {
             logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, command));
         }
+    }
+
+    private String convertToProtocol(Commands command, String commandValue) {
+        return command + Commands.getSeparator() + commandValue;
     }
 }

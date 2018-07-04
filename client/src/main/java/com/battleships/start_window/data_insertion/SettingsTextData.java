@@ -47,13 +47,13 @@ public class SettingsTextData {
     }
 
     private void connectToServerButtonAction() {
-        if (isIPorPortNotPresent()) {
-            logErrorsAboutIPAndPort();
-        } else {
+        if (isPortAndIPPresent()) {
             String ip = getIPIfUserInsertedProperly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
             Connection.INSTANCE.establishConnection(connectionInfo, nameTextField.getText());
+        } else {
+            logErrorsAboutIPAndPort();
         }
     }
 
@@ -66,8 +66,8 @@ public class SettingsTextData {
         }
     }
 
-    private boolean isIPorPortNotPresent() {
-        return !getIPIfUserInsertedProperly().isPresent() || !extractPortIfPlayerInserted().isPresent();
+    private boolean isPortAndIPPresent() {
+        return getIPIfUserInsertedProperly().isPresent() && extractPortIfPlayerInserted().isPresent();
     }
 
     private Optional<String> getIPIfUserInsertedProperly() {

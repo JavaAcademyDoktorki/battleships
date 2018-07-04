@@ -63,7 +63,7 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendCommand("Serwer wita: " + player); // TODO protocol to send commands
+        player.sendCommand("Serwer wita: " + player);
     }
 
     private void handlePlayerCommandsUntilDisconnected(Player player) {
@@ -72,14 +72,18 @@ class Server {
     }
 
     private void handlePlayerInput(Player player) {
-        // TODO THINK ABOUT A PROTOCOL...
-        Commands command = Commands.GO_PLAYING;
+        Commands command = Commands.START_PLAYING;
         while (!command.equals(Commands.STOP_PLAYING)) {
             if (player.hasNextCommand()) {
-                command = Commands.valueOf(player.nextCommand()); // TODO try send a object, or use some protocol here
-                logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command));
+                PlayerCommand playerCommand = new PlayerCommand(player.nextCommand());
+                command = playerCommand.getType();
+                handlePlayerCommands(player, command, playerCommand.getValue());
             }
         }
+    }
+
+    private void handlePlayerCommands(Player player, Commands command, String commandValue) {
+        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command, commandValue));
     }
 
     private void tryToDisconnectPlayer(Player player) {

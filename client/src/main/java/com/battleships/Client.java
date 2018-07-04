@@ -22,25 +22,26 @@ public class Client extends Application {
     @Override
     public void start(Stage primaryStage) {
         enableAppTitleTranslation(primaryStage);
-        setSceneRunAppIfViewLoaded(primaryStage);
+        runApp(primaryStage);
     }
 
     private void enableAppTitleTranslation(Stage primaryStage) {
         primaryStage.titleProperty().bind(Translator.createStringBinding("battleships_title"));
     }
 
-    private void setSceneRunAppIfViewLoaded(Stage primaryStage) {
-        Optional<Parent> rootFxml = tryToGetRootFxml();
-        if (rootFxml.isPresent()) {
-            setScalingScene(primaryStage, rootFxml.get());
+    private void runApp(Stage primaryStage) {
+        Optional<Parent> rootFxmlOptional = tryToGetRootFxmlOptional();
+        if (rootFxmlOptional.isPresent()) {
+            setScalingScene(primaryStage, rootFxmlOptional.get());
             primaryStage.show();
+            logger.error(LogMessages.MAIN_FXML_VIEW_LOADED_APP_STARTED);
         }
         else{
             logger.error(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW);
         }
     }
 
-    private Optional<Parent> tryToGetRootFxml() {
+    private Optional<Parent> tryToGetRootFxmlOptional() {
         String mainFxmlPath = "start_window/start_window.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(mainFxmlPath));
         return tryToLoadRoot(mainFxmlPath, loader);
