@@ -1,20 +1,15 @@
 package com.battleships;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 class Player {
     private final Socket playerSocket;
-    private final PrintWriter clientWriter;
-    private final Scanner clientInput;
     private String playerName;
+    private PlayerIO playerIO;
 
     private Player(Socket playerSocket) throws IOException {
         this.playerSocket = playerSocket;
-        clientWriter = new PrintWriter(playerSocket.getOutputStream());
-        clientInput = new Scanner(playerSocket.getInputStream());
+        playerIO = new PlayerIO(playerSocket);
     }
 
     static Player of(Socket socket) throws IOException {
@@ -22,16 +17,15 @@ class Player {
     }
 
     void sendMessage(String message) {
-        clientWriter.println(message);
-        clientWriter.flush();
+        playerIO.sendMessage(message);
     }
 
     boolean hasNextMessage() {
-        return clientInput.hasNextLine();
+        return playerIO.hasNextMessage();
     }
 
     String nextMessage() {
-        return clientInput.nextLine();
+        return playerIO.nextMessage();
     }
 
     void disconnect() throws IOException {
@@ -47,7 +41,7 @@ class Player {
         return playerName;
     }
 
-    public boolean isNamed(String name) {
+    boolean isNamed(String name) {
         return playerName.equals(name);
     }
 }
