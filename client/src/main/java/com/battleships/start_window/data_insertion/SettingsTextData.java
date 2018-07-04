@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
-public class SettingsTextData {
+class SettingsTextData {
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -49,8 +49,7 @@ public class SettingsTextData {
     private void connectToServerButtonAction() {
         if (isIPorPortNotPresent()) {
             logErrorsAboutIPAndPort();
-        }
-        else {
+        } else {
             String ip = getIPIfUserInsertedProperly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
@@ -72,17 +71,10 @@ public class SettingsTextData {
     }
 
     private Optional<String> getIPIfUserInsertedProperly() {
-        // TODO REGEX validation
-        Optional<String> result = Optional.empty(); // TODO redundand ?
-        result = Optional.of(ipTextField.textProperty().get().split(":")[0]); // TODO convert to IP class? Not simple integer? Because IP can be v4 and v6
-        return result;
+        return Optional.of(ipTextField.textProperty().get().split(":")[0]);
     }
 
-    private Optional<Integer> extractPortIfPlayerInserted(){
-        // TODO REGEX validation
-        Optional<Integer> IP_Value = Optional.empty(); // TODO redundand ?
-        // TODO check if IP_Value.get() is INTEGER
-        IP_Value = Optional.of(Integer.valueOf(ipTextField.getText().split(":")[1]));
-        return IP_Value;
+    private Optional<Integer> extractPortIfPlayerInserted() {
+        return Optional.of(Integer.valueOf(ipTextField.getText().split(":")[1]));
     }
 }
