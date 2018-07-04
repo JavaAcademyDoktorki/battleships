@@ -9,10 +9,10 @@ class Player {
 
     private Player(Socket playerSocket) throws IOException {
         this.playerSocket = playerSocket;
-        playerIO = new PlayerIO(playerSocket);
+        this.playerIO = new PlayerIO(playerSocket);
     }
 
-    static Player of(Socket socket) throws IOException {
+    static Player createForSocket(Socket socket) throws IOException {
         return new Player(socket);
     }
 
@@ -41,7 +41,7 @@ class Player {
         return playerName;
     }
 
-    boolean isNamed(String name) {
+    boolean isSameName(String name) {
         return playerName.equals(name);
     }
 }

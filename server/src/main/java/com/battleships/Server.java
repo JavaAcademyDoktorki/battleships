@@ -45,7 +45,7 @@ class Server {
 
     private Player acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
-        return Player.of(socket);
+        return Player.createForSocket(socket);
     }
 
     private void assignNameToNewUser(Player player) {

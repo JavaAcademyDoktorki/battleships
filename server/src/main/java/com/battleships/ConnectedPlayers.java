@@ -21,7 +21,7 @@ class ConnectedPlayers {
 
     boolean isNameAvailable(String name){
         for (Player player : playerList){
-            if (player.isNamed(name)){
+            if (player.isSameName(name)){
                 return false;
             }
         }
