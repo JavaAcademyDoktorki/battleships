@@ -9,28 +9,30 @@ import javafx.scene.transform.Scale;
 
 class SceneSizeChangeListener implements ChangeListener<Number> {
     private final Scene scene;
-    private final ScalingParams scalingParams;
+    private final Scaling scaling;
     private final Parent contentPane;
 
-    public SceneSizeChangeListener(Scene scene, ScalingParams scalingParams, Parent contentPane) {
+    SceneSizeChangeListener(Scene scene, Scaling scaling, Parent contentPane) {
         this.scene = scene;
-        this.scalingParams = scalingParams;
+        this.scaling = scaling;
         this.contentPane = contentPane;
     }
 
     @Override
     public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-        double scaleFactor = scalingParams.calculateScaleFactor(scene.getWidth(), scene.getHeight());
-        if (scaleFactor >= 1) {
+        double scaleFactor = scaling.calculateScaleFactor(scene.getWidth(), scene.getHeight());
+        if (areBothDimensionsGreaterThanInitial(scaleFactor)) {
             Scale scale = new Scale(scaleFactor, scaleFactor);
-            scale.setPivotX(0);
-            scale.setPivotY(0);
             scene.getRoot().getTransforms().setAll(scale);
             contentPane.prefWidth(scene.getWidth() / scaleFactor);
             contentPane.prefHeight(scene.getHeight() / scaleFactor);
         } else {
-            contentPane.prefWidth(Math.max(scalingParams.getWidth(), scene.getWidth()));
-            contentPane.prefHeight(Math.max(scalingParams.getHeight(), scene.getHeight()));
+            contentPane.prefWidth(Math.max(scaling.getInitialWidth(), scene.getWidth()));
+            contentPane.prefHeight(Math.max(scaling.getInitialHeight(), scene.getHeight()));
         }
+    }
+
+    private boolean areBothDimensionsGreaterThanInitial(double scaleFactor) {
+        return scaleFactor >= 1;
     }
 }
