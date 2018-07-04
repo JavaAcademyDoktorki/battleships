@@ -14,15 +14,15 @@ class PlayerIO {
         clientInput = new Scanner(playerSocket.getInputStream());
     }
 
-    void sendMessage(String message) {
-        clientWriter.println(message);
+    void sendCommand(String command) {
+        clientWriter.println(command);
         clientWriter.flush();
     }
-    boolean hasNextMessage() {
+    boolean hasNextCommand() {
         return clientInput.hasNextLine();
     }
 
-    String nextMessage() {
+    String nextCommand() {
         return clientInput.nextLine();
     }
 }

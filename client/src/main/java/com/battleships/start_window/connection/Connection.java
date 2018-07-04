@@ -17,7 +17,7 @@ public enum Connection {
     private PrintWriter socketWriter;
     private Scanner socketScanner;
     private final static Logger logger = LogManager.getLogger(Connection.class);
-    private Thread readMessagesFromUserThread;
+    private Thread readCommandsFromUserThread;
 
     public void disconnect() {
         if (isConnected()) {
@@ -44,16 +44,16 @@ public enum Connection {
                 socketWriter = new PrintWriter(socket.get().getOutputStream());
                 socketScanner = new Scanner(socket.get().getInputStream());
                 sendToServer(playerName);
-                initThreadReadingMessagesFromServer();
-                startThreadReadingMessagesFromServer();
+                initThreadReadingCommandsFromServer();
+                startThreadReadingCommandsFromServer();
             } catch (IOException e) {
                 logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
             }
         }
     }
 
-    private void initThreadReadingMessagesFromServer() {
-        readMessagesFromUserThread = new Thread(() ->{
+    private void initThreadReadingCommandsFromServer() {
+        readCommandsFromUserThread = new Thread(() ->{
             while (isConnected()) {
                 tryThreadSleep(100);
                 if (socketScanner.hasNextLine()) {
@@ -63,8 +63,8 @@ public enum Connection {
         });
     }
 
-    private void startThreadReadingMessagesFromServer() {
-        readMessagesFromUserThread.start();
+    private void startThreadReadingCommandsFromServer() {
+        readCommandsFromUserThread.start();
     }
 
     private void tryThreadSleep(int ms) {
@@ -75,13 +75,13 @@ public enum Connection {
         }
     }
 
-    private void sendToServer(String message) {
+    private void sendToServer(String command) {
         if (isConnected()) {
-            socketWriter.println(message);
+            socketWriter.println(command);
             socketWriter.flush();
         }
         else{
-            logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, message));
+            logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, command));
         }
     }
 }

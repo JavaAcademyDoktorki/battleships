@@ -16,16 +16,16 @@ class Player {
         return new Player(socket);
     }
 
-    void sendMessage(String message) {
-        playerIO.sendMessage(message);
+    void sendCommand(String command) {
+        playerIO.sendCommand(command);
     }
 
-    boolean hasNextMessage() {
-        return playerIO.hasNextMessage();
+    boolean hasNextCommand() {
+        return playerIO.hasNextCommand();
     }
 
-    String nextMessage() {
-        return playerIO.nextMessage();
+    String nextCommand() {
+        return playerIO.nextCommand();
     }
 
     void disconnect() throws IOException {

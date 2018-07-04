@@ -26,6 +26,7 @@ class Server {
             while (true) {
                 try {
                     addPlayerToTheGame();
+                    handlePlayerInputUntillDisconnect();
                 } catch (IOException e) {
                     logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER, e.getStackTrace());
                 }
@@ -33,14 +34,17 @@ class Server {
         }).start();
     }
 
+    private void handlePlayerInputUntillDisconnect() {
+        new Thread(() -> handlePlayerCommandsUntilDisconnected(connectedPlayers.getLastAddedPlayer())).start();
+    }
+
 
     private void addPlayerToTheGame() throws IOException {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
-        player.sendMessage(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
+        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
         registerPlayer(player);
-        new Thread(() -> handlePlayerMessagesUntilDisconnected(player)).start();
     }
 
     private Player acceptPlayer() throws IOException {
@@ -49,7 +53,7 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) {
-        String providedName = player.nextMessage();
+        String providedName = player.nextCommand();
         if (connectedPlayers.isNameAvailable(providedName) && !providedName.trim().equals("")) {
             player.setName(providedName);
         } else {
@@ -59,20 +63,20 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendMessage("Serwer wita: " + player); // TODO protocol to send commands
+        player.sendCommand("Serwer wita: " + player); // TODO protocol to send commands
     }
 
-    private void handlePlayerMessagesUntilDisconnected(Player player) {
-        proceedWithPlayerMesseges(player);
+    private void handlePlayerCommandsUntilDisconnected(Player player) {
+        handlePlayerInput(player);
         tryToDisconnectPlayer(player);
     }
 
-    private void proceedWithPlayerMesseges(Player player) {
+    private void handlePlayerInput(Player player) {
         // TODO THINK ABOUT A PROTOCOL...
         Commands command = Commands.GO_PLAYING;
         while (!command.equals(Commands.STOP_PLAYING)) {
-            if (player.hasNextMessage()) {
-                command = Commands.valueOf(player.nextMessage()); // TODO try send a object, or use some protocol here
+            if (player.hasNextCommand()) {
+                command = Commands.valueOf(player.nextCommand()); // TODO try send a object, or use some protocol here
                 logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command));
             }
         }

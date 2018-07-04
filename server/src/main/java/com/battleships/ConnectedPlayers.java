@@ -32,4 +32,8 @@ class ConnectedPlayers {
         ++anonymousPlayersCounter;
         return "Player" + anonymousPlayersCounter;
     }
+
+    Player getLastAddedPlayer() {
+        return playerList.get(playerList.size()-1);
+    }
 }
