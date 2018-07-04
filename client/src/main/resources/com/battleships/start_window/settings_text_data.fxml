@@ -10,6 +10,5 @@
     <Button fx:id="disconnectFromServerButton" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
     <HBox alignment="TOP_CENTER" GridPane.rowIndex="2">
         <TextField fx:id="nameTextField"/>
-        <Label fx:id="nameLabel"/>
     </HBox>
 </GridPane>

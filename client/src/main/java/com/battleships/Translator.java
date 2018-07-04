@@ -5,7 +5,6 @@ import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Labeled;
 
 import java.text.MessageFormat;
 import java.util.Locale;

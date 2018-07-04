@@ -11,7 +11,7 @@
             >
     <VBox alignment="TOP_CENTER" style="-fx-padding: 8 8 8 8">
         <Label fx:id="roomListLabel"/>
-        <ListView fx:id="roomsList"/>
+        <ListView />
         <Button fx:id="selectRoomButton"/>
         <Button fx:id="createRoomButton"/>
     </VBox>

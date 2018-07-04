@@ -1,7 +1,5 @@
 package com.battleships.Messages;
 
-import java.util.Locale;
-
 public class LogMessages {
     public static final String TRY_TO_RUN_SERVER = "Próba odpalenia serwera";
     public static final String SERVER_RUNS = "Serwer odpalony... :)";

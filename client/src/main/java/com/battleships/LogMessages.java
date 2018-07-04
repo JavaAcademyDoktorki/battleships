@@ -8,4 +8,6 @@ public class LogMessages {
     public static final String NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW = "Nie mogłem załadować głownego widoku fxml, nie odpaliłem aplikacji.";
     public static final String NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW_FROM_PATH = "Nie mogłem załadować głównego pliku xml aplikacji ze ścieżki %s";
     public static final String UNABLE_TO_SEND_MESSAGE = "Nie mogę wysłać do serwera wiadomości \"%s\". Połączenie nie jest nawiązane.";
+    public static final String WRONG_IP_ADDRESS = "Nie mogłem utworzyć połączenia, nie dostałem poprawnego adresu IP.";
+    public static final String WRONG_PORT_NUMBER = "Nie mogłem utworzyć połączenia, nie dostałem poprawnego numeru portu.";
 }

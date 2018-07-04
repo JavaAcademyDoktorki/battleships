@@ -28,7 +28,7 @@ class Server {
                     addPlayerToTheGame();
                     handlePlayerInputUntillDisconnect();
                 } catch (IOException e) {
-                    logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER, e.getStackTrace());
+                    logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
                 }
             }
         }).start();

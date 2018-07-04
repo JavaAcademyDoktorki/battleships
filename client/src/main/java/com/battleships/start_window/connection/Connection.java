@@ -30,14 +30,14 @@ public enum Connection {
             sendToServer(Commands.STOP_PLAYING.name());
             disconnectPlayerOrLogIfFailed();
         } catch (IOException e) {
-           logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
+            logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
         } finally {
             socket = Optional.empty();
         }
     }
 
     private void disconnectPlayerOrLogIfFailed() throws IOException {
-        if(socket.isPresent()) {
+        if (socket.isPresent()) {
             socket.get().close();
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
         } else {
@@ -49,30 +49,41 @@ public enum Connection {
         return socket.isPresent() && socket.get().isConnected();
     }
 
-    public void connect(ConnectionInfo connectionInfo, String playerName) {
+    public void establishConnection(ConnectionInfo connectionInfo, String playerName) {
         if (!isConnected()) {
-            try {
-                socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
-                socketWriter = new PrintWriter(socket.get().getOutputStream());
-                socketScanner = new Scanner(socket.get().getInputStream());
-                sendToServer(playerName);
-                initThreadReadingCommandsFromServer();
-                startThreadReadingCommandsFromServer();
-            } catch (IOException e) {
-                logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
-            }
+            tryToEstablishConnection(connectionInfo, playerName);
+        }
+    }
+
+    private void tryToEstablishConnection(ConnectionInfo connectionInfo, String playerName) {
+        try {
+            socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
+            socketWriter = new PrintWriter(socket.get().getOutputStream());
+            socketScanner = new Scanner(socket.get().getInputStream());
+            sendToServer(playerName);
+            initThreadReadingCommandsFromServer();
+            startThreadReadingCommandsFromServer();
+        } catch (IOException e) {
+            logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
         }
     }
 
     private void initThreadReadingCommandsFromServer() {
-        readCommandsFromUserThread = new Thread(() ->{
-            while (isConnected()) {
-                tryThreadSleep(100);
-                if (socketScanner.hasNextLine()) {
-                    logger.info(socketScanner.nextLine());
-                }
-            }
-        });
+        final int breakTimeMillisBetweenReadingFromServer = 100;
+        readCommandsFromUserThread = new Thread(() -> readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer));
+    }
+
+    private void readFromServerUntilDisconnected(int breakTimeMillisBetweenReadingFromServer) {
+        while (isConnected()) {
+            tryThreadSleep(breakTimeMillisBetweenReadingFromServer);
+            logInfoIfAvailable();
+        }
+    }
+
+    private void logInfoIfAvailable() {
+        if (socketScanner.hasNextLine()) {
+            logger.info(socketScanner.nextLine());
+        }
     }
 
     private void startThreadReadingCommandsFromServer() {
@@ -91,8 +102,7 @@ public enum Connection {
         if (isConnected()) {
             socketWriter.println(command);
             socketWriter.flush();
-        }
-        else{
+        } else {
             logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, command));
         }
     }

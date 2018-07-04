@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class Client extends Application {
-    private WindowScalling windowScalling;
     private static final Logger logger = LogManager.getLogger(Client.class.getName());
 
     public static void main(String[] args) {
@@ -54,9 +53,7 @@ public class Client extends Application {
         } catch (IOException e) {
             logger.error(String.format(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW_FROM_PATH, mainFxmlPath), e.getMessage());
         }
-        finally {
-            return root;
-        }
+        return root;
     }
 
     private void setScalingScene(Stage primaryStage, Parent root) {
@@ -66,7 +63,7 @@ public class Client extends Application {
     }
 
     private void enableScaling(Parent root, Scene scene) {
-        windowScalling = new WindowScalling();
+        WindowScalling windowScalling = new WindowScalling();
         windowScalling.enableFor(scene, root);
     }
 }

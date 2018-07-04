@@ -1,12 +1,15 @@
 package com.battleships.start_window.data_insertion;
 
+import com.battleships.LogMessages;
 import com.battleships.Translator;
-import com.battleships.start_window.connection.ConnectionInfo;
 import com.battleships.start_window.connection.Connection;
+import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ public class SettingsTextData {
     private TextField nameTextField;
     @FXML
     private TextField ipTextField;
+    private final static Logger logger = LogManager.getLogger(SettingsTextData.class);
 
     @FXML
     public void initialize() {
@@ -43,10 +47,28 @@ public class SettingsTextData {
     }
 
     private void connectToServerButtonAction() {
-        String ip = getIPIfUserInsertedProperly().get();
-        int port = extractPortIfPlayerInserted().get();
-        ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
-        Connection.INSTANCE.connect(connectionInfo, nameTextField.getText());
+        if (isIPorPortNotPresent()) {
+            logErrorsAboutIPAndPort();
+        }
+        else {
+            String ip = getIPIfUserInsertedProperly().get();
+            int port = extractPortIfPlayerInserted().get();
+            ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
+            Connection.INSTANCE.establishConnection(connectionInfo, nameTextField.getText());
+        }
+    }
+
+    private void logErrorsAboutIPAndPort() {
+        if (!getIPIfUserInsertedProperly().isPresent()) {
+            logger.error(LogMessages.WRONG_IP_ADDRESS);
+        }
+        if (!extractPortIfPlayerInserted().isPresent()) {
+            logger.error(LogMessages.WRONG_PORT_NUMBER);
+        }
+    }
+
+    private boolean isIPorPortNotPresent() {
+        return !getIPIfUserInsertedProperly().isPresent() || !extractPortIfPlayerInserted().isPresent();
     }
 
     private Optional<String> getIPIfUserInsertedProperly() {
