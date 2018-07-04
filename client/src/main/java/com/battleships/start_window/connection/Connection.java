@@ -21,15 +21,27 @@ public enum Connection {
 
     public void disconnect() {
         if (isConnected()) {
-            try {
-                sendToServer(Commands.STOP_PLAYING.name());
-                socket.get().close();
-                logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
-            } catch (IOException e) {
-               logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
-            } finally {
-                socket = Optional.empty();
-            }
+            tryToDisconnectFromServer();
+        }
+    }
+
+    private void tryToDisconnectFromServer() {
+        try {
+            sendToServer(Commands.STOP_PLAYING.name());
+            disconnectPlayerOrLogIfFailed();
+        } catch (IOException e) {
+           logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
+        } finally {
+            socket = Optional.empty();
+        }
+    }
+
+    private void disconnectPlayerOrLogIfFailed() throws IOException {
+        if(socket.isPresent()) {
+            socket.get().close();
+            logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ);
+        } else {
+            logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
         }
     }
 
