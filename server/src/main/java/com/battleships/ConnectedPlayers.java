@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 class ConnectedPlayers {
     private final List<Player> playerList;
+    private int anonymousPlayersCounter = 0;
 
     ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
@@ -28,6 +29,7 @@ class ConnectedPlayers {
     }
 
     String generateNewName(){
-        return "Player" + playerList.size();
+        ++anonymousPlayersCounter;
+        return "Player" + anonymousPlayersCounter;
     }
 }
