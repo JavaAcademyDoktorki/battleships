@@ -53,7 +53,8 @@ public class SettingsTextData {
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
             Connection.INSTANCE.establishConnection(connectionInfo);
-            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText());
+            Connection.INSTANCE.establishServerIO();
+            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText()); // TODO: if connection not established, do not send anything to server
         } else {
             logErrorsAboutIPAndPort();
         }
