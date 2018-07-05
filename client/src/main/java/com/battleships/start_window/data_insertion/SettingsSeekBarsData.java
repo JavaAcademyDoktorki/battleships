@@ -1,10 +1,11 @@
-package com.battleships.start_window.InsertData;
+package com.battleships.start_window.data_insertion;
+
 import com.battleships.Translator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
-public class SeekBarsDataInserter {
+public class SettingsSeekBarsData {
     @FXML
     private Label rowsTextLabel;
     @FXML
@@ -26,14 +27,14 @@ public class SeekBarsDataInserter {
     }
 
     private void initRowsProgressBar() {
-        Translator.bind(rowsTextLabel, "rows_count");
+        Translator.bind(rowsTextLabel.textProperty(), "rows_count");
         rowsProgressBar.valueProperty()
                 .addListener((observableValue, oldValue, newValue) ->
                         rowsAmountDisplayer.setText(String.valueOf(newValue.intValue())));
     }
 
     private void initColumnsProgressBar() {
-        Translator.bind(columnsTextLabel, "columns_count");
+        Translator.bind(columnsTextLabel.textProperty(), "columns_count");
         columnsProgressBar.valueProperty()
                 .addListener((observableValue, oldValue, newValue) ->
                         columnsAmountDisplayer.setText(String.valueOf(newValue.intValue())));

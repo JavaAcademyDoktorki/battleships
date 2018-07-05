@@ -6,13 +6,13 @@
             fx:controller="com.battleships.start_window.StartWindow"
             style="-fx-padding: 16 16 16 16">
     <top>
-        <fx:include source="header_controller.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include source="header.fxml" style="-fx-padding: 4 4 4 4"/>
     </top>
     <left>
-        <fx:include source="room_list_controller.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include source="room_list.fxml" style="-fx-padding: 4 4 4 4"/>
     </left>
     <center>
-        <fx:include source="insert_data.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include source="settings_data.fxml" style="-fx-padding: 4 4 4 4"/>
     </center>
     <bottom>
         <fx:include source="footer.fxml" style="-fx-padding: 4 4 4 4"/>

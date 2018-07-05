@@ -6,8 +6,13 @@
 * JRE 1.8 must be installed on your machine (http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 * maven installed (mvn)
 
-### How to run client app 
+### How to run server and two clients 
 1. Download project: git clone git@github.com:JavaAcademyDoktorki/battleships.git
 2. cd battleships
-3. ./run.sh
-3. Enjoy!
+3. ./run_server.sh
+4. 2 X ./run_client.sh
+5. Enjoy!
+
+Demo 29.06.2018:
++ \+ uzycie ObjectProperty javafx do tłumaczen
++ \+ includy w javafx

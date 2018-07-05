@@ -9,7 +9,7 @@
     <columnConstraints>
         <ColumnConstraints percentWidth="100"/>
     </columnConstraints>
-    <HBox alignment="CENTER" style="-fx-padding: 8 8 8 8">
+    <HBox alignment="CENTER" style="-fx-padding: 8 8 8 8;">
         <Label fx:id="settingsLabel"/>
     </HBox>
 </GridPane>

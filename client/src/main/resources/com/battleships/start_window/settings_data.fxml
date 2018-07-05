@@ -3,14 +3,14 @@
 <?import javafx.scene.layout.*?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.battleships.start_window.InsertData.InsertDataController">
+          fx:controller="com.battleships.start_window.data_insertion.SettingsDataController">
         <columnConstraints>
             <ColumnConstraints percentWidth="100"/>
         </columnConstraints>
         <VBox  prefHeight="100" prefWidth="100" GridPane.rowIndex="1" GridPane.columnSpan="1">
-            <fx:include source="insert_text_data.fxml" />
+            <fx:include source="settings_text_data.fxml" />
         </VBox>
         <VBox prefWidth="100" GridPane.rowIndex="2" GridPane.columnSpan="1">
-            <fx:include source="insert_seek_bar_data.fxml" />
+            <fx:include source="settings_seek_bar_data.fxml" />
         </VBox>
 </GridPane>
