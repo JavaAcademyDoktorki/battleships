@@ -1,6 +1,7 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.Commands;
+import com.battleships.Command;
+import com.battleships.CommunicatingProtocol;
 import com.battleships.LogMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            sendToServer(Commands.STOP_PLAYING);
+            sendToServer(Command.STOP_PLAYING);
             disconnectPlayerOrLogIfFailed();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
@@ -60,7 +61,7 @@ public enum Connection {
             socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
             socketWriter = new PrintWriter(socket.get().getOutputStream());
             socketScanner = new Scanner(socket.get().getInputStream());
-            sendToServer(Commands.SET_NAME, playerName);
+            sendToServer(Command.SET_NAME, playerName);
             initThreadReadingCommandsFromServer();
             startThreadReadingCommandsFromServer();
         } catch (IOException e) {
@@ -98,11 +99,11 @@ public enum Connection {
         }
     }
 
-    private void sendToServer(Commands command) {
+    private void sendToServer(Command command) {
         sendToServer(command, "");
     }
 
-    private void sendToServer(Commands command, String commandValue) {
+    private void sendToServer(Command command, String commandValue) {
         if (isConnected()) {
             socketWriter.println(convertToProtocol(command, commandValue));
             socketWriter.flush();
@@ -111,7 +112,7 @@ public enum Connection {
         }
     }
 
-    private String convertToProtocol(Commands command, String commandValue) {
-        return command + Commands.getSeparator() + commandValue;
+    private String convertToProtocol(Command command, String commandValue) {
+        return command + CommunicatingProtocol.getSeparator() + commandValue;
     }
 }

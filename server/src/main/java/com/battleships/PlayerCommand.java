@@ -1,17 +1,17 @@
 package com.battleships;
 
 class PlayerCommand {
-    private final Commands type;
+    private final Command type;
     private final String value;
 
     PlayerCommand(String playerInput) {
         // TODO validate it !
-        String[] inputCommand = playerInput.split(Commands.getSeparator());
-        type = Commands.valueOf(inputCommand[0]);
+        String[] inputCommand = playerInput.split(CommunicatingProtocol.getSeparator());
+        type = Command.valueOf(inputCommand[0]);
         value = inputCommand[1];
     }
 
-    Commands getType() {
+    Command getType() {
         return type;
     }
 

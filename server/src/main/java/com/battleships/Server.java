@@ -17,7 +17,7 @@ class Server {
         logger.info(LogMessages.TRY_TO_RUN_SERVER);
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
-        connectedPlayers = new ConnectedPlayers();
+        this.connectedPlayers = new ConnectedPlayers();
         tryAcceptPlayersLoop();
     }
 
@@ -72,8 +72,8 @@ class Server {
     }
 
     private void handlePlayerInput(Player player) {
-        Commands command = Commands.START_PLAYING;
-        while (!command.equals(Commands.STOP_PLAYING)) {
+        Command command = Command.START_PLAYING;
+        while (!command.equals(Command.STOP_PLAYING)) {
             if (player.hasNextCommand()) {
                 PlayerCommand playerCommand = new PlayerCommand(player.nextCommand());
                 command = playerCommand.getType();
@@ -82,7 +82,7 @@ class Server {
         }
     }
 
-    private void handlePlayerCommands(Player player, Commands command, String commandValue) {
+    private void handlePlayerCommands(Player player, Command command, String commandValue) {
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command, commandValue));
     }
 
