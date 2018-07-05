@@ -29,7 +29,7 @@ public enum Connection {
     private void tryToDisconnectFromServer() {
         try {
             sendToServer(Command.STOP_PLAYING);
-            disconnectPlayerOrLogIfFailed();
+            disconnectPlayer();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
         } finally {
@@ -37,12 +37,12 @@ public enum Connection {
         }
     }
 
-    private void disconnectPlayerOrLogIfFailed() throws IOException {
+    private void disconnectPlayer() throws IOException {
         if (socket.isPresent()) {
             socket.get().close();
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
-            logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
+            logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
         }
     }
 
