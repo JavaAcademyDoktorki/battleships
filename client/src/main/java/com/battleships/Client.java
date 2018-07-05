@@ -34,7 +34,7 @@ public class Client extends Application {
         if (rootFxmlOptional.isPresent()) {
             setScalingScene(primaryStage, rootFxmlOptional.get());
             primaryStage.show();
-            logger.error(LogMessages.MAIN_FXML_VIEW_LOADED_APP_STARTED);
+            logger.info(LogMessages.MAIN_FXML_VIEW_LOADED_APP_STARTED);
         }
         else{
             logger.error(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW);
