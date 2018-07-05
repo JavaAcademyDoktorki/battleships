@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class SettingsTextData {
@@ -52,11 +53,20 @@ public class SettingsTextData {
             String ip = getOptionalIPIfInsertedCorrectly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
-            Connection.INSTANCE.establishConnection(connectionInfo);
-            Connection.INSTANCE.establishServerIO();
-            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText()); // TODO: if connection not established, do not send anything to server
+            handleConnectButtonAction(connectionInfo);
         } else {
             logErrorsAboutIPAndPort();
+        }
+    }
+
+    private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
+        try {
+            Connection.INSTANCE.establishConnection(connectionInfo);
+            Connection.INSTANCE.establishServerIO();
+            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText());
+        } catch (IOException e){
+            // TODO message to GUI that sth went wrong with connection
+            logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
         }
     }
 

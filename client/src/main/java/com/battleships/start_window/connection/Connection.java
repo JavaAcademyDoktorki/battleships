@@ -114,22 +114,21 @@ public enum Connection {
         return command + CommunicatingProtocol.getSeparator() + commandValue;
     }
 
-    public void establishServerIO() {
-        Optional<OutputStream> outputStreamOptional = getOutputStreamOptional();
-        Optional<InputStream> inputStreamOptional = getInputStreamOptional();
+    public void establishServerIO() throws IOException {
+        Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
+        Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();
 
         if(outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
             PrintWriter socketWriter = new PrintWriter(outputStreamOptional.get());
             Scanner socketScanner = new Scanner(inputStreamOptional.get());
             serverIO = new ServerIO(socketWriter, socketScanner);
-        } else {
-            // TODO do not allow to go forward with application when here...
         }
+
         initThreadReadingCommandsFromServer();
         startThreadReadingCommandsFromServer();
     }
 
-    private Optional<OutputStream> getOutputStreamOptional() {
+    private Optional<OutputStream> tryGetOutputStreamOptional() throws IOException {
         Optional <OutputStream> outputStreamOptional = Optional.empty();
         try {
             if (socket.isPresent()) {
@@ -137,11 +136,12 @@ public enum Connection {
             }
         } catch (IOException e) {
             logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_OUTPUSTREAM);
+            throw e;
         }
         return outputStreamOptional;
     }
 
-    private Optional<InputStream> getInputStreamOptional() {
+    private Optional<InputStream> tryGetInputStreamOptional() throws IOException {
         Optional <InputStream> inputStreamOptional = Optional.empty();
         try {
             if (socket.isPresent()) {
@@ -149,6 +149,7 @@ public enum Connection {
             }
         } catch (IOException e) {
             logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_INPUTSTREAM);
+            throw e;
         }
         return inputStreamOptional;
     }

@@ -12,6 +12,7 @@ public class LogMessages {
     public static final String COMMAND_SEND_SUCCEEDED = "Komenda do serwera została wysłana: \"%s\"";
     public static final String WRONG_IP_ADDRESS = "Nie mogłem utworzyć połączenia, nie dostałem poprawnego adresu IP.";
     public static final String WRONG_PORT_NUMBER = "Nie mogłem utworzyć połączenia, nie dostałem poprawnego numeru portu.";
+    public static final String SERVERIO_OBJECT_NOT_CREATED = "Nie stworzono obiektu ServerIO. (brak strumienia wyjśćia lub wejścia)";
     public static final String CANNOT_OBTAIN_SOCKET_OUTPUSTREAM = "Nie mogę uzyskać strumienia wyjścia (OutputStream) klienta";
     public static final String CANNOT_OBTAIN_SOCKET_INPUTSTREAM = "Nie mogę uzyskać strumienia wejścia (InputStream) klienta";
 }
