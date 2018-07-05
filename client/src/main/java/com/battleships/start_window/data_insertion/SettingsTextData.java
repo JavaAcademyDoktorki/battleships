@@ -1,5 +1,6 @@
 package com.battleships.start_window.data_insertion;
 
+import com.battleships.Command;
 import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
@@ -48,17 +49,18 @@ public class SettingsTextData {
 
     private void connectToServerButtonAction() {
         if (isPortAndIPPresent()) {
-            String ip = getIPIfUserInsertedProperly().get();
+            String ip = getOptionalIPIfInsertedCorrectly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
             Connection.INSTANCE.establishConnection(connectionInfo, nameTextField.getText());
+            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText());
         } else {
             logErrorsAboutIPAndPort();
         }
     }
 
     private void logErrorsAboutIPAndPort() {
-        if (!getIPIfUserInsertedProperly().isPresent()) {
+        if (!getOptionalIPIfInsertedCorrectly().isPresent()) {
             logger.error(LogMessages.WRONG_IP_ADDRESS);
         }
         if (!extractPortIfPlayerInserted().isPresent()) {
@@ -67,10 +69,10 @@ public class SettingsTextData {
     }
 
     private boolean isPortAndIPPresent() {
-        return getIPIfUserInsertedProperly().isPresent() && extractPortIfPlayerInserted().isPresent();
+        return getOptionalIPIfInsertedCorrectly().isPresent() && extractPortIfPlayerInserted().isPresent();
     }
 
-    private Optional<String> getIPIfUserInsertedProperly() {
+    private Optional<String> getOptionalIPIfInsertedCorrectly() {
         return Optional.of(ipTextField.textProperty().get().split(":")[0]);
     }
 

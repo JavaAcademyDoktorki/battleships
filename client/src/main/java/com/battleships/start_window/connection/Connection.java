@@ -61,7 +61,6 @@ public enum Connection {
             socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
             socketWriter = new PrintWriter(socket.get().getOutputStream());
             socketScanner = new Scanner(socket.get().getInputStream());
-            sendToServer(Command.SET_NAME, playerName);
             initThreadReadingCommandsFromServer();
             startThreadReadingCommandsFromServer();
         } catch (IOException e) {
@@ -103,12 +102,13 @@ public enum Connection {
         sendToServer(command, "");
     }
 
-    private void sendToServer(Command command, String commandValue) {
+    public void sendToServer(Command command, String commandValue) {
         if (isConnected()) {
             socketWriter.println(convertToProtocol(command, commandValue));
             socketWriter.flush();
+            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, command));
         } else {
-            logger.error(String.format(LogMessages.UNABLE_TO_SEND_MESSAGE, command));
+            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, command));
         }
     }
 
