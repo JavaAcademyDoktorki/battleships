@@ -50,13 +50,13 @@ public enum Connection {
         return socket.isPresent() && socket.get().isConnected();
     }
 
-    public void establishConnection(ConnectionInfo connectionInfo, String playerName) {
+    public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
-            tryToEstablishConnection(connectionInfo, playerName);
+            tryToEstablishConnection(connectionInfo);
         }
     }
 
-    private void tryToEstablishConnection(ConnectionInfo connectionInfo, String playerName) {
+    private void tryToEstablishConnection(ConnectionInfo connectionInfo) {
         try {
             socket = Optional.of(new Socket(connectionInfo.getIp(), connectionInfo.getPort()));
             socketWriter = new PrintWriter(socket.get().getOutputStream());
