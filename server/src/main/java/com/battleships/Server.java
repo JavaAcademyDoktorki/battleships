@@ -52,12 +52,17 @@ class Server {
         return Player.createForSocket(socket);
     }
 
-    private void assignNameToNewUser(Player player) {
-        String providedName = player.nextCommand();
-        if (connectedPlayers.isNameAvailable(providedName) && !providedName.trim().equals("")) {
-            player.setName(providedName);
-        } else {
-            player.setName(connectedPlayers.generateNewName());
+    private void assignNameToNewUser(Player player) { // TODO 16.07.2018 Delegate it to new class (SRP)
+        PlayerCommand userRequest = player.nextPlayerCommand();
+        // TODO 16.07.2018 make sure command is SET_NAME - Damian
+        // TODO 16.07.2018 refator that statement - Damian
+        if (userRequest.getCommand() == Command.SET_NAME) {
+            String name = userRequest.getValue(); // TODO 16.07.2018 make it OPTIONAL !!! : ) - Damian
+            if (name != null && connectedPlayers.isNameAvailable(name.trim())) {
+                player.setName(name);
+            } else {
+                player.setName(connectedPlayers.generateNewName());
+            }
         }
     }
 
@@ -75,15 +80,14 @@ class Server {
         Command command = Command.START_PLAYING;
         while (!command.equals(Command.STOP_PLAYING)) {
             if (player.hasNextCommand()) {
-                PlayerCommand playerCommand = new PlayerCommand(player.nextCommand());
-                command = playerCommand.getType();
-                handlePlayerCommands(player, command, playerCommand.getValue());
+                PlayerCommand playerCommand = player.nextPlayerCommand();
+                handlePlayerCommands(player, playerCommand);
             }
         }
     }
 
-    private void handlePlayerCommands(Player player, Command command, String commandValue) {
-        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command, commandValue));
+    private void handlePlayerCommands(Player player, PlayerCommand playerCommand) {
+        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, playerCommand.getCommand(), playerCommand.getValue()));
     }
 
     private void tryToDisconnectPlayer(Player player) {

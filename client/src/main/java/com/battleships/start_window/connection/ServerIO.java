@@ -1,14 +1,17 @@
 package com.battleships.start_window.connection;
 
-import java.io.PrintWriter;
+import com.battleships.PlayerCommand;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 import java.util.Scanner;
 
 class ServerIO {
-    private PrintWriter socketWriter;
-    private Scanner socketScanner;
+    private final ObjectOutputStream socketWriter;
+    private final Scanner socketScanner;
 
-    ServerIO(PrintWriter socketWriter, Scanner socketScanner) {
+    ServerIO(ObjectOutputStream socketWriter, Scanner socketScanner) {
         this.socketWriter = socketWriter;
         this.socketScanner = socketScanner;
     }
@@ -23,8 +26,12 @@ class ServerIO {
         return messageOptional;
     }
 
-    void send(String message) {
-        socketWriter.println(message);
-        socketWriter.flush();
+    void trySend(PlayerCommand playerCommand) {
+        try {
+            socketWriter.writeObject(playerCommand);
+        } catch (IOException e) {
+            // TODO 16.07.2018 handle - Damian
+            e.printStackTrace();
+        }
     }
 }

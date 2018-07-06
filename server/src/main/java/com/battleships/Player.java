@@ -21,11 +21,11 @@ class Player {
     }
 
     boolean hasNextCommand() {
-        return playerIO.hasNextCommand();
+        return playerIO.isNextUserRequestAvailable();
     }
 
-    String nextCommand() {
-        return playerIO.nextCommand();
+    PlayerCommand nextPlayerCommand() {
+        return playerIO.nextUserCommand();
     }
 
     void disconnect() throws IOException {
