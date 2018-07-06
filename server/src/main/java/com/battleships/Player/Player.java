@@ -1,10 +1,10 @@
-package com.battleships;
+package com.battleships.Player;
 import com.battleships.commands.PlayerCommand;
 
 import java.io.IOException;
 import java.net.Socket;
 
-class Player {
+public class Player {
     private final Socket playerSocket;
     private String playerName;
     private PlayerIO playerIO;
@@ -14,23 +14,23 @@ class Player {
         this.playerIO = new PlayerIO(playerSocket);
     }
 
-    static Player createForSocket(Socket socket) throws IOException {
+    public static Player createForSocket(Socket socket) throws IOException {
         return new Player(socket);
     }
 
-    void sendCommand(String command) {
+    public void sendCommand(String command) {
         playerIO.sendCommand(command);
     }
 
-    PlayerCommand nextCommand() {
+    public PlayerCommand nextCommand() {
         return playerIO.nextUserCommand();
     }
 
-    void disconnect() throws IOException {
+    public void disconnect() throws IOException {
         playerSocket.close();
     }
 
-    void setName(String playerName) {
+    public void setName(String playerName) {
         this.playerName = playerName;
     }
 

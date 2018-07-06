@@ -1,4 +1,4 @@
-package com.battleships;
+package com.battleships.Player;
 
 import com.battleships.commands.PlayerCommand;
 
@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-class PlayerIO {
+public class PlayerIO {
     private final PrintWriter clientWriter;
     private final ObjectInputStream clientObjectReader;
 
