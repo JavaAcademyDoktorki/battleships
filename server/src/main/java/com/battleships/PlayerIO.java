@@ -1,5 +1,7 @@
 package com.battleships;
 
+import com.battleships.commands.PlayerCommand;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -19,18 +21,7 @@ class PlayerIO {
         clientWriter.flush();
     }
 
-    boolean isNextUserRequestAvailable() {
-        try {
-            return clientObjectReader.available() > 0; // TODO 16.07.2018 is it a good way to check is object available ?  - Damian
-        } catch (IOException e) {
-            // TODO 16.07.2018 handle - Damian
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     PlayerCommand nextUserCommand() {
-
         try {
             return (PlayerCommand) clientObjectReader.readObject();
         } catch (IOException e) {

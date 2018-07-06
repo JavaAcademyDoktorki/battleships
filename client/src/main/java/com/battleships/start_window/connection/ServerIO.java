@@ -1,6 +1,6 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.PlayerCommand;
+import com.battleships.commands.PlayerCommand;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

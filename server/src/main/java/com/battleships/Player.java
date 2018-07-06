@@ -1,4 +1,6 @@
 package com.battleships;
+import com.battleships.commands.PlayerCommand;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -20,11 +22,7 @@ class Player {
         playerIO.sendCommand(command);
     }
 
-    boolean hasNextCommand() {
-        return playerIO.isNextUserRequestAvailable();
-    }
-
-    PlayerCommand nextPlayerCommand() {
+    PlayerCommand nextCommand() {
         return playerIO.nextUserCommand();
     }
 

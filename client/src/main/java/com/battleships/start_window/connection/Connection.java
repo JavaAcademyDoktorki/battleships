@@ -1,8 +1,8 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.Command;
+import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
-import com.battleships.PlayerCommand;
+import com.battleships.commands.PlayerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +52,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            PlayerCommand playerCommand = new PlayerCommand(Command.STOP_PLAYING);
+            PlayerCommand playerCommand = new PlayerCommand(CommandType.STOP_PLAYING);
             sendToServer(playerCommand);
             disconnectPlayer();
         } catch (IOException e) {
@@ -65,9 +65,9 @@ public enum Connection {
     public void sendToServer(PlayerCommand playerCommand) {
         if (isConnected()) {
             serverIO.trySend(playerCommand);
-            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, playerCommand.getCommand()));
+            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, playerCommand.getCommandType()));
         } else {
-            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, playerCommand.getCommand()));
+            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, playerCommand.getCommandType()));
         }
     }
 

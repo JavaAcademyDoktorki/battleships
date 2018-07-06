@@ -1,6 +1,8 @@
 package com.battleships;
 
 import com.battleships.Messages.LogMessages;
+import com.battleships.commands.CommandType;
+import com.battleships.commands.PlayerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +28,7 @@ class Server {
             while (true) {
                 try {
                     addPlayerToTheGame();
-                    handlePlayerInputUntillDisconnect();
+                    handlePlayerCommandsUntilDisconnect();
                 } catch (IOException e) {
                     logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
                 }
@@ -34,7 +36,7 @@ class Server {
         }).start();
     }
 
-    private void handlePlayerInputUntillDisconnect() {
+    private void handlePlayerCommandsUntilDisconnect() {
         new Thread(() -> handlePlayerCommandsUntilDisconnected(connectedPlayers.getLastAddedPlayer())).start();
     }
 
@@ -53,10 +55,10 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) { // TODO 16.07.2018 Delegate it to new class (SRP)
-        PlayerCommand userRequest = player.nextPlayerCommand();
+        PlayerCommand userRequest = player.nextCommand();
         // TODO 16.07.2018 make sure command is SET_NAME - Damian
         // TODO 16.07.2018 refator that statement - Damian
-        if (userRequest.getCommand() == Command.SET_NAME) {
+        if (userRequest.getCommandType() == CommandType.SET_NAME) {
             String name = userRequest.getValue(); // TODO 16.07.2018 make it OPTIONAL !!! : ) - Damian
             if (name != null && connectedPlayers.isNameAvailable(name.trim())) {
                 player.setName(name);
@@ -77,17 +79,18 @@ class Server {
     }
 
     private void handlePlayerInput(Player player) {
-        Command command = Command.START_PLAYING;
-        while (!command.equals(Command.STOP_PLAYING)) {
-            if (player.hasNextCommand()) {
-                PlayerCommand playerCommand = player.nextPlayerCommand();
-                handlePlayerCommands(player, playerCommand);
-            }
+        CommandType commandType = CommandType.START_PLAYING;
+        while (!commandType.equals(CommandType.STOP_PLAYING)) {
+            PlayerCommand playerCommand = player.nextCommand();
+            commandType = playerCommand.getCommandType();
+            handlePlayerCommands(player, playerCommand);
         }
     }
 
     private void handlePlayerCommands(Player player, PlayerCommand playerCommand) {
-        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, playerCommand.getCommand(), playerCommand.getValue()));
+        CommandType commandType = playerCommand.getCommandType();
+        String commandValue = playerCommand.getValue();
+        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
     }
 
     private void tryToDisconnectPlayer(Player player) {

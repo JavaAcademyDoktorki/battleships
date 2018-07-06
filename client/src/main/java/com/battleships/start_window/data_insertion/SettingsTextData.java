@@ -1,8 +1,8 @@
 package com.battleships.start_window.data_insertion;
 
-import com.battleships.Command;
+import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
-import com.battleships.PlayerCommand;
+import com.battleships.commands.PlayerCommand;
 import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
-public class SettingsTextData {
+class SettingsTextData {
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -64,7 +64,7 @@ public class SettingsTextData {
         try {
             Connection.INSTANCE.establishConnection(connectionInfo);
             Connection.INSTANCE.establishServerIO();
-            PlayerCommand setNameCommand = new PlayerCommand(Command.SET_NAME, nameTextField.getText());
+            PlayerCommand setNameCommand = new PlayerCommand(CommandType.SET_NAME, nameTextField.getText());
             Connection.INSTANCE.sendToServer(setNameCommand);
         } catch (IOException e){
             // TODO message to GUI that sth went wrong with connection
