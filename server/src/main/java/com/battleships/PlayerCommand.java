@@ -8,7 +8,8 @@ class PlayerCommand {
 
     PlayerCommand(String playerInput) {
         // TODO validate it !
-        String[] inputCommand = playerInput.split(CommunicatingProtocol.getSeparator());
+        String commandSeparator = CommunicatingProtocol.getSeparator();
+        String[] inputCommand = playerInput.split(commandSeparator);
         this.type = Command.valueOf(inputCommand[0]);
         loadValue(inputCommand);
     }
