@@ -20,33 +20,40 @@ class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
-        tryAcceptPlayersLoop();
+
+        Thread infiniteLoopAcceptingPlayersThread = infiniteLoopAcceptingPlayers();
+        infiniteLoopAcceptingPlayersThread.start();
     }
 
-    private void tryAcceptPlayersLoop() {
-        new Thread(() -> {
+    private Thread infiniteLoopAcceptingPlayers() {
+        return new Thread(() -> {
             while (true) {
                 try {
-                    addPlayerToTheGame();
-                    handlePlayerCommandsUntilDisconnect();
+                    Player newPlayer = acceptNewPlayer();
+                    startHandlingPlayerCommandsLoop(newPlayer);
                 } catch (IOException e) {
                     logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
                 }
             }
-        }).start();
+        });
     }
 
-    private void handlePlayerCommandsUntilDisconnect() {
-        new Thread(() -> handlePlayerCommandsUntilDisconnected(connectedPlayers.getLastAddedPlayer())).start();
+    private void startHandlingPlayerCommandsLoop(final Player newPlayer) {
+        new Thread(() -> handlePlayerCommandsUntilDisconnected(newPlayer)).start();
     }
 
+    private void handlePlayerCommandsUntilDisconnected(Player newPlayer) {
+        handlePlayerInput(newPlayer);
+        tryToDisconnectPlayer(newPlayer);
+    }
 
-    private void addPlayerToTheGame() throws IOException {
+    private Player acceptNewPlayer() throws IOException {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
         player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
         registerPlayer(player);
+        return player;
     }
 
     private Player acceptPlayer() throws IOException {
@@ -71,11 +78,6 @@ class Server {
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
         player.sendCommand("Serwer wita: " + player);
-    }
-
-    private void handlePlayerCommandsUntilDisconnected(Player player) {
-        handlePlayerInput(player);
-        tryToDisconnectPlayer(player);
     }
 
     private void handlePlayerInput(Player player) {
