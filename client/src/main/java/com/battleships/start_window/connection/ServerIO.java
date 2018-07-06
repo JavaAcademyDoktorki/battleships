@@ -17,7 +17,8 @@ class ServerIO {
     Optional<String> getMessageOptional() {
         Optional <String> messageOptional = Optional.empty();
         if (socketScanner.hasNextLine()) {
-            messageOptional = Optional.of(socketScanner.nextLine());
+            String messageFromServer = socketScanner.nextLine();
+            messageOptional = Optional.of(messageFromServer);
         }
         return messageOptional;
     }

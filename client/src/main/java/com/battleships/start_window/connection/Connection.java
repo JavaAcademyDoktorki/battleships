@@ -17,11 +17,35 @@ import java.util.Scanner;
 
 public enum Connection {
     INSTANCE;
-    private Optional<Socket> socket = Optional.empty();
+    private Optional<Socket> socketOptional = Optional.empty();
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
+
+
+    public void establishConnection(ConnectionInfo connectionInfo) {
+        if (!isConnected()) {
+            tryToEstablishConnection(connectionInfo);
+        }
+    }
+
+    private boolean isConnected() {
+        return socketOptional.isPresent() && socketOptional.get().isConnected();
+    }
+
+    private void tryToEstablishConnection(ConnectionInfo connectionInfo) {
+        try {
+            socketOptional = Optional.of(new Socket());
+            Socket socket = socketOptional.get();
+            InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
+            socket.connect(endpoint, initialConnectingTimeout);
+        } catch (IOException e) {
+            String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
+            logger.error(errorMessage);
+            //TODO message to user that problems occurred
+        }
+    }
 
     public void disconnect() {
         if (isConnected()) {
@@ -36,36 +60,33 @@ public enum Connection {
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
         } finally {
-            socket = Optional.empty();
+            socketOptional = Optional.empty();
         }
+    }
+
+    private void sendToServer(Command command) {
+        sendToServer(command, "");
+    }
+
+    public void sendToServer(Command command, String commandValue) {
+        if (isConnected()) {
+            serverIO.send(convertToProtocol(command, commandValue));
+            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, command));
+        } else {
+            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, command));
+        }
+    }
+
+    private String convertToProtocol(Command command, String commandValue) {
+        return command + CommunicatingProtocol.getSeparator() + commandValue;
     }
 
     private void disconnectPlayer() throws IOException {
-        if (socket.isPresent()) {
-            socket.get().close();
+        if (socketOptional.isPresent()) {
+            socketOptional.get().close();
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
             logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
-        }
-    }
-
-    private boolean isConnected() {
-        return socket.isPresent() && socket.get().isConnected();
-    }
-
-    public void establishConnection(ConnectionInfo connectionInfo) {
-        if (!isConnected()) {
-            tryToEstablishConnection(connectionInfo);
-        }
-    }
-
-    private void tryToEstablishConnection(ConnectionInfo connectionInfo) {
-        try {
-            socket = Optional.of(new Socket());
-            socket.get().connect(new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort()), initialConnectingTimeout);
-        } catch (IOException e) {
-            logger.error(String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort()));
-            //TODO message to user that problems occurred
         }
     }
 
@@ -97,23 +118,6 @@ public enum Connection {
         }
     }
 
-    private void sendToServer(Command command) {
-        sendToServer(command, "");
-    }
-
-    public void sendToServer(Command command, String commandValue) {
-        if (isConnected()) {
-            serverIO.send(convertToProtocol(command, commandValue));
-            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, command));
-        } else {
-            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, command));
-        }
-    }
-
-    private String convertToProtocol(Command command, String commandValue) {
-        return command + CommunicatingProtocol.getSeparator() + commandValue;
-    }
-
     public void establishServerIO() throws IOException {
         Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
         Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();
@@ -131,8 +135,10 @@ public enum Connection {
     private Optional<OutputStream> tryGetOutputStreamOptional() throws IOException {
         Optional <OutputStream> outputStreamOptional = Optional.empty();
         try {
-            if (socket.isPresent()) {
-                outputStreamOptional = Optional.of(socket.get().getOutputStream());
+            if (socketOptional.isPresent()) {
+                Socket socket = socketOptional.get();
+                OutputStream socketOutputStream = socket.getOutputStream();
+                outputStreamOptional = Optional.of(socketOutputStream);
             }
         } catch (IOException e) {
             logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_OUTPUSTREAM);
@@ -144,8 +150,10 @@ public enum Connection {
     private Optional<InputStream> tryGetInputStreamOptional() throws IOException {
         Optional <InputStream> inputStreamOptional = Optional.empty();
         try {
-            if (socket.isPresent()) {
-                inputStreamOptional = Optional.of(socket.get().getInputStream());
+            if (socketOptional.isPresent()) {
+                Socket socket = socketOptional.get();
+                InputStream socketInputStream = socket.getInputStream();
+                inputStreamOptional = Optional.of(socketInputStream);
             }
         } catch (IOException e) {
             logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_INPUTSTREAM);
