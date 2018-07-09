@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
+    private Connection connection = new Connection();
+
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -33,6 +35,10 @@ public class ConnectionSettingsPaneController {
         setOnActionToButtons();
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     private void bindTextFieldsWithTranslation() {
         Translator.bind(connectToServerButton.textProperty(), "connect");
         Translator.bind(disconnectFromServerButton.textProperty(), "disconnect");
@@ -45,7 +51,7 @@ public class ConnectionSettingsPaneController {
 
     private void setOnActionToButtons() {
         connectToServerButton.setOnAction(e -> connectToServerButtonAction());
-        disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
+        disconnectFromServerButton.setOnAction(e -> connection.disconnect());
     }
 
     private void connectToServerButtonAction() {
@@ -61,10 +67,10 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         try {
-            Connection.INSTANCE.establishConnection(connectionInfo);
-            Connection.INSTANCE.establishServerIO();
-            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText());
-        } catch (IOException e){
+            connection.establishConnection(connectionInfo);
+            connection.establishServerIO();
+            connection.sendToServer(Command.SET_NAME, nameTextField.getText());
+        } catch (IOException e) {
             // TODO message to GUI that sth went wrong with connection
             logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
         }

@@ -15,8 +15,7 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.Scanner;
 
-public enum Connection {
-    INSTANCE;
+public class Connection {
     private Optional<Socket> socketOptional = Optional.empty();
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);
