@@ -1,15 +1,12 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.Command;
-import com.battleships.CommunicatingProtocol;
+import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
+import com.battleships.commands.PlayerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Optional;
@@ -54,7 +51,8 @@ public class Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            sendToServer(Command.STOP_PLAYING);
+            PlayerCommand<String> playerCommand = new PlayerCommand<>(CommandType.STOP_PLAYING, "");
+            sendToServer(playerCommand);
             disconnectPlayer();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
@@ -63,21 +61,13 @@ public class Connection {
         }
     }
 
-    private void sendToServer(Command command) {
-        sendToServer(command, "");
-    }
-
-    public void sendToServer(Command command, String commandValue) {
+    public <V> void sendToServer(PlayerCommand<V> playerCommand) {
         if (isConnected()) {
-            serverIO.send(convertToProtocol(command, commandValue));
-            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, command));
+            serverIO.trySend(playerCommand);
+            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, playerCommand.getCommandType()));
         } else {
-            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, command));
+            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, playerCommand.getCommandType()));
         }
-    }
-
-    private String convertToProtocol(Command command, String commandValue) {
-        return command + CommunicatingProtocol.getSeparator() + commandValue;
     }
 
     private void disconnectPlayer() throws IOException {
@@ -122,9 +112,9 @@ public class Connection {
         Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();
 
         if(outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
-            PrintWriter socketWriter = new PrintWriter(outputStreamOptional.get());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStreamOptional.get());
             Scanner socketScanner = new Scanner(inputStreamOptional.get());
-            serverIO = new ServerIO(socketWriter, socketScanner);
+            serverIO = new ServerIO(objectOutputStream, socketScanner);
         }
 
         initThreadReadingCommandsFromServer();

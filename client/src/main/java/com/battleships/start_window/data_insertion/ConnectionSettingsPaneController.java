@@ -1,7 +1,8 @@
 package com.battleships.start_window.data_insertion;
 
-import com.battleships.Command;
+import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
+import com.battleships.commands.PlayerCommand;
 import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
@@ -69,7 +70,8 @@ public class ConnectionSettingsPaneController {
         try {
             connection.establishConnection(connectionInfo);
             connection.establishServerIO();
-            connection.sendToServer(Command.SET_NAME, nameTextField.getText());
+            PlayerCommand<String> setNameCommand = new PlayerCommand<>(CommandType.SET_NAME, nameTextField.getText());
+            connection.sendToServer(setNameCommand);
         } catch (IOException e) {
             // TODO message to GUI that sth went wrong with connection
             logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
