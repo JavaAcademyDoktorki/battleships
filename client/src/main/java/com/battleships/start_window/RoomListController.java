@@ -37,6 +37,7 @@ public class RoomListController {
     @FXML
     private void createRoom() {
         BoardSettings boardSettings = startWindowController.getBoardSettings();
+
         System.out.println(boardSettings.getRowCount());
         System.out.println(boardSettings.getColumnCount());
     }

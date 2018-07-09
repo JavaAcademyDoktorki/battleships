@@ -18,6 +18,7 @@ import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
     private Connection connection = new Connection();
+    private PlayerName playerName = new PlayerName();
 
     @FXML
     private Button connectToServerButton;
@@ -38,6 +39,7 @@ public class ConnectionSettingsPaneController {
         bindTextFieldsWithTranslation();
         bindConnectToServerButton();
         setOnActionToButtons();
+        initPlayerName();
     }
 
     Connection getConnection() {
@@ -89,6 +91,13 @@ public class ConnectionSettingsPaneController {
         if (!extractPortIfPlayerInserted().isPresent()) {
             logger.error(LogMessages.WRONG_PORT_NUMBER);
         }
+    }
+
+    private void initPlayerName() {
+        playerName.playerNameProperty().bind(nameTextField.textProperty());
+        nameTextField.textProperty()
+                .addListener((observableValue, oldValue, newValue) ->
+                        nameTextField.setText(String.valueOf(newValue)));
     }
 
     private boolean isPortAndIPPresent() {
