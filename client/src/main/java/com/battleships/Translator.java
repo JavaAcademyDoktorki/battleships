@@ -10,6 +10,9 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Responsible for a translation according to chosen language settings
+ */
 public class Translator {
     private static final ObjectProperty<Locale> locale;
 
@@ -24,6 +27,11 @@ public class Translator {
         return locale.get();
     }
 
+    /**
+     * Sets a new locale based on a new value provided by a player
+     *
+     * @param locale -a new locale to be set up
+     */
     public static void setLocale(Locale locale) {
         Translator.locale.set(locale);
         Locale.setDefault(locale);
@@ -38,6 +46,13 @@ public class Translator {
         return Bindings.createStringBinding(() -> getTranslation(key, args), locale);
     }
 
+    /**
+     * Translate text on @FXML object according to chosen language settings
+     *
+     * @param stringProperty - text on @FXML object
+     * @param key - text command of the properties file
+     * @param args - arguments of the properties file
+     */
     public static void bind(StringProperty stringProperty, String key, Object... args) {
         stringProperty.bind(createStringBinding(key, args));
     }

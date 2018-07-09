@@ -18,6 +18,13 @@ class SceneSizeChangeListener implements ChangeListener<Number> {
         this.contentPane = contentPane;
     }
 
+    /**
+     *Overriden method of ChangeListener interface that controls scalling of the scene
+     *
+     * @param observableValue - observes changes of the value
+     * @param oldValue - the old value
+     * @param newValue - the new value
+     */
     @Override
     public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
         double scaleFactor = scaling.calculateScaleFactor(scene.getWidth(), scene.getHeight());

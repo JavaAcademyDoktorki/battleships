@@ -1,5 +1,8 @@
 package com.battleships;
 
+/**
+ * Stores client commands with messages for logging purpose
+ */
 public class LogMessages {
     public static final String DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED = "Rozłączony z serwerem na żądanie gracza";
     public static final String DISCONNECTED_AFTER_PLAYER_REQ_FAILED = "Rozłączenie z serwerem na żądanie gracza nie powiodło się.";

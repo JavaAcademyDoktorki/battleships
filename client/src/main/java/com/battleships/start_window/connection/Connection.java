@@ -15,6 +15,10 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ *
+ */
+
 public enum Connection {
     INSTANCE;
     private Optional<Socket> socketOptional = Optional.empty();
@@ -23,6 +27,11 @@ public enum Connection {
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
 
+    /**
+     *Establishes the server's connection
+     *
+     * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
+     */
 
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
@@ -47,6 +56,10 @@ public enum Connection {
         }
     }
 
+    /**
+     * Disconnects client from the server
+     */
+
     public void disconnect() {
         if (isConnected()) {
             tryToDisconnectFromServer();
@@ -67,6 +80,13 @@ public enum Connection {
     private void sendToServer(Command command) {
         sendToServer(command, "");
     }
+
+    /**
+     * Sends to the connected server specified command with command value
+     *
+     * @param command - <code>Command</code> enum object with specified command set
+     * @param commandValue - client input in a text format
+     */
 
     public void sendToServer(Command command, String commandValue) {
         if (isConnected()) {
@@ -118,6 +138,11 @@ public enum Connection {
         }
     }
 
+    /**
+     * Initializes input and output of the server client connected to
+     *
+     * @throws IOException - if input or output might not be obtained
+     */
     public void establishServerIO() throws IOException {
         Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
         Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();

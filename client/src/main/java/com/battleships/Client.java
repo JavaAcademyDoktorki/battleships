@@ -12,6 +12,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Responsible for running client application
+ */
+
 public class Client extends Application {
     private static final Logger logger = LogManager.getLogger(Client.class.getName());
 
@@ -19,6 +23,11 @@ public class Client extends Application {
         launch(args);
     }
 
+    /**
+     * Starts client application
+     *
+     * @param primaryStage - the primary stage for the application
+     */
     @Override
     public void start(Stage primaryStage) {
         enableAppTitleTranslation(primaryStage);
