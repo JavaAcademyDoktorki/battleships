@@ -1,6 +1,7 @@
 package com.battleships;
 
 import com.battleships.start_window.window_scaling.ScreenSize;
+import com.battleships.windowScalling.WindowScalling;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +47,6 @@ public class Client extends Application {
         Optional<Parent> rootFxmlOptional = tryToGetRootFxmlOptional();
         if (rootFxmlOptional.isPresent()) {
             setScalingScene(primaryStage, rootFxmlOptional.get());
-            primaryStage.setResizable(false);
             addQuitWithEscapeKeyHandling(primaryStage);
             primaryStage.show();
             logger.info(LogMessages.MAIN_FXML_VIEW_LOADED_APP_STARTED);
@@ -84,5 +84,11 @@ public class Client extends Application {
         ScreenSize screenSize = new ScreenSize(Screen.getPrimary());
         Scene scene = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
         primaryStage.setScene(scene);
+        enableScaling(root, scene);
+    }
+
+    private void enableScaling(Parent root, Scene scene) {
+        WindowScalling windowScalling = new WindowScalling();
+        windowScalling.enableFor(scene, root);
     }
 }
