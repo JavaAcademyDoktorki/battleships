@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
-public class SettingsTextData {
+public class ConnectionSettingsPaneController {
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -24,7 +24,7 @@ public class SettingsTextData {
     private TextField nameTextField;
     @FXML
     private TextField ipTextField;
-    private final static Logger logger = LogManager.getLogger(SettingsTextData.class);
+    private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
     @FXML
     public void initialize() {

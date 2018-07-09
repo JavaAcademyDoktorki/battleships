@@ -15,4 +15,5 @@ public class LogMessages {
     public static final String SERVERIO_OBJECT_NOT_CREATED = "Nie stworzono obiektu ServerIO. (brak strumienia wyjśćia lub wejścia)";
     public static final String CANNOT_OBTAIN_SOCKET_OUTPUSTREAM = "Nie mogę uzyskać strumienia wyjścia (OutputStream) klienta";
     public static final String CANNOT_OBTAIN_SOCKET_INPUTSTREAM = "Nie mogę uzyskać strumienia wejścia (InputStream) klienta";
+    public static final String QUIT_WITH_ESCAPE = "Wyjście przy użyciu Escape";
 }

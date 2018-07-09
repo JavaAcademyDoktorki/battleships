@@ -38,17 +38,21 @@ public class Client extends Application {
         if (rootFxmlOptional.isPresent()) {
             setScalingScene(primaryStage, rootFxmlOptional.get());
             primaryStage.setResizable(false);
-            primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-                if (e.getCode() == KeyCode.ESCAPE) {
-                    System.out.println("quitting");
-                    Platform.exit();
-                }
-            });
+            addQuitWithEscapeKeyHandling(primaryStage);
             primaryStage.show();
             logger.info(LogMessages.MAIN_FXML_VIEW_LOADED_APP_STARTED);
         } else {
             logger.error(LogMessages.NOT_ABLE_TO_LOAD_MAIN_FXML_VIEW);
         }
+    }
+
+    private void addQuitWithEscapeKeyHandling(Stage primaryStage) {
+        primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                logger.info(LogMessages.QUIT_WITH_ESCAPE);
+                Platform.exit();
+            }
+        });
     }
 
     private Optional<Parent> tryToGetRootFxmlOptional() {

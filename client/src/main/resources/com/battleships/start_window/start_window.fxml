@@ -3,16 +3,16 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.battleships.start_window.StartWindow"
+            fx:controller="com.battleships.start_window.StartWindowController"
             style="-fx-padding: 16 16 16 16">
     <top>
         <fx:include source="header.fxml" style="-fx-padding: 4 4 4 4"/>
     </top>
     <left>
-        <fx:include source="room_list.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include fx:id="roomList" source="room_list.fxml" style="-fx-padding: 4 4 4 4"/>
     </left>
     <center>
-        <fx:include source="settings_data.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include fx:id="settingsData" source="settings_data.fxml" style="-fx-padding: 4 4 4 4"/>
     </center>
     <bottom>
         <fx:include source="footer.fxml" style="-fx-padding: 4 4 4 4"/>
