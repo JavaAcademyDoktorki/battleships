@@ -12,6 +12,9 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ *
+ */
 public class Connection {
     private Optional<Socket> socketOptional = Optional.empty();
     private ServerIO serverIO;
@@ -19,6 +22,11 @@ public class Connection {
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
 
+    /**
+     *Establishes the server's connection
+     *
+     * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
+     */
 
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
@@ -43,6 +51,10 @@ public class Connection {
         }
     }
 
+    /**
+     * Disconnects client from the server
+     */
+
     public void disconnect() {
         if (isConnected()) {
             tryToDisconnectFromServer();
@@ -60,6 +72,12 @@ public class Connection {
             socketOptional = Optional.empty();
         }
     }
+
+    /**
+     * Sends to the connected server specified command with command value
+     *
+     * @param playerCommand - <code>PlayerCommand</code> Player command object with specified command kind and value
+     */
 
     public <V> void sendToServer(PlayerCommand<V> playerCommand) {
         if (isConnected()) {
@@ -107,6 +125,11 @@ public class Connection {
         }
     }
 
+    /**
+     * Initializes input and output of the server client connected to
+     *
+     * @throws IOException - if input or output might not be obtained
+     */
     public void establishServerIO() throws IOException {
         Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
         Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();

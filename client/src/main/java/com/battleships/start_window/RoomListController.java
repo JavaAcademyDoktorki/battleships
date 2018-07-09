@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+/**
+ * Responsible for rooms section
+ */
 public class RoomListController {
     @FXML
     private Label roomListLabel;
@@ -14,6 +17,9 @@ public class RoomListController {
     @FXML
     private Button selectRoomButton;
 
+    /**
+     * Sets the text on <b>roomListLabel</b>, <b>createRoomButton</b> and <b>selectRoomButton</b> depending on chosen language settings
+     */
     @FXML
     private StartWindowController startWindowController;
 

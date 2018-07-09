@@ -5,6 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+/**
+ * Responsible for creating columns and rows bars to choose the boars size
+ */
+
 public class BoardSettingsPaneController {
     private final BoardSettings boardSettings = new BoardSettings();
 
@@ -22,6 +26,9 @@ public class BoardSettingsPaneController {
     @FXML
     private Label columnsAmountDisplayer;
 
+    /**
+     * Initializes bars for choosing columns and rows number of the board
+     */
 
     public void initialize() {
         initRowsProgressBar();

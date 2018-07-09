@@ -3,6 +3,9 @@ package com.battleships.start_window.data_insertion;
 import com.battleships.start_window.connection.Connection;
 import javafx.fxml.FXML;
 
+/**
+ * Controller for fxml class
+ */
 public class SettingsDataController {
     @FXML
     private BoardSettingsPaneController boardSettingsPaneController;

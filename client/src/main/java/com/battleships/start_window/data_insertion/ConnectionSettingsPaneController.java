@@ -29,6 +29,10 @@ public class ConnectionSettingsPaneController {
     private TextField ipTextField;
     private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
+    /**
+     *Sets text on buttons <b>connectToServerButton</b> and <b>disconnectFromServerButton</b> depending on chosen language settings and assigns action to each button
+     *and sets text on <b>nameTextField</b>
+     */
     @FXML
     public void initialize() {
         bindTextFieldsWithTranslation();
