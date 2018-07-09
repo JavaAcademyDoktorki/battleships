@@ -14,7 +14,6 @@ public class FooterController {
     @FXML
     private ChoiceBox<String> languageSelector;
 
-    @FXML
     public void initialize() {
         setupLanguageSelector();
     }
@@ -30,8 +29,8 @@ public class FooterController {
     }
 
     private void setListenerForLanguageSelector(ChangeListener<String> changeListener) {
-        SelectionModel<String> changeLanguageSelecetionModel = languageSelector.getSelectionModel();
-        ReadOnlyObjectProperty<String> readOnlyObjectProperty = changeLanguageSelecetionModel.selectedItemProperty();
+        SelectionModel<String> changeLanguageSelectionModel = languageSelector.getSelectionModel();
+        ReadOnlyObjectProperty<String> readOnlyObjectProperty = changeLanguageSelectionModel.selectedItemProperty();
         readOnlyObjectProperty.addListener(changeListener);
     }
 
@@ -40,7 +39,7 @@ public class FooterController {
     }
 
     private void selectFirstItemInLanguageSelector() {
-        SelectionModel<String> changeLanguageSelecetionModel = languageSelector.getSelectionModel();
-        changeLanguageSelecetionModel.selectFirst();
+        SelectionModel<String> changeLanguageSelectionModel = languageSelector.getSelectionModel();
+        changeLanguageSelectionModel.selectFirst();
     }
 }

@@ -90,7 +90,7 @@ class Server {
         try {
             disconnect(player);
         } catch (IOException e) {
-            String logMessage = String.format(LogMessages.UNSUCCESFUL_TRY_TO_DISCONNECT_PLAYER, player);
+            String logMessage = String.format(LogMessages.UNSUCCESSFUL_TRY_TO_DISCONNECT_PLAYER, player);
             logger.info(logMessage, e.getMessage());
         }
     }

@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 public class BoardSettingsPaneController {
-    private BoardSettings boardSettings = new BoardSettings();
+    private final BoardSettings boardSettings = new BoardSettings();
 
     @FXML
     private Label rowsTextLabel;

@@ -35,7 +35,7 @@ public class ConnectionSettingsPaneController {
         setOnActionToButtons();
     }
 
-    public Connection getConnection() {
+    Connection getConnection() {
         return connection;
     }
 

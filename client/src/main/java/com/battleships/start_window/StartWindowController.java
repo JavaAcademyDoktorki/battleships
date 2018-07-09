@@ -13,6 +13,8 @@ public class StartWindowController {
     private RoomListController roomListController;
     @FXML
     private SettingsDataController settingsDataController;
+    @FXML
+    private FooterController footerController;
 
     public void initialize() {
         boardSettings = settingsDataController.getBoardSettings();
@@ -20,7 +22,11 @@ public class StartWindowController {
         roomListController.setStartWindowController(this);
     }
 
-    public BoardSettings getBoardSettings() {
+    BoardSettings getBoardSettings() {
         return boardSettings;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

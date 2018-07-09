@@ -15,6 +15,6 @@
         <fx:include fx:id="settingsData" source="settings_data.fxml" style="-fx-padding: 4 4 4 4"/>
     </center>
     <bottom>
-        <fx:include source="footer.fxml" style="-fx-padding: 4 4 4 4"/>
+        <fx:include fx:id="footer" source="footer.fxml" style="-fx-padding: 4 4 4 4"/>
     </bottom>
 </BorderPane>

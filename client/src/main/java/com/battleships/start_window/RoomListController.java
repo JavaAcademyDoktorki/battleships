@@ -2,7 +2,6 @@ package com.battleships.start_window;
 
 import com.battleships.Translator;
 import com.battleships.start_window.data_insertion.BoardSettings;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,10 +29,9 @@ public class RoomListController {
     }
 
     @FXML
-    private void createRoom(ActionEvent actionEvent) {
+    private void createRoom() {
         BoardSettings boardSettings = startWindowController.getBoardSettings();
         System.out.println(boardSettings.getRowCount());
         System.out.println(boardSettings.getColumnCount());
-        System.out.println("clicked");
     }
 }

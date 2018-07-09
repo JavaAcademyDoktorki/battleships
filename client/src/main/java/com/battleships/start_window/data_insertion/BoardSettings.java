@@ -10,14 +10,14 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class BoardSettings {
     private static final int INITIAL_ROW_COLUMN_COUNT = 10;
-    private IntegerProperty rowCount = new SimpleIntegerProperty(INITIAL_ROW_COLUMN_COUNT);
-    private IntegerProperty columnCount = new SimpleIntegerProperty(INITIAL_ROW_COLUMN_COUNT);
+    private final IntegerProperty rowCount = new SimpleIntegerProperty(INITIAL_ROW_COLUMN_COUNT);
+    private final IntegerProperty columnCount = new SimpleIntegerProperty(INITIAL_ROW_COLUMN_COUNT);
 
     public int getRowCount() {
         return rowCount.get();
     }
 
-    public IntegerProperty rowCountProperty() {
+    IntegerProperty rowCountProperty() {
         return rowCount;
     }
 
@@ -29,7 +29,7 @@ public class BoardSettings {
         return columnCount.get();
     }
 
-    public IntegerProperty columnCountProperty() {
+    IntegerProperty columnCountProperty() {
         return columnCount;
     }
 
