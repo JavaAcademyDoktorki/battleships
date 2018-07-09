@@ -1,9 +1,7 @@
 package com.battleships;
 
 import com.battleships.Commands.AbstractCommand;
-import com.battleships.Commands.CommandsImpl.SetName;
-import com.battleships.Commands.CommandsImpl.StartPlaying;
-import com.battleships.Commands.CommandsImpl.StopPlaying;
+import com.battleships.Commands.CommandFactory;
 import com.battleships.Messages.LogMessages;
 import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
@@ -92,32 +90,22 @@ class Server {
             PlayerCommand playerCommand = player.nextCommand();
             commandType = playerCommand.getCommandType();
 
-            AbstractCommand commandImpl = getCommandImpl(playerCommand);
-            commandImpl.execute(player);
             handlePlayerCommands(player, playerCommand);
         }
     }
 
-    private AbstractCommand getCommandImpl(PlayerCommand playerCommand) {
-        CommandType commandType = playerCommand.getCommandType();
-        String value = playerCommand.getValue();
-        switch(commandType) { // TODO Krzysiek 16.07 replace switch with sth better
-            case SET_NAME:
-                return new SetName(value);
-
-            case STOP_PLAYING:
-                return new StopPlaying(value);
-
-            case START_PLAYING:
-                return new StartPlaying(value);
-        }
-        return null;
-    }
-
     private void handlePlayerCommands(Player player, PlayerCommand playerCommand) {
+        executePlayerCommand(player, playerCommand);
+
+        //logging
         CommandType commandType = playerCommand.getCommandType();
         String commandValue = playerCommand.getValue();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
+    }
+
+    private void executePlayerCommand(Player player, PlayerCommand playerCommand) {
+        AbstractCommand commandImpl = CommandFactory.getCommandImpl(playerCommand);
+        commandImpl.execute(player);
     }
 
     private void tryToDisconnectPlayer(Player player) {
