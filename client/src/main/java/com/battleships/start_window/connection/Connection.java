@@ -52,7 +52,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            PlayerCommand playerCommand = new PlayerCommand(CommandType.STOP_PLAYING);
+            PlayerCommand<String> playerCommand = new PlayerCommand<>(CommandType.STOP_PLAYING, "");
             sendToServer(playerCommand);
             disconnectPlayer();
         } catch (IOException e) {
@@ -62,7 +62,7 @@ public enum Connection {
         }
     }
 
-    public void sendToServer(PlayerCommand playerCommand) {
+    public <V> void sendToServer(PlayerCommand<V> playerCommand) {
         if (isConnected()) {
             serverIO.trySend(playerCommand);
             logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, playerCommand.getCommandType()));

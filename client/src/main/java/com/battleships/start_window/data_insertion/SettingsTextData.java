@@ -64,7 +64,7 @@ public class SettingsTextData {
         try {
             Connection.INSTANCE.establishConnection(connectionInfo);
             Connection.INSTANCE.establishServerIO();
-            PlayerCommand setNameCommand = new PlayerCommand(CommandType.SET_NAME, nameTextField.getText());
+            PlayerCommand<String> setNameCommand = new PlayerCommand<>(CommandType.SET_NAME, nameTextField.getText());
             Connection.INSTANCE.sendToServer(setNameCommand);
         } catch (IOException e){
             // TODO message to GUI that sth went wrong with connection

@@ -22,7 +22,7 @@ public class Player {
         playerIO.sendCommand(command);
     }
 
-    public PlayerCommand nextCommand() {
+    public <V> PlayerCommand<V> nextCommand() {
         return playerIO.nextUserCommand();
     }
 

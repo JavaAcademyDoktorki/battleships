@@ -3,9 +3,9 @@ package com.battleships.Commands.CommandsImpl;
 import com.battleships.Commands.AbstractCommand;
 import com.battleships.Player.Player;
 
-public class EmptyCommand extends AbstractCommand {
+public class EmptyCommand<V> extends AbstractCommand<V> {
 
-    public EmptyCommand(String value) {
+    public EmptyCommand(V value) {
         super(value);
     }
 

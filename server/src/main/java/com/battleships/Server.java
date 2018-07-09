@@ -2,6 +2,7 @@ package com.battleships;
 
 import com.battleships.Commands.AbstractCommand;
 import com.battleships.Commands.CommandFactory;
+import com.battleships.Commands.CommandsImpl.SetName;
 import com.battleships.Messages.LogMessages;
 import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
@@ -65,18 +66,14 @@ class Server {
         return Player.createForSocket(socket);
     }
 
-    private void assignNameToNewUser(Player player) { // TODO 16.07.2018 Delegate it to new class (SRP)
+    private void assignNameToNewUser(Player player) {
         PlayerCommand userRequest = player.nextCommand();
+        if (userRequest.getCommandType() == CommandType.SET_NAME) {
+            SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
+            setNameCommand.execute(player);
+        }
         // TODO 16.07.2018 make sure command is SET_NAME - Damian
         // TODO 16.07.2018 refator that statement - Damian
-        if (userRequest.getCommandType() == CommandType.SET_NAME) {
-            String name = userRequest.getValue(); // TODO 16.07.2018 make it OPTIONAL !!! : ) - Damian
-            if (name != null && connectedPlayers.isNameAvailable(name.trim())) {
-                player.setName(name);
-            } else {
-                player.setName(connectedPlayers.generateNewName());
-            }
-        }
     }
 
     private void registerPlayer(Player player) {
@@ -84,26 +81,25 @@ class Server {
         player.sendCommand("Serwer wita: " + player);
     }
 
-    private void handlePlayerInput(Player player) {
+    private <V> void handlePlayerInput(Player player) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            PlayerCommand playerCommand = player.nextCommand();
+            PlayerCommand<V> playerCommand = player.nextCommand();
             commandType = playerCommand.getCommandType();
-
             handlePlayerCommands(player, playerCommand);
         }
     }
 
-    private void handlePlayerCommands(Player player, PlayerCommand playerCommand) {
+    private <V> void handlePlayerCommands(Player player, PlayerCommand<V> playerCommand) {
         executePlayerCommand(player, playerCommand);
 
         //logging
         CommandType commandType = playerCommand.getCommandType();
-        String commandValue = playerCommand.getValue();
+        String commandValue = playerCommand.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
     }
 
-    private void executePlayerCommand(Player player, PlayerCommand playerCommand) {
+    private <V> void executePlayerCommand(Player player, PlayerCommand<V> playerCommand) {
         AbstractCommand commandImpl = CommandFactory.getCommandImpl(playerCommand);
         commandImpl.execute(player);
     }

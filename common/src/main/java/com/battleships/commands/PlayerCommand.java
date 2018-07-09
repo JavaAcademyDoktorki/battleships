@@ -2,15 +2,11 @@ package com.battleships.commands;
 
 import java.io.Serializable;
 
-public class PlayerCommand implements Serializable {
+public class PlayerCommand<V> implements Serializable {
     private final CommandType commandType;
-    private final String value;
+    private final V value;
 
-    public PlayerCommand(CommandType commandType) {
-        this(commandType, ""); // TODO 16.07.2018 handle that null - Damian
-    }
-
-    public PlayerCommand(CommandType commandType, String value) {
+    public PlayerCommand(CommandType commandType, V value) {
         this.commandType = commandType;
         this.value = value;
     }
@@ -19,7 +15,7 @@ public class PlayerCommand implements Serializable {
         return commandType;
     }
 
-    public String getValue() {
+    public V getValue() {
         return value;
     }
 }

@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class PlayerIO {
+class PlayerIO {
     private final PrintWriter clientWriter;
     private final ObjectInputStream clientObjectReader;
 
@@ -21,13 +21,10 @@ public class PlayerIO {
         clientWriter.flush();
     }
 
-    PlayerCommand nextUserCommand() {
+    <V> PlayerCommand<V> nextUserCommand() {
         try {
-            return (PlayerCommand) clientObjectReader.readObject();
-        } catch (IOException e) {
-            // TODO 16.07.2018 handle - Damian
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            return (PlayerCommand<V>) clientObjectReader.readObject(); // TODO 16.07 fix unchecked cast - krzychu
+        } catch (IOException | ClassNotFoundException e) {
             // TODO 16.07.2018 handle - Damian
             e.printStackTrace();
         }

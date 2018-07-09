@@ -2,13 +2,12 @@ package com.battleships.Commands;
 
 import com.battleships.Player.Player;
 
-public abstract class AbstractCommand {
-    String value;
+public abstract class AbstractCommand<V> {
+    protected final V value;
 
-    public AbstractCommand(String value) {
+    protected AbstractCommand(V value) {
         this.value = value;
     }
 
-    public abstract void
-    execute(Player player);
+    public abstract void execute(Player player);
 }

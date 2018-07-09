@@ -1,9 +1,6 @@
 package com.battleships.Commands;
 
 import com.battleships.Commands.CommandsImpl.EmptyCommand;
-import com.battleships.Commands.CommandsImpl.SetName;
-import com.battleships.Commands.CommandsImpl.StartPlaying;
-import com.battleships.Commands.CommandsImpl.StopPlaying;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.PlayerCommand;
 
@@ -26,21 +23,13 @@ public class CommandFactory {
      * @param playerCommand Player given command to execute
      */
 
-    public static AbstractCommand getCommandImpl(PlayerCommand playerCommand) {
+    public static <V> AbstractCommand getCommandImpl(PlayerCommand<V> playerCommand) {
         CommandType commandType = playerCommand.getCommandType();
-        String value = playerCommand.getValue();
+        V value = playerCommand.getValue();
         switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
-            case SET_NAME:
-                return new SetName(value);
-
-            case STOP_PLAYING:
-                return new StopPlaying(value);
-
-            case START_PLAYING:
-                return new StartPlaying(value);
 
             default:
-                return new EmptyCommand(null);
+                return new EmptyCommand<>(null);
         }
     }
 }
