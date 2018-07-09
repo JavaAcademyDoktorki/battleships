@@ -1,5 +1,8 @@
 package com.battleships.Messages;
 
+/**
+ * Stores server commands with messages for logging purpose
+ */
 public class LogMessages {
     public static final String TRY_TO_RUN_SERVER = "Próba odpalenia serwera";
     public static final String SERVER_RUNS = "Serwer odpalony... :)";

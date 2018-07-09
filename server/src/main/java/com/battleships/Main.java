@@ -9,6 +9,11 @@ import java.io.IOException;
 class Main {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
+    /**
+     * Initialiazes server
+     *
+     * @param args - possible String array with arguments
+     */
     public static void main(String[] args) {
         try {
             new Server();
