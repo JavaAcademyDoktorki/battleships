@@ -5,6 +5,7 @@ import com.battleships.LogMessages;
 import com.battleships.commands.PlayerCommand;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -115,7 +116,13 @@ public class Connection {
 
     private void initThreadReadingCommandsFromServer() {
         final int breakTimeMillisBetweenReadingFromServer = 100;
-        readCommandsFromUserThread = new Thread(() -> readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer));
+        readCommandsFromUserThread = new Thread(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer);
+                return null;
+            }
+        });
     }
 
     private void startThreadReadingCommandsFromServer() {

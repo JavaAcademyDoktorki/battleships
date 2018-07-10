@@ -8,15 +8,12 @@ import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
@@ -112,7 +109,7 @@ public class ConnectionSettingsPaneController {
     }
 
     private Optional<String> getOptionalIPIfInsertedCorrectly() {
-        String ip = ipTextField.textProperty().get().split(":")[0].trim();
+        String ip = extractIPFromIPTextFieldContent();
         if (!ip.isEmpty()) {
             return Optional.of(ipTextField.textProperty().get().split(":")[0]);
         } else {
@@ -120,11 +117,19 @@ public class ConnectionSettingsPaneController {
         }
     }
 
+    private String extractIPFromIPTextFieldContent() {
+        return ipTextField.textProperty().get().split(":")[0].trim();
+    }
+
     private Optional<Integer> extractPortIfPlayerInserted() {
         try {
-            return Optional.of(Integer.valueOf(ipTextField.getText().split(":")[1]));
-        } catch (IndexOutOfBoundsException e) {
+            return Optional.of(Integer.valueOf(extractIPAndPortFromTextFieldContent()[1]));
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
             return Optional.empty();
         }
+    }
+
+    private String[] extractIPAndPortFromTextFieldContent() {
+        return ipTextField.getText().split(":");
     }
 }
