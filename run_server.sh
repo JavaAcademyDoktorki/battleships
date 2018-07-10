@@ -1,3 +1,5 @@
 #!/bin/bash
+set -e
 mvn clean install
-java -jar server/target/server-0.0.1-jar-with-dependencies.jar
+cd server/
+mvn exec:java
