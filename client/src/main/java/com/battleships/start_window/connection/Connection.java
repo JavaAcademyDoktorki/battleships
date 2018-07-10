@@ -3,6 +3,9 @@ package com.battleships.start_window.connection;
 import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
 import com.battleships.commands.PlayerCommand;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,9 +24,10 @@ public class Connection {
     private final static Logger logger = LogManager.getLogger(Connection.class);
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
+    private BooleanProperty connected = new SimpleBooleanProperty(false);
 
     /**
-     *Establishes the server's connection
+     * Establishes the server's connection
      *
      * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
      */
@@ -34,8 +38,21 @@ public class Connection {
         }
     }
 
+    public BooleanProperty connectedProperty() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected.set(connected);
+    }
+
     private boolean isConnected() {
-        return socketOptional.isPresent() && socketOptional.get().isConnected();
+        checkConnected();
+        return connected.get();
+    }
+
+    private void checkConnected() {
+        setConnected(socketOptional.isPresent() && socketOptional.get().isConnected());
     }
 
     private void tryToEstablishConnection(ConnectionInfo connectionInfo) {
@@ -99,7 +116,13 @@ public class Connection {
 
     private void initThreadReadingCommandsFromServer() {
         final int breakTimeMillisBetweenReadingFromServer = 100;
-        readCommandsFromUserThread = new Thread(() -> readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer));
+        readCommandsFromUserThread = new Thread(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer);
+                return null;
+            }
+        });
     }
 
     private void startThreadReadingCommandsFromServer() {
@@ -134,7 +157,7 @@ public class Connection {
         Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
         Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();
 
-        if(outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
+        if (outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStreamOptional.get());
             Scanner socketScanner = new Scanner(inputStreamOptional.get());
             serverIO = new ServerIO(objectOutputStream, socketScanner);
@@ -145,7 +168,7 @@ public class Connection {
     }
 
     private Optional<OutputStream> tryGetOutputStreamOptional() throws IOException {
-        Optional <OutputStream> outputStreamOptional = Optional.empty();
+        Optional<OutputStream> outputStreamOptional = Optional.empty();
         try {
             if (socketOptional.isPresent()) {
                 Socket socket = socketOptional.get();
@@ -160,7 +183,7 @@ public class Connection {
     }
 
     private Optional<InputStream> tryGetInputStreamOptional() throws IOException {
-        Optional <InputStream> inputStreamOptional = Optional.empty();
+        Optional<InputStream> inputStreamOptional = Optional.empty();
         try {
             if (socketOptional.isPresent()) {
                 Socket socket = socketOptional.get();
