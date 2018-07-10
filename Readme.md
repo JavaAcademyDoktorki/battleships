@@ -5,6 +5,7 @@
 ### In order to run application:
 * JRE 1.8 must be installed on your machine (http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 * maven installed (mvn)
+* set java version for maven to 1.8, you can use a command: export JAVA_HOME=<path-to-java>
 
 ### How to run server and two clients 
 1. Download project: git clone git@github.com:JavaAcademyDoktorki/battleships.git
