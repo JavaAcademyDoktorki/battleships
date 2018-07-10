@@ -10,10 +10,16 @@ import javafx.scene.control.SelectionModel;
 
 import java.util.Locale;
 
+/**
+ * Responsible for a common footer of each screen that enables to change language
+ */
 public class FooterController {
     @FXML
     private ChoiceBox<String> languageSelector;
 
+    /**
+     * Initializes language settings to be chosen by a player
+     */
     @FXML
     public void initialize() {
         setupLanguageSelector();
@@ -30,8 +36,8 @@ public class FooterController {
     }
 
     private void setListenerForLanguageSelector(ChangeListener<String> changeListener) {
-        SelectionModel<String> changeLanguageSelecetionModel = languageSelector.getSelectionModel();
-        ReadOnlyObjectProperty<String> readOnlyObjectProperty = changeLanguageSelecetionModel.selectedItemProperty();
+        SelectionModel<String> changeLanguageSelectionModel = languageSelector.getSelectionModel();
+        ReadOnlyObjectProperty<String> readOnlyObjectProperty = changeLanguageSelectionModel.selectedItemProperty();
         readOnlyObjectProperty.addListener(changeListener);
     }
 
@@ -40,7 +46,7 @@ public class FooterController {
     }
 
     private void selectFirstItemInLanguageSelector() {
-        SelectionModel<String> changeLanguageSelecetionModel = languageSelector.getSelectionModel();
-        changeLanguageSelecetionModel.selectFirst();
+        SelectionModel<String> changeLanguageSelectionModel = languageSelector.getSelectionModel();
+        changeLanguageSelectionModel.selectFirst();
     }
 }

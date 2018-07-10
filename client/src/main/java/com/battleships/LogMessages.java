@@ -1,5 +1,8 @@
 package com.battleships;
 
+/**
+ * Stores client commands with messages for logging purpose
+ */
 public class LogMessages {
     public static final String DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED = "Rozłączony z serwerem na żądanie gracza";
     public static final String DISCONNECTED_AFTER_PLAYER_REQ_FAILED = "Rozłączenie z serwerem na żądanie gracza nie powiodło się.";
@@ -15,4 +18,5 @@ public class LogMessages {
     public static final String SERVERIO_OBJECT_NOT_CREATED = "Nie stworzono obiektu ServerIO. (brak strumienia wyjśćia lub wejścia)";
     public static final String CANNOT_OBTAIN_SOCKET_OUTPUSTREAM = "Nie mogę uzyskać strumienia wyjścia (OutputStream) klienta";
     public static final String CANNOT_OBTAIN_SOCKET_INPUTSTREAM = "Nie mogę uzyskać strumienia wejścia (InputStream) klienta";
+    public static final String QUIT_WITH_ESCAPE = "Wyjście przy użyciu Escape";
 }

@@ -3,14 +3,13 @@
 <?import javafx.scene.layout.*?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.battleships.start_window.data_insertion.SettingsDataController">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="100"/>
-        </columnConstraints>
-        <VBox  prefHeight="100" prefWidth="100" GridPane.rowIndex="1" GridPane.columnSpan="1">
-            <fx:include source="settings_text_data.fxml" />
-        </VBox>
-        <VBox prefWidth="100" GridPane.rowIndex="2" GridPane.columnSpan="1">
-            <fx:include source="settings_seek_bar_data.fxml" />
-        </VBox>
+          fx:controller="com.battleships.start_window.data_insertion.SettingsDataController"
+          alignment="TOP_CENTER"
+          style="-fx-padding: 16 16 16 16">
+    <VBox GridPane.rowIndex="1" GridPane.columnSpan="1" style="-fx-padding: 4 4 4 4">
+        <fx:include fx:id="connectionSettingsPane" source="connection_settings_pane.fxml"/>
+    </VBox>
+    <VBox GridPane.rowIndex="2" GridPane.columnSpan="1" style="-fx-padding: 4 4 4 4">
+        <fx:include fx:id="boardSettingsPane" source="board_settings_pane.fxml"/>
+    </VBox>
 </GridPane>

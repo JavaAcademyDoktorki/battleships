@@ -1,25 +1,25 @@
-package com.battleships;
+package com.battleships.Player;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-class ConnectedPlayers {
+public class ConnectedPlayers {
     private final List<Player> playerList;
     private int anonymousPlayersCounter = 0;
 
-    ConnectedPlayers() {
+    public ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
     }
 
-    void add(Player player) {
+    public void add(Player player) {
         playerList.add(player);
     }
 
-    void remove(Player player) {
+    public void remove(Player player) {
         playerList.remove(player);
     }
 
-    boolean isNameAvailable(String name){
+    public boolean isNameAvailable(String name){
         for (Player player : playerList){
             if (player.isSameName(name)){
                 return false;
@@ -28,7 +28,7 @@ class ConnectedPlayers {
         return true;
     }
 
-    String generateNewName(){
+    public String generateNewName(){
         ++anonymousPlayersCounter;
         return "Player" + anonymousPlayersCounter;
     }

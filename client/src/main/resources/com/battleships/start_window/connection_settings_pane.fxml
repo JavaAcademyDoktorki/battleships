@@ -3,9 +3,10 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.battleships.start_window.data_insertion.SettingsTextData">
-    <TextField fx:id="ipTextField" text="127.0.0.1:50000" promptText="127.0.0.1:50000" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.battleships.start_window.data_insertion.ConnectionSettingsPaneController">
+    <TextField fx:id="ipTextField" text="127.0.0.1:50000" promptText="127.0.0.1:50000" GridPane.rowIndex="0"
+               GridPane.columnIndex="0"/>
     <Button fx:id="connectToServerButton" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
     <Button fx:id="disconnectFromServerButton" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
     <HBox alignment="TOP_CENTER" GridPane.rowIndex="2">

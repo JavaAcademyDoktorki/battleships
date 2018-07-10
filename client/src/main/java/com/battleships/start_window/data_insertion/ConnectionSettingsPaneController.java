@@ -1,7 +1,8 @@
 package com.battleships.start_window.data_insertion;
 
-import com.battleships.Command;
+import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
+import com.battleships.commands.PlayerCommand;
 import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
@@ -15,7 +16,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
-public class SettingsTextData {
+public class ConnectionSettingsPaneController {
+    private Connection connection = new Connection();
+    private PlayerName playerName = new PlayerName();
+
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -24,13 +28,22 @@ public class SettingsTextData {
     private TextField nameTextField;
     @FXML
     private TextField ipTextField;
-    private final static Logger logger = LogManager.getLogger(SettingsTextData.class);
+    private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
+    /**
+     *Sets text on buttons <b>connectToServerButton</b> and <b>disconnectFromServerButton</b> depending on chosen language settings and assigns action to each button
+     *and sets text on <b>nameTextField</b>
+     */
     @FXML
     public void initialize() {
         bindTextFieldsWithTranslation();
         bindConnectToServerButton();
         setOnActionToButtons();
+        initPlayerName();
+    }
+
+    Connection getConnection() {
+        return connection;
     }
 
     private void bindTextFieldsWithTranslation() {
@@ -45,7 +58,7 @@ public class SettingsTextData {
 
     private void setOnActionToButtons() {
         connectToServerButton.setOnAction(e -> connectToServerButtonAction());
-        disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
+        disconnectFromServerButton.setOnAction(e -> connection.disconnect());
     }
 
     private void connectToServerButtonAction() {
@@ -61,10 +74,11 @@ public class SettingsTextData {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         try {
-            Connection.INSTANCE.establishConnection(connectionInfo);
-            Connection.INSTANCE.establishServerIO();
-            Connection.INSTANCE.sendToServer(Command.SET_NAME, nameTextField.getText());
-        } catch (IOException e){
+            connection.establishConnection(connectionInfo);
+            connection.establishServerIO();
+            PlayerCommand<String> setNameCommand = new PlayerCommand<>(CommandType.SET_NAME, nameTextField.getText());
+            connection.sendToServer(setNameCommand);
+        } catch (IOException e) {
             // TODO message to GUI that sth went wrong with connection
             logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
         }
@@ -77,6 +91,13 @@ public class SettingsTextData {
         if (!extractPortIfPlayerInserted().isPresent()) {
             logger.error(LogMessages.WRONG_PORT_NUMBER);
         }
+    }
+
+    private void initPlayerName() {
+        playerName.playerNameProperty().bind(nameTextField.textProperty());
+        nameTextField.textProperty()
+                .addListener((observableValue, oldValue, newValue) ->
+                        nameTextField.setText(String.valueOf(newValue)));
     }
 
     private boolean isPortAndIPPresent() {

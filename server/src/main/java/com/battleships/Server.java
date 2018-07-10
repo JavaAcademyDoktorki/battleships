@@ -1,6 +1,13 @@
 package com.battleships;
 
+import com.battleships.Commands.AbstractCommand;
+import com.battleships.Commands.CommandFactory;
+import com.battleships.Commands.CommandsImpl.SetName;
 import com.battleships.Messages.LogMessages;
+import com.battleships.Player.ConnectedPlayers;
+import com.battleships.Player.Player;
+import com.battleships.commands.CommandType;
+import com.battleships.commands.PlayerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,33 +25,40 @@ class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
-        tryAcceptPlayersLoop();
+
+        Thread infiniteLoopAcceptingPlayersThread = infiniteLoopAcceptingPlayers();
+        infiniteLoopAcceptingPlayersThread.start();
     }
 
-    private void tryAcceptPlayersLoop() {
-        new Thread(() -> {
+    private Thread infiniteLoopAcceptingPlayers() {
+        return new Thread(() -> {
             while (true) {
                 try {
-                    addPlayerToTheGame();
-                    handlePlayerInputUntillDisconnect();
+                    Player newPlayer = acceptNewPlayer();
+                    startHandlingPlayerCommandsLoop(newPlayer);
                 } catch (IOException e) {
                     logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
                 }
             }
-        }).start();
+        });
     }
 
-    private void handlePlayerInputUntillDisconnect() {
-        new Thread(() -> handlePlayerCommandsUntilDisconnected(connectedPlayers.getLastAddedPlayer())).start();
+    private void startHandlingPlayerCommandsLoop(final Player newPlayer) {
+        new Thread(() -> handlePlayerCommandsUntilDisconnected(newPlayer)).start();
     }
 
+    private void handlePlayerCommandsUntilDisconnected(Player newPlayer) {
+        handlePlayerInput(newPlayer);
+        tryToDisconnectPlayer(newPlayer);
+    }
 
-    private void addPlayerToTheGame() throws IOException {
+    private Player acceptNewPlayer() throws IOException {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
         player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
         registerPlayer(player);
+        return player;
     }
 
     private Player acceptPlayer() throws IOException {
@@ -53,12 +67,13 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) {
-        String providedName = player.nextCommand();
-        if (connectedPlayers.isNameAvailable(providedName) && !providedName.trim().equals("")) {
-            player.setName(providedName);
-        } else {
-            player.setName(connectedPlayers.generateNewName());
+        PlayerCommand userRequest = player.nextCommand();
+        if (userRequest.getCommandType() == CommandType.SET_NAME) {
+            SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
+            setNameCommand.execute(player);
         }
+        // TODO 16.07.2018 make sure command is SET_NAME - Damian
+        // TODO 16.07.2018 refator that statement - Damian
     }
 
     private void registerPlayer(Player player) {
@@ -66,31 +81,34 @@ class Server {
         player.sendCommand("Serwer wita: " + player);
     }
 
-    private void handlePlayerCommandsUntilDisconnected(Player player) {
-        handlePlayerInput(player);
-        tryToDisconnectPlayer(player);
-    }
-
-    private void handlePlayerInput(Player player) {
-        Command command = Command.START_PLAYING;
-        while (!command.equals(Command.STOP_PLAYING)) {
-            if (player.hasNextCommand()) {
-                PlayerCommand playerCommand = new PlayerCommand(player.nextCommand());
-                command = playerCommand.getType();
-                handlePlayerCommands(player, command, playerCommand.getValue());
-            }
+    private <V> void handlePlayerInput(Player player) {
+        CommandType commandType = CommandType.START_PLAYING;
+        while (!commandType.equals(CommandType.STOP_PLAYING)) {
+            PlayerCommand<V> playerCommand = player.nextCommand();
+            commandType = playerCommand.getCommandType();
+            handlePlayerCommands(player, playerCommand);
         }
     }
 
-    private void handlePlayerCommands(Player player, Command command, String commandValue) {
-        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, command, commandValue));
+    private <V> void handlePlayerCommands(Player player, PlayerCommand<V> playerCommand) {
+        executePlayerCommand(player, playerCommand);
+
+        //logging
+        CommandType commandType = playerCommand.getCommandType();
+        String commandValue = playerCommand.getValue().toString();
+        logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
+    }
+
+    private <V> void executePlayerCommand(Player player, PlayerCommand<V> playerCommand) {
+        AbstractCommand commandImpl = CommandFactory.getCommandImpl(playerCommand);
+        commandImpl.execute(player);
     }
 
     private void tryToDisconnectPlayer(Player player) {
         try {
             disconnect(player);
         } catch (IOException e) {
-            String logMessage = String.format(LogMessages.UNSUCCESFUL_TRY_TO_DISCONNECT_PLAYER, player);
+            String logMessage = String.format(LogMessages.UNSUCCESSFUL_TRY_TO_DISCONNECT_PLAYER, player);
             logger.info(logMessage, e.getMessage());
         }
     }
