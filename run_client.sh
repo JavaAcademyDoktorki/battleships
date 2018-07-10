@@ -1,2 +1,5 @@
 #!/bin/bash
-java -jar client/target/client-0.0.1-jar-with-dependencies.jar
+set -e
+mvn clean install
+cd client/
+mvn exec:java
