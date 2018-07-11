@@ -116,13 +116,9 @@ public class Connection {
 
     private void initThreadReadingCommandsFromServer() {
         final int breakTimeMillisBetweenReadingFromServer = 100;
-        readCommandsFromUserThread = new Thread(new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer);
-                return null;
-            }
-        });
+        readCommandsFromUserThread = new Thread(() ->
+                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer));
+        readCommandsFromUserThread.setDaemon(true);
     }
 
     private void startThreadReadingCommandsFromServer() {
