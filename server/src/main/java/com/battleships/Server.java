@@ -56,7 +56,8 @@ class Server {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
-        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));
+//        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
+        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
         registerPlayer(player);
         return player;
     }
@@ -78,7 +79,8 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendCommand("Serwer wita: " + player);
+        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
+//        player.sendCommand("Serwer wita: " + player);   // todo!
     }
 
     private <V> void handlePlayerInput(Player player) {

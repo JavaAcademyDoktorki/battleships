@@ -4,21 +4,26 @@ import com.battleships.commands.PlayerCommand;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 class PlayerIO {
-    private final PrintWriter clientWriter;
+    private final ObjectOutputStream clientObjectWriter;
     private final ObjectInputStream clientObjectReader;
 
     PlayerIO(Socket playerSocket) throws IOException {
-        clientWriter = new PrintWriter(playerSocket.getOutputStream());
+        clientObjectWriter = new ObjectOutputStream(playerSocket.getOutputStream());
         clientObjectReader = new ObjectInputStream(playerSocket.getInputStream());
     }
 
-    void sendCommand(String command) {
-        clientWriter.println(command);
-        clientWriter.flush();
+    void sendCommand(PlayerCommand<?> command) {
+        try {
+            clientObjectWriter.writeObject(command);
+            clientObjectWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();    // todo obsłużyć ładniej
+        }
     }
 
     <V> PlayerCommand<V> nextUserCommand() {

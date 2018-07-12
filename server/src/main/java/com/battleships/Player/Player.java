@@ -18,7 +18,7 @@ public class Player {
         return new Player(socket);
     }
 
-    public void sendCommand(String command) {
+    public void sendCommand(PlayerCommand<?> command) {
         playerIO.sendCommand(command);
     }
 
