@@ -3,9 +3,9 @@ package com.battleships.start_window.connection;
 import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
 import com.battleships.commands.PlayerCommand;
+import com.battleships.start_window.data_insertion.PlayerName;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +25,7 @@ public class Connection {
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
     private BooleanProperty connected = new SimpleBooleanProperty(false);
+    private MessageQueue messageQueue;
 
     /**
      * Establishes the server's connection
@@ -61,6 +62,7 @@ public class Connection {
             Socket socket = socketOptional.get();
             InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
             socket.connect(endpoint, initialConnectingTimeout);
+            messageQueue = new MessageQueue();
         } catch (IOException e) {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
             logger.error(errorMessage);
@@ -115,12 +117,17 @@ public class Connection {
     }
 
     private void initThreadReadingCommandsFromServer() {
-        final int breakTimeMillisBetweenReadingFromServer = 100;
-        readCommandsFromUserThread = new Thread(new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer);
-                return null;
+        readCommandsFromUserThread = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName());
+            try {
+                PlayerCommand<?> command;
+                while ((command = messageQueue.take()) != null) {
+                    logger.info(command.getCommandType());
+                    System.out.println("next player command"+ command.getCommandType());
+                    logInfoFromServerIfAvailable();
+                }
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage()); //Todo add log error
             }
         });
     }
@@ -129,11 +136,8 @@ public class Connection {
         readCommandsFromUserThread.start();
     }
 
-    private void readFromServerUntilDisconnected(int breakTimeMillisBetweenReadingFromServer) {
-        while (isConnected()) {
-            tryThreadSleep(breakTimeMillisBetweenReadingFromServer);
-            logInfoFromServerIfAvailable();
-        }
+    private void readFromServerUntilDisconnected() {
+
     }
 
     private void logInfoFromServerIfAvailable() {
@@ -159,8 +163,8 @@ public class Connection {
 
         if (outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStreamOptional.get());
-            Scanner socketScanner = new Scanner(inputStreamOptional.get());
-            serverIO = new ServerIO(objectOutputStream, socketScanner);
+            ObjectInputStream socketInputStream = new ObjectInputStream(inputStreamOptional.get());
+            serverIO = new ServerIO(objectOutputStream, socketInputStream);
         }
 
         initThreadReadingCommandsFromServer();

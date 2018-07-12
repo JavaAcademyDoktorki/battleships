@@ -6,7 +6,7 @@
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.battleships.start_window.data_insertion.ConnectionSettingsPaneController"
           fx:id="connectionSettingsPane">
-    <TextField fx:id="ipTextField" text="127.0.0.1:50000" promptText="127.0.0.1:50000" GridPane.rowIndex="0"
+    <TextField fx:id="ipTextField" text="10.30.1.179:50000" promptText="10.30.1.179:50000" GridPane.rowIndex="0"
                GridPane.columnIndex="0"/>
     <Button fx:id="connectToServerButton" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
     <Button fx:id="disconnectFromServerButton" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
