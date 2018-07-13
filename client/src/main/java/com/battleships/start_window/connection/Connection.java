@@ -1,11 +1,10 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
+import com.battleships.commands.CommandType;
 import com.battleships.commands.PlayerCommand;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +12,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Optional;
-import java.util.Scanner;
 
 /**
  *
@@ -155,8 +153,8 @@ public class Connection {
 
         if (outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStreamOptional.get());
-            Scanner socketScanner = new Scanner(inputStreamOptional.get());
-            serverIO = new ServerIO(objectOutputStream, socketScanner);
+            ObjectInputStream socketInputStream = new ObjectInputStream(inputStreamOptional.get());
+            serverIO = new ServerIO(objectOutputStream, socketInputStream);
         }
 
         initThreadReadingCommandsFromServer();
