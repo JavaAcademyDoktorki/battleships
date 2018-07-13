@@ -8,12 +8,15 @@ import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.PlayerCommand;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeoutException;
 
 class Server {
     private final ServerSocket serverSocket;
@@ -25,7 +28,6 @@ class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
-
         Thread infiniteLoopAcceptingPlayersThread = infiniteLoopAcceptingPlayers();
         infiniteLoopAcceptingPlayersThread.start();
     }
@@ -99,6 +101,9 @@ class Server {
         CommandType commandType = playerCommand.getCommandType();
         String commandValue = playerCommand.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
+        if (commandType == CommandType.SET_NAME) {
+            player.sendCommand(new PlayerCommand<>(CommandType.OK, "ok"));
+        }
     }
 
     private <V> void executePlayerCommand(Player player, PlayerCommand<V> playerCommand) {

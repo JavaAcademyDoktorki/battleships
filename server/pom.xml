@@ -17,6 +17,8 @@
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <log4j.version>2.11.0</log4j.version>
+        <amqp-client.version>5.3.0</amqp-client.version>
+        <slf4j-simple.version>1.7.25</slf4j-simple.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -55,6 +57,16 @@
             <artifactId>common</artifactId>
             <version>0.0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>${amqp-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
         </dependency>
     </dependencies>
 
