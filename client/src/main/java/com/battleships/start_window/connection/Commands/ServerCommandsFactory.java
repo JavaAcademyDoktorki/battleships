@@ -9,8 +9,8 @@ public class ServerCommandsFactory {
         CommandType commandType = message.getCommandType();
         V value = message.getValue();
         switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
-            case OK:
-                return new OkCommand<>(value);
+            case PLAYER_REGISTERED_SUCCESSFULLY:
+                return new PlayerRegistered<>(value);
             default:
                 return new EmptyCommand<>(null);
         }

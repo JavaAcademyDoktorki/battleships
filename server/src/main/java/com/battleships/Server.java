@@ -8,8 +8,7 @@ import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
-import com.battleships.commands.OkCommandValue;
-import com.battleships.commands.OkCommandObj;
+import com.battleships.commands.PlayerRegisteredValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,7 +57,6 @@ class Server {
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
 //        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
-//        player.sendCommand(new Message<>(CommandType.SET_NAME, ""));
         registerPlayer(player);
         return player;
     }
@@ -80,10 +78,10 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        OkCommandObj okCommandObj = new OkCommandObj("To jest wiadomosc do wyswietlenia");
-        OkCommandValue okCommandValue = new OkCommandValue(okCommandObj);
-        player.sendCommand(new Message<>(CommandType.OK, okCommandValue));
-//        player.sendCommand("Serwer wita: " + player);   // todo!
+        PlayerRegisteredValue playerRegisteredValue =
+                new PlayerRegisteredValue(player.getPlayerName(), player.isPlayerNameDifferentThanGiven());
+        player.sendCommand(new Message<>(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
+        logger.info(String.format("Komenda została wysłana do gracza: %s", CommandType.PLAYER_REGISTERED_SUCCESSFULLY.toString()));
     }
 
     private <V> void handlePlayerInput(Player player) {

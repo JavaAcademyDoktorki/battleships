@@ -8,6 +8,7 @@ public class Player {
     private final Socket playerSocket;
     private String playerName;
     private PlayerIO playerIO;
+    private boolean playerNameDifferentThanGiven;
 
     private Player(Socket playerSocket) throws IOException {
         this.playerSocket = playerSocket;
@@ -41,5 +42,17 @@ public class Player {
 
     boolean isSameName(String name) {
         return playerName.equals(name);
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public boolean isPlayerNameDifferentThanGiven() {
+        return playerNameDifferentThanGiven;
+    }
+
+    public void setPlayerNameSameAsGiven(boolean playerNameDifferentThanGiven) {
+        this.playerNameDifferentThanGiven = playerNameDifferentThanGiven;
     }
 }

@@ -83,7 +83,7 @@ public class ConnectionSettingsPaneController {
             Message<String> setNameCommand = new Message<>(CommandType.SET_NAME, nameTextField.getText());
             connection.sendToServer(setNameCommand);
         } catch (IOException e) {
-            // TODO message to GUI that sth went wrong with connection
+            // TODO playerName to GUI that sth went wrong with connection
             showConnectionFailedDialog();
             logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
         }

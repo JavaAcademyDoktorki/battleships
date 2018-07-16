@@ -64,7 +64,7 @@ public class Connection {
         } catch (IOException e) {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
             logger.error(errorMessage);
-            //TODO message to user that problems occurred
+            //TODO playerName to user that problems occurred
         }
     }
 

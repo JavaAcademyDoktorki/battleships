@@ -17,8 +17,10 @@ public class SetName<V> extends AbstractCommand<V> {
         String name = (String) this.value; // TODO 16.07.2018 make it OPTIONAL !!! : ) - Damian
         if (usernameIsCorrect(name)) {
             player.setName(name);
+            player.setPlayerNameSameAsGiven(true);
         } else {
             player.setName(connectedPlayers.generateNewName());
+            player.setPlayerNameSameAsGiven(false);
         }
     }
 
