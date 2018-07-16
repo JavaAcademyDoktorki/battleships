@@ -68,11 +68,11 @@ class Server {
 
     private void assignNameToNewUser(Player player) {
         Message userRequest = player.nextCommand();
-        if (userRequest.getCommandType() == CommandType.SET_NAME) {
+        if (userRequest.getCommandType() == CommandType.REGISTER_NEW_PLAYER) {
             SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
             setNameCommand.execute(player);
         }
-        // TODO 16.07.2018 make sure command is SET_NAME - Damian
+        // TODO 16.07.2018 make sure command is REGISTER_NEW_PLAYER - Damian
         // TODO 16.07.2018 refator that statement - Damian
     }
 
@@ -100,7 +100,7 @@ class Server {
         CommandType commandType = message.getCommandType();
         String commandValue = message.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
-        if (commandType == CommandType.SET_NAME) {
+        if (commandType == CommandType.REGISTER_NEW_PLAYER) {
             player.sendCommand(new Message<>(CommandType.OK, "ok"));
         }
     }

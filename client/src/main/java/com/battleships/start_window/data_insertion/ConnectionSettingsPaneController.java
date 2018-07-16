@@ -80,7 +80,7 @@ public class ConnectionSettingsPaneController {
         try {
             connection.establishConnection(connectionInfo);
             connection.establishServerIO();
-            Message<String> setNameCommand = new Message<>(CommandType.SET_NAME, nameTextField.getText());
+            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
             connection.sendToServer(setNameCommand);
         } catch (IOException e) {
             // TODO playerName to GUI that sth went wrong with connection

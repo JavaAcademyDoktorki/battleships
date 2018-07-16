@@ -136,7 +136,7 @@ public class Connection {
     }
 
     private void logInfoFromServerIfAvailable(Message<?> message) {
-        logger.info(message);
+        logger.info(String.format("Klient odebrał komendę od serwera: %s", message.getCommandType().toString()));
     }
 
     private void tryThreadSleep(int ms) {

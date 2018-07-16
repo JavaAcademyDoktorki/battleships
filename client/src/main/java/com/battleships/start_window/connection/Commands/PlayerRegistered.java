@@ -1,8 +1,11 @@
 package com.battleships.start_window.connection.Commands;
 
 import com.battleships.commands.PlayerRegisteredValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PlayerRegistered<V> extends AbstractServerCommand {
+    private final static Logger logger = LogManager.getLogger(PlayerRegistered.class);
     protected PlayerRegistered(V value) {
         super(value);
     }
@@ -15,6 +18,6 @@ public class PlayerRegistered<V> extends AbstractServerCommand {
             message = String.format("Welcome %s!", playerRegisteredValue.getPlayerName());
         else
             message = String.format("Given name was already assigned. New player name: %s", playerRegisteredValue.getPlayerName());
-        System.out.println(message);
+        logger.info(message);
     }
 }
