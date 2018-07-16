@@ -1,11 +1,10 @@
 package com.battleships.Player;
 
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 class PlayerIO {
@@ -17,7 +16,7 @@ class PlayerIO {
         clientObjectReader = new ObjectInputStream(playerSocket.getInputStream());
     }
 
-    void sendCommand(PlayerCommand<?> command) {
+    void sendCommand(Message<?> command) {
         try {
             clientObjectWriter.writeObject(command);
             clientObjectWriter.flush();
@@ -26,9 +25,9 @@ class PlayerIO {
         }
     }
 
-    <V> PlayerCommand<V> nextUserCommand() {
+    <V> Message<V> nextUserCommand() {
         try {
-            return (PlayerCommand<V>) clientObjectReader.readObject(); // TODO 16.07 fix unchecked cast - krzychu
+            return (Message<V>) clientObjectReader.readObject(); // TODO 16.07 fix unchecked cast - krzychu
         } catch (IOException | ClassNotFoundException e) {
             // TODO 16.07.2018 handle - Damian
             e.printStackTrace();

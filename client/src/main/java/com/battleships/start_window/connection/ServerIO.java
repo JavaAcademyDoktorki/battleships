@@ -1,12 +1,10 @@
 package com.battleships.start_window.connection;
 
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Optional;
-import java.util.Scanner;
 
 class ServerIO {
     private final ObjectOutputStream socketWriter;
@@ -18,21 +16,19 @@ class ServerIO {
     }
 
 
-    Optional<PlayerCommand<?>> getMessageOptional() {
-        Optional <PlayerCommand<?>> messageOptional = Optional.empty();
-        PlayerCommand<?> messageFromServer = null;
+    Message<?> getMessage() {
+        Message<?> messageFromServer = null;
         try {
-            messageFromServer = (PlayerCommand<?>) socketReader.readObject();
+            messageFromServer = (Message<?>) socketReader.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        messageOptional = Optional.of(messageFromServer);
-        return messageOptional;
+        return messageFromServer;
     }
 
-    void trySend(PlayerCommand playerCommand) {
+    void trySend(Message message) {
         try {
-            socketWriter.writeObject(playerCommand);
+            socketWriter.writeObject(message);
         } catch (IOException e) {
             // TODO 16.07.2018 handle - Damian
             e.printStackTrace();

@@ -7,16 +7,15 @@ import com.battleships.Messages.LogMessages;
 import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
 import com.battleships.commands.CommandType;
-import com.battleships.commands.PlayerCommand;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.battleships.commands.Message;
+import com.battleships.commands.OkCommandValue;
+import com.battleships.commands.OkCommandObj;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.TimeoutException;
 
 class Server {
     private final ServerSocket serverSocket;
@@ -59,7 +58,7 @@ class Server {
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
 //        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
-        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
+//        player.sendCommand(new Message<>(CommandType.SET_NAME, ""));
         registerPlayer(player);
         return player;
     }
@@ -70,7 +69,7 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) {
-        PlayerCommand userRequest = player.nextCommand();
+        Message userRequest = player.nextCommand();
         if (userRequest.getCommandType() == CommandType.SET_NAME) {
             SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
             setNameCommand.execute(player);
@@ -81,33 +80,35 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
+        OkCommandObj okCommandObj = new OkCommandObj("To jest wiadomosc do wyswietlenia");
+        OkCommandValue okCommandValue = new OkCommandValue(okCommandObj);
+        player.sendCommand(new Message<>(CommandType.OK, okCommandValue));
 //        player.sendCommand("Serwer wita: " + player);   // todo!
     }
 
     private <V> void handlePlayerInput(Player player) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            PlayerCommand<V> playerCommand = player.nextCommand();
-            commandType = playerCommand.getCommandType();
-            handlePlayerCommands(player, playerCommand);
+            Message<V> message = player.nextCommand();
+            commandType = message.getCommandType();
+            handlePlayerCommands(player, message);
         }
     }
 
-    private <V> void handlePlayerCommands(Player player, PlayerCommand<V> playerCommand) {
-        executePlayerCommand(player, playerCommand);
+    private <V> void handlePlayerCommands(Player player, Message<V> message) {
+        executePlayerCommand(player, message);
 
         //logging
-        CommandType commandType = playerCommand.getCommandType();
-        String commandValue = playerCommand.getValue().toString();
+        CommandType commandType = message.getCommandType();
+        String commandValue = message.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
         if (commandType == CommandType.SET_NAME) {
-            player.sendCommand(new PlayerCommand<>(CommandType.OK, "ok"));
+            player.sendCommand(new Message<>(CommandType.OK, "ok"));
         }
     }
 
-    private <V> void executePlayerCommand(Player player, PlayerCommand<V> playerCommand) {
-        AbstractCommand commandImpl = CommandFactory.getCommandImpl(playerCommand);
+    private <V> void executePlayerCommand(Player player, Message<V> message) {
+        AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
         commandImpl.execute(player);
     }
 

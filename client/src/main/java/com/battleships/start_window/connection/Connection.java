@@ -2,7 +2,9 @@ package com.battleships.start_window.connection;
 
 import com.battleships.LogMessages;
 import com.battleships.commands.CommandType;
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
+import com.battleships.start_window.connection.Commands.AbstractServerCommand;
+import com.battleships.start_window.connection.Commands.ServerCommandsFactory;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.logging.log4j.LogManager;
@@ -78,8 +80,8 @@ public class Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            PlayerCommand<String> playerCommand = new PlayerCommand<>(CommandType.STOP_PLAYING, "");
-            sendToServer(playerCommand);
+            Message<String> message = new Message<>(CommandType.STOP_PLAYING, "");
+            sendToServer(message);
             disconnectPlayer();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
@@ -91,15 +93,15 @@ public class Connection {
     /**
      * Sends to the connected server specified command with command value
      *
-     * @param playerCommand - <code>PlayerCommand</code> Player command object with specified command kind and value
+     * @param message - <code>Message</code> Player command object with specified command kind and value
      */
 
-    public <V> void sendToServer(PlayerCommand<V> playerCommand) {
+    public <V> void sendToServer(Message<V> message) {
         if (isConnected()) {
-            serverIO.trySend(playerCommand);
-            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, playerCommand.getCommandType()));
+            serverIO.trySend(message);
+            logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, message.getCommandType()));
         } else {
-            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, playerCommand.getCommandType()));
+            logger.error(String.format(LogMessages.COMMAND_SEND_FAILED, message.getCommandType()));
         }
     }
 
@@ -126,12 +128,15 @@ public class Connection {
     private void readFromServerUntilDisconnected(int breakTimeMillisBetweenReadingFromServer) {
         while (isConnected()) {
             tryThreadSleep(breakTimeMillisBetweenReadingFromServer);
-            logInfoFromServerIfAvailable();
+            Message<?> message = serverIO.getMessage();
+            AbstractServerCommand commandImpl = ServerCommandsFactory.getCommandImpl(message);
+            commandImpl.execute();
+            logInfoFromServerIfAvailable(message);
         }
     }
 
-    private void logInfoFromServerIfAvailable() {
-        logger.info(serverIO.getMessageOptional());
+    private void logInfoFromServerIfAvailable(Message<?> message) {
+        logger.info(message);
     }
 
     private void tryThreadSleep(int ms) {
