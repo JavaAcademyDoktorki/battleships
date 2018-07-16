@@ -26,21 +26,22 @@ class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
-        Thread infiniteLoopAcceptingPlayersThread = infiniteLoopAcceptingPlayers();
-        infiniteLoopAcceptingPlayersThread.start();
+        infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
+        new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
+            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));
+            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING_WAIT, false));
+        }).start();
     }
 
-    private Thread infiniteLoopAcceptingPlayers() {
-        return new Thread(() -> {
-            while (true) {
-                try {
-                    Player newPlayer = acceptNewPlayer();
-                    startHandlingPlayerCommandsLoop(newPlayer);
-                } catch (IOException e) {
-                    logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
-                }
+    private void infiniteLoopAcceptingPlayers() {
+        while (connectedPlayers.notFull()) {
+            try {
+                Player newPlayer = acceptNewPlayer();
+                startHandlingPlayerCommandsLoop(newPlayer);
+            } catch (IOException e) {
+                logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
             }
-        });
+        }
     }
 
     private void startHandlingPlayerCommandsLoop(final Player newPlayer) {
@@ -63,7 +64,7 @@ class Server {
 
     private Player acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
-        return Player.createForSocket(socket);
+        return connectedPlayers.playerForSocket(socket);
     }
 
     private void assignNameToNewUser(Player player) {

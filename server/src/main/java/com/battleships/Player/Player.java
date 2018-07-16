@@ -1,5 +1,7 @@
 package com.battleships.Player;
+
 import com.battleships.commands.Message;
+import com.battleships.commands.PlayerStatus;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -8,15 +10,13 @@ public class Player {
     private final Socket playerSocket;
     private String playerName;
     private PlayerIO playerIO;
+    private final PlayerStatus playerStatus;
     private boolean playerNameDifferentThanGiven;
 
-    private Player(Socket playerSocket) throws IOException {
+    public Player(Socket playerSocket, PlayerStatus playerStatus) throws IOException {
         this.playerSocket = playerSocket;
         this.playerIO = new PlayerIO(playerSocket);
-    }
-
-    public static Player createForSocket(Socket socket) throws IOException {
-        return new Player(socket);
+        this.playerStatus = playerStatus;
     }
 
     public void sendCommand(Message<?> command) {
@@ -42,6 +42,14 @@ public class Player {
 
     boolean isSameName(String name) {
         return playerName.equals(name);
+    }
+
+    public boolean isActive() {
+        return playerStatus == PlayerStatus.ACTIVE;
+    }
+
+    public boolean isInActive() {
+        return !isActive();
     }
 
     public String getPlayerName() {
