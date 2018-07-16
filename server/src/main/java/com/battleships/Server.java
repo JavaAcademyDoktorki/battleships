@@ -28,8 +28,8 @@ class Server {
         this.connectedPlayers = new ConnectedPlayers();
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
         new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
-            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, ""));
-            connectedPlayers.sendToInactive(new Message<>(CommandType.WAIT, ""));
+            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));
+            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING_WAIT, false));
         }).start();
     }
 
@@ -58,7 +58,6 @@ class Server {
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
 //        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
-        player.sendCommand(new PlayerCommand<>(CommandType.WAIT, ""));
         registerPlayer(player);
         return player;
     }

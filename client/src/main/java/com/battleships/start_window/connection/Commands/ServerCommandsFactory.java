@@ -11,6 +11,10 @@ public class ServerCommandsFactory {
         switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
             case PLAYER_REGISTERED_SUCCESSFULLY:
                 return new PlayerRegistered<>(value);
+            case START_PLAYING:
+                return new StartGameWindow<>(value);
+            case START_PLAYING_WAIT:
+                return new StartGameWindow<>(value);
             default:
                 return new EmptyCommand<>(null);
         }

@@ -136,7 +136,7 @@ public class Connection {
     }
 
     private void logInfoFromServerIfAvailable(Message<?> message) {
-        logger.info(message);
+        logger.info(message.getCommandType());
     }
 
     private void tryThreadSleep(int ms) {

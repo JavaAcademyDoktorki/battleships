@@ -1,6 +1,6 @@
 package com.battleships.Player;
 
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
 import com.battleships.commands.PlayerStatus;
 
 import java.io.IOException;
@@ -54,9 +54,9 @@ public class ConnectedPlayers {
         return playerList.size() < 2;
     }
 
-    public void sendToActive(PlayerCommand<String> stringPlayerCommand) {
+    public void sendToActive(Message<Boolean> playerCommand) {
         Player active = getActive();
-        active.sendCommand(stringPlayerCommand);
+        active.sendCommand(playerCommand);
     }
 
     private Player getActive() {
@@ -66,7 +66,7 @@ public class ConnectedPlayers {
             return playerList.get(1);
     }
 
-    public void sendToInactive(PlayerCommand<String> stringPlayerCommand) {
+    public void sendToInactive(Message<Boolean> stringPlayerCommand) {
         Player inactive = getInactive();
         inactive.sendCommand(stringPlayerCommand);
     }
