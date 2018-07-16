@@ -28,21 +28,22 @@ class Server {
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
-        Thread infiniteLoopAcceptingPlayersThread = infiniteLoopAcceptingPlayers();
-        infiniteLoopAcceptingPlayersThread.start();
+        infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
+        new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
+            connectedPlayers.sendToActive(new PlayerCommand<>(CommandType.START_PLAYING, ""));
+            connectedPlayers.sendToInactive(new PlayerCommand<>(CommandType.WAIT, ""));
+        }).start();
     }
 
-    private Thread infiniteLoopAcceptingPlayers() {
-        return new Thread(() -> {
-            while (true) {
-                try {
-                    Player newPlayer = acceptNewPlayer();
-                    startHandlingPlayerCommandsLoop(newPlayer);
-                } catch (IOException e) {
-                    logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
-                }
+    private void infiniteLoopAcceptingPlayers() {
+        while (connectedPlayers.notFull()) {
+            try {
+                Player newPlayer = acceptNewPlayer();
+                startHandlingPlayerCommandsLoop(newPlayer);
+            } catch (IOException e) {
+                logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
             }
-        });
+        }
     }
 
     private void startHandlingPlayerCommandsLoop(final Player newPlayer) {
@@ -59,14 +60,14 @@ class Server {
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
 //        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
-        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
+        player.sendCommand(new PlayerCommand<>(CommandType.WAIT, ""));
         registerPlayer(player);
         return player;
     }
 
     private Player acceptPlayer() throws IOException {
         Socket socket = serverSocket.accept();
-        return Player.createForSocket(socket);
+        return connectedPlayers.playerForSocket(socket);
     }
 
     private void assignNameToNewUser(Player player) {
