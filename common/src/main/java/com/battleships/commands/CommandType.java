@@ -1,5 +1,5 @@
 package com.battleships.commands;
 
 public enum CommandType {
-    START_PLAYING, STOP_PLAYING, SET_NAME, OK, WAIT;
+    START_PLAYING, STOP_PLAYING, SET_NAME, OK, PLAYER_REGISTERED_SUCCESSFULLY, WAIT
 }

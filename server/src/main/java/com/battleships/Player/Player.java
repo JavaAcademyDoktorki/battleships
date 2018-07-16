@@ -1,6 +1,6 @@
 package com.battleships.Player;
 
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
 import com.battleships.commands.PlayerStatus;
 
 import java.io.IOException;
@@ -11,6 +11,7 @@ public class Player {
     private String playerName;
     private PlayerIO playerIO;
     private final PlayerStatus playerStatus;
+    private boolean playerNameDifferentThanGiven;
 
     public Player(Socket playerSocket, PlayerStatus playerStatus) throws IOException {
         this.playerSocket = playerSocket;
@@ -18,11 +19,11 @@ public class Player {
         this.playerStatus = playerStatus;
     }
 
-    public void sendCommand(PlayerCommand<?> command) {
+    public void sendCommand(Message<?> command) {
         playerIO.sendCommand(command);
     }
 
-    public <V> PlayerCommand<V> nextCommand() {
+    public <V> Message<V> nextCommand() {
         return playerIO.nextUserCommand();
     }
 
@@ -49,5 +50,17 @@ public class Player {
 
     public boolean isInActive() {
         return !isActive();
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public boolean isPlayerNameDifferentThanGiven() {
+        return playerNameDifferentThanGiven;
+    }
+
+    public void setPlayerNameSameAsGiven(boolean playerNameDifferentThanGiven) {
+        this.playerNameDifferentThanGiven = playerNameDifferentThanGiven;
     }
 }

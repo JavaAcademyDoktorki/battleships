@@ -7,16 +7,14 @@ import com.battleships.Messages.LogMessages;
 import com.battleships.Player.ConnectedPlayers;
 import com.battleships.Player.Player;
 import com.battleships.commands.CommandType;
-import com.battleships.commands.PlayerCommand;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.battleships.commands.Message;
+import com.battleships.commands.PlayerRegisteredValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.TimeoutException;
 
 class Server {
     private final ServerSocket serverSocket;
@@ -30,8 +28,8 @@ class Server {
         this.connectedPlayers = new ConnectedPlayers();
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
         new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
-            connectedPlayers.sendToActive(new PlayerCommand<>(CommandType.START_PLAYING, ""));
-            connectedPlayers.sendToInactive(new PlayerCommand<>(CommandType.WAIT, ""));
+            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, ""));
+            connectedPlayers.sendToInactive(new Message<>(CommandType.WAIT, ""));
         }).start();
     }
 
@@ -71,7 +69,7 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) {
-        PlayerCommand userRequest = player.nextCommand();
+        Message userRequest = player.nextCommand();
         if (userRequest.getCommandType() == CommandType.SET_NAME) {
             SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
             setNameCommand.execute(player);
@@ -82,33 +80,35 @@ class Server {
 
     private void registerPlayer(Player player) {
         connectedPlayers.add(player);
-        player.sendCommand(new PlayerCommand<>(CommandType.SET_NAME, ""));
-//        player.sendCommand("Serwer wita: " + player);   // todo!
+        PlayerRegisteredValue playerRegisteredValue =
+                new PlayerRegisteredValue(player.getPlayerName(), player.isPlayerNameDifferentThanGiven());
+        player.sendCommand(new Message<>(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
+        logger.info(String.format("Komenda została wysłana do gracza: %s", CommandType.PLAYER_REGISTERED_SUCCESSFULLY.toString()));
     }
 
     private <V> void handlePlayerInput(Player player) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            PlayerCommand<V> playerCommand = player.nextCommand();
-            commandType = playerCommand.getCommandType();
-            handlePlayerCommands(player, playerCommand);
+            Message<V> message = player.nextCommand();
+            commandType = message.getCommandType();
+            handlePlayerCommands(player, message);
         }
     }
 
-    private <V> void handlePlayerCommands(Player player, PlayerCommand<V> playerCommand) {
-        executePlayerCommand(player, playerCommand);
+    private <V> void handlePlayerCommands(Player player, Message<V> message) {
+        executePlayerCommand(player, message);
 
         //logging
-        CommandType commandType = playerCommand.getCommandType();
-        String commandValue = playerCommand.getValue().toString();
+        CommandType commandType = message.getCommandType();
+        String commandValue = message.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
         if (commandType == CommandType.SET_NAME) {
-            player.sendCommand(new PlayerCommand<>(CommandType.OK, "ok"));
+            player.sendCommand(new Message<>(CommandType.OK, "ok"));
         }
     }
 
-    private <V> void executePlayerCommand(Player player, PlayerCommand<V> playerCommand) {
-        AbstractCommand commandImpl = CommandFactory.getCommandImpl(playerCommand);
+    private <V> void executePlayerCommand(Player player, Message<V> message) {
+        AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
         commandImpl.execute(player);
     }
 
