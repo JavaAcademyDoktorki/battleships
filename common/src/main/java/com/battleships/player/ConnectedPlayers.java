@@ -76,4 +76,9 @@ public class ConnectedPlayers {
         else
             return playerList.get(1);
     }
+
+    public void switchActive() {
+        playerList.get(0).switchActive();
+        playerList.get(1).switchActive();
+    }
 }

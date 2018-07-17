@@ -1,4 +1,4 @@
-package com.battleships.game_window;
+package com.battleships.commands.Values;
 
 import java.io.Serializable;
 
@@ -17,5 +17,13 @@ public class Shot implements Serializable {
 
     public int getColumn() {
         return column;
+    }
+
+    @Override
+    public String toString() {
+        return "Shot{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
     }
 }

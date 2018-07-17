@@ -1,14 +1,13 @@
 package com.battleships;
 
-import com.battleships.commands.AbstractCommand;
 import com.battleships.Commands.CommandFactory;
-import com.battleships.Commands.CommandsImpl.SetName;
 import com.battleships.Messages.LogMessages;
-import com.battleships.player.ConnectedPlayers;
-import com.battleships.player.Player;
+import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Values.PlayerRegisteredValue;
+import com.battleships.player.ConnectedPlayers;
+import com.battleships.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,7 +57,6 @@ class Server {
         Player player = acceptPlayer();
         assignNameToNewUser(player);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
-//        player.sendCommand(String.format(LogMessages.NICK_WAS_ASSIGNED_TO_YOU, player));    // todo!
         registerPlayer(player);
         return player;
     }
@@ -70,10 +68,18 @@ class Server {
 
     private void assignNameToNewUser(Player player) {
         Message userRequest = player.nextCommand();
-        if (userRequest.getCommandType() == CommandType.REGISTER_NEW_PLAYER) {
-            SetName setNameCommand = new SetName<>(userRequest.getValue(), player);
-            setNameCommand.execute(connectedPlayers);
+        String name = (String) userRequest.getValue();
+        if (usernameIsCorrect(name, connectedPlayers)) {
+            player.setName(name);
+            player.setPlayerNameSameAsGiven(true);
+        } else {
+            player.setName(connectedPlayers.generateNewName());
+            player.setPlayerNameSameAsGiven(false);
         }
+    }
+
+    private boolean usernameIsCorrect(String name, ConnectedPlayers connectedPlayers) {
+        return name != null && !name.equals("") && connectedPlayers.isNameAvailable(name.trim());
     }
 
     private void registerPlayer(Player player) {

@@ -2,6 +2,7 @@ package com.battleships.game_window;
 
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
+import com.battleships.commands.Values.Shot;
 import com.battleships.start_window.connection.Connection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,6 +45,6 @@ public class GameWindowController {
         System.out.println(rawShot.getRow()+" "+rawShot.getColumn());
         Shot shot = new Shot(rawShot.getRow(), rawShot.getColumn());
 
-        Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOOT,shot));
+        Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT,shot));
     }
 }

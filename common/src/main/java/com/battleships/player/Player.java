@@ -9,7 +9,7 @@ public class Player {
     private final Socket playerSocket;
     private String playerName;
     private PlayerIO playerIO;
-    private final PlayerStatus playerStatus;
+    private PlayerStatus playerStatus;
     private boolean playerNameDifferentThanGiven;
 
     public Player(Socket playerSocket, PlayerStatus playerStatus) throws IOException {
@@ -61,5 +61,9 @@ public class Player {
 
     public void setPlayerNameSameAsGiven(boolean playerNameDifferentThanGiven) {
         this.playerNameDifferentThanGiven = playerNameDifferentThanGiven;
+    }
+
+    public void switchActive() {
+        this.playerStatus = playerStatus.other();
     }
 }

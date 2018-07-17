@@ -30,7 +30,7 @@ public class CommandFactory {
         CommandType commandType = message.getCommandType();
         V value = message.getValue();
         switch (commandType) {
-            case SHOOT:
+            case SHOT:
                 return new PlayersShootCommand<>(value);
             case MESSAGE:
                 return new MessageToPlayer<>(value);

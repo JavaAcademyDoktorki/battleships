@@ -5,6 +5,6 @@ public enum CommandType {
     STOP_PLAYING,
     PLAYER_REGISTERED_SUCCESSFULLY,
     REGISTER_NEW_PLAYER,
-    SHOOT,
+    SHOT,
     MESSAGE
 }

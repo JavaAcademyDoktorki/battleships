@@ -15,6 +15,8 @@ public class ServerCommandsFactory {
                 return new StartGameWindow<>(value);
             case MESSAGE:
                 return new PlayerMessageReceived(value);
+            case SHOT:
+                return new ShotMessageReceived(value);
             default:
                 return new EmptyCommand<>(null);
         }
