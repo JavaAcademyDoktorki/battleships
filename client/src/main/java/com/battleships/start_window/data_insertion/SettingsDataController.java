@@ -17,7 +17,7 @@ public class SettingsDataController {
 
     public void initialize() {
         boardSettings = boardSettingsPaneController.getBoardSettings();
-        connection = connectionSettingsPaneController.getConnection();
+        connection = Connection.INSTANCE;
     }
 
     public BoardSettings getBoardSettings() {

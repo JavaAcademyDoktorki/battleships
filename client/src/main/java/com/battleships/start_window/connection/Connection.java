@@ -18,7 +18,8 @@ import java.util.Optional;
 /**
  *
  */
-public class Connection {
+public enum Connection {
+    INSTANCE;
     private Optional<Socket> socketOptional = Optional.empty();
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);

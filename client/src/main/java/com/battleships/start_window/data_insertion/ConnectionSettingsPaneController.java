@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
-    private Connection connection = new Connection();
     private PlayerName playerName = new PlayerName();
 
     @FXML
@@ -44,10 +43,6 @@ public class ConnectionSettingsPaneController {
         initPlayerName();
     }
 
-    Connection getConnection() {
-        return connection;
-    }
-
     private void bindTextFieldsWithTranslation() {
         Translator.bind(connectToServerButton.textProperty(), "connect");
         Translator.bind(disconnectFromServerButton.textProperty(), "disconnect");
@@ -60,9 +55,9 @@ public class ConnectionSettingsPaneController {
 
     private void setOnActionToButtons() {
         connectToServerButton.setOnAction(e -> connectToServerButtonAction());
-        connectToServerButton.disableProperty().bind(connection.connectedProperty());
-        disconnectFromServerButton.setOnAction(e -> connection.disconnect());
-        disconnectFromServerButton.disableProperty().bind(connection.connectedProperty().not());
+        connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
+        disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
+        disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
     }
 
     private void connectToServerButtonAction() {
@@ -78,10 +73,10 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         try {
-            connection.establishConnection(connectionInfo);
-            connection.establishServerIO();
+            Connection.INSTANCE.establishConnection(connectionInfo);
+            Connection.INSTANCE.establishServerIO();
             Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
-            connection.sendToServer(setNameCommand);
+            Connection.INSTANCE.sendToServer(setNameCommand);
         } catch (IOException e) {
             // TODO playerName to GUI that sth went wrong with connection
             showConnectionFailedDialog();
