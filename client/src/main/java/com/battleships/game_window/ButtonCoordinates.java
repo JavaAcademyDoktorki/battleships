@@ -1,11 +1,11 @@
 package com.battleships.game_window;
 
-public class RawShot {
+public class ButtonCoordinates {
     private final int row;
     private final int column;
 
 
-    public RawShot(String id) {
+    public ButtonCoordinates(String id) {
         String[] parse = parse(id);
         this.row=Integer.valueOf(parse[0]);
         this.column=Integer.valueOf(parse[1]);

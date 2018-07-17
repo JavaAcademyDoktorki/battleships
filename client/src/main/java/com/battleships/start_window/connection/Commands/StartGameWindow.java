@@ -16,6 +16,6 @@ public class StartGameWindow<V> extends AbstractServerCommand {
         else
             System.out.println("starting and waiting for opponents move!");
 
-        Connection.INSTANCE.setIsPlayerActive(value);
+        Connection.INSTANCE.setPlayerActive(value);
     }
 }

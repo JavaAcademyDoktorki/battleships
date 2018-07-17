@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<GridPane hgap="20" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleships.game_window.GameWindowController">
-    <GridPane fx:id="myBoard" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <GridPane fx:id="opponentBoard" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-</GridPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.battleships.game_window.GameWindowController"
+            style="-fx-padding: 16 16 16 16">
+    <top>
+        <Label fx:id="readyLabel"/>
+    </top>
+    <center>
+        <GridPane hgap="20" alignment="CENTER">
+            <GridPane fx:id="myBoard" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <GridPane fx:id="opponentBoard" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label fx:id="yourBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="opponentBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Button fx:id="randomShipPlacementButton" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                    onAction="#placeShipsRandomly"/>
+            <Button fx:id="readyToPlayButton" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                    onAction="#confirmReady"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <fx:include fx:id="footer" source="../start_window/footer.fxml"/>
+    </bottom>
+</BorderPane>

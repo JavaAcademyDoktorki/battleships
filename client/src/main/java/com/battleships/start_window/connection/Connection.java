@@ -26,18 +26,37 @@ public enum Connection {
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
     private BooleanProperty connected = new SimpleBooleanProperty(false);
-    private BooleanProperty isPlayerActive = new SimpleBooleanProperty(false);
+    private BooleanProperty playerActive = new SimpleBooleanProperty(false);
+    private BooleanProperty ready = new SimpleBooleanProperty(false);
 
-    public boolean isIsPlayerActive() {
-        return isPlayerActive.get();
+    public void setOtherPlayerReady(boolean otherPlayerReady) {
+        this.otherPlayerReady = otherPlayerReady;
     }
 
-    public BooleanProperty isPlayerActiveProperty() {
-        return isPlayerActive;
+    private boolean otherPlayerReady = false;
+
+    public boolean getReady() {
+        return ready.get();
     }
 
-    public void setIsPlayerActive(boolean isPlayerActive) {
-        this.isPlayerActive.set(isPlayerActive);
+    public BooleanProperty readyProperty() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready.set(ready);
+    }
+
+    public boolean getPlayerActive() {
+        return playerActive.get();
+    }
+
+    public BooleanProperty playerActiveProperty() {
+        return playerActive;
+    }
+
+    public void setPlayerActive(boolean playerActive) {
+        this.playerActive.set(playerActive);
     }
 
     /**

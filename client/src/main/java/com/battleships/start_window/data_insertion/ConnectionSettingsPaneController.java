@@ -1,6 +1,5 @@
 package com.battleships.start_window.data_insertion;
 
-import com.battleships.Client;
 import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
 import com.battleships.commands.Message;
@@ -50,7 +49,7 @@ public class ConnectionSettingsPaneController {
         bindConnectToServerButton();
         setOnActionToButtons();
         initPlayerName();
-        sendMessageToOtherPlayer.disableProperty().bind(Connection.INSTANCE.isPlayerActiveProperty().not());
+        sendMessageToOtherPlayer.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
     }
 
     private void bindTextFieldsWithTranslation() {
@@ -75,8 +74,7 @@ public class ConnectionSettingsPaneController {
             String ip = getOptionalIPIfInsertedCorrectly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
-            handleConnectButtonAction(connectionInfo);
-            openGameWindow(e);
+            handleConnectButtonAction(connectionInfo, e);
         } else {
             logErrorsAboutIPAndPort();
         }
@@ -84,33 +82,30 @@ public class ConnectionSettingsPaneController {
 
     }
 
-    private void openGameWindow(ActionEvent e) {
-        try {
-            Parent root;
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("com/battleships/game_window/game_window.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
-            stage.setScene(new Scene(root, 450, 450));
-            stage.show();
-            // Hide this current window (if this is what you want)
-            ((Node)(e.getSource())).getScene().getWindow().hide();
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
-    private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
+    private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
         try {
             Connection.INSTANCE.establishConnection(connectionInfo);
             Connection.INSTANCE.establishServerIO();
             Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
             Connection.INSTANCE.sendToServer(setNameCommand);
+            openGameWindow(event);
         } catch (IOException e) {
             // TODO playerName to GUI that sth went wrong with connection
             showConnectionFailedDialog();
             logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
+        }
+    }
+
+    private void openGameWindow(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("com/battleships/game_window/game_window.fxml"));
+            Stage stage = new Stage();
+            stage.titleProperty().bind(Translator.createStringBinding("game_window"));
+            stage.setScene(new Scene(root, 600, 450));
+            stage.show();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
