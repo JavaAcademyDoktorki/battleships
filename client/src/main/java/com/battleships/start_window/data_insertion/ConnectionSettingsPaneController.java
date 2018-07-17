@@ -1,5 +1,6 @@
 package com.battleships.start_window.data_insertion;
 
+import com.battleships.Client;
 import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
 import com.battleships.commands.Message;
@@ -9,8 +10,13 @@ import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,21 +64,41 @@ public class ConnectionSettingsPaneController {
     }
 
     private void setOnActionToButtons() {
-        connectToServerButton.setOnAction(e -> connectToServerButtonAction());
+        connectToServerButton.setOnAction(e -> connectToServerButtonAction(e));
         connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
     }
 
-    private void connectToServerButtonAction() {
+    private void connectToServerButtonAction(ActionEvent e) {
         if (isPortAndIPPresent()) {
             String ip = getOptionalIPIfInsertedCorrectly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
             handleConnectButtonAction(connectionInfo);
+            openGameWindow(e);
         } else {
             logErrorsAboutIPAndPort();
         }
+
+
+    }
+
+    private void openGameWindow(ActionEvent e) {
+        try {
+            Parent root;
+            root = FXMLLoader.load(getClass().getClassLoader().getResource("com/battleships/game_window/game_window.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 450, 450));
+            stage.show();
+            // Hide this current window (if this is what you want)
+            ((Node)(e.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
