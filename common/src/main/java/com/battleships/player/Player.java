@@ -1,7 +1,5 @@
 package com.battleships.player;
 
-import com.battleships.commands.Message;
-
 import java.io.IOException;
 import java.net.Socket;
 
@@ -18,11 +16,11 @@ public class Player {
         this.playerStatus = playerStatus;
     }
 
-    public void sendCommand(Message<?> command) {
+    public void sendCommand(String command) {
         playerIO.sendCommand(command);
     }
 
-    public <V> Message<V> nextCommand() {
+    public String nextCommand() {
         return playerIO.nextUserCommand();
     }
 

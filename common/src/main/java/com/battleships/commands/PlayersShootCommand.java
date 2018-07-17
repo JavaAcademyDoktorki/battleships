@@ -11,7 +11,7 @@ public class PlayersShootCommand<V> extends AbstractCommand {
     @Override
     public void execute(ConnectedPlayers connectedPlayers) {
         Shot shot = (Shot) this.value;
-        Message<Shot> shotMessage = new Message<>(CommandType.SHOT, shot);
+        String shotMessage = MessageTranslator.prepareMessage(CommandType.SHOT, shot);
         connectedPlayers.sendToInactive(shotMessage);
         connectedPlayers.switchActive();
     }

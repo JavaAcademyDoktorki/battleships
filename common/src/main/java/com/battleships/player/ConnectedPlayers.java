@@ -45,15 +45,15 @@ public class ConnectedPlayers {
         return "Player" + anonymousPlayersCounter;
     }
 
-    Player getLastAddedPlayer() {
-        return playerList.get(playerList.size() - 1);
-    }
+//    Player getLastAddedPlayer() {
+//        return playerList.get(playerList.size() - 1);
+//    }
 
     public boolean notFull() {
         return playerList.size() < 2;
     }
 
-    public void sendToActive(Message<Boolean> playerCommand) {
+    public void sendToActive(String playerCommand) {
         Player active = getActive();
         active.sendCommand(playerCommand);
     }
@@ -65,7 +65,7 @@ public class ConnectedPlayers {
             return playerList.get(1);
     }
 
-    public <V> void sendToInactive(Message<V> stringPlayerCommand) {
+    public void sendToInactive(String stringPlayerCommand) {
         Player inactive = getInactive();
         inactive.sendCommand(stringPlayerCommand);
     }

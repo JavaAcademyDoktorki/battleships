@@ -1,10 +1,8 @@
 package com.battleships;
 
-import com.battleships.Commands.CommandFactory;
 import com.battleships.Messages.LogMessages;
-import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
-import com.battleships.commands.Message;
+import com.battleships.commands.MessageTranslator;
 import com.battleships.commands.Values.PlayerRegisteredValue;
 import com.battleships.player.ConnectedPlayers;
 import com.battleships.player.Player;
@@ -27,8 +25,8 @@ class Server {
         this.connectedPlayers = new ConnectedPlayers();
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
         new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
-            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));
-            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
+            connectedPlayers.sendToActive(MessageTranslator.prepareMessage(CommandType.START_PLAYING, true));
+            connectedPlayers.sendToInactive(MessageTranslator.prepareMessage(CommandType.START_PLAYING, false));
         }).start();
 
     }
@@ -67,8 +65,8 @@ class Server {
     }
 
     private void assignNameToNewUser(Player player) {
-        Message userRequest = player.nextCommand();
-        String name = (String) userRequest.getValue();
+        String userRequest = player.nextCommand();
+        String name = MessageTranslator.getMessageContent(userRequest);
         if (usernameIsCorrect(name, connectedPlayers)) {
             player.setName(name);
             player.setPlayerNameSameAsGiven(true);
@@ -86,31 +84,24 @@ class Server {
         connectedPlayers.add(player);
         PlayerRegisteredValue playerRegisteredValue =
                 new PlayerRegisteredValue(player.getPlayerName(), player.isPlayerNameDifferentThanGiven());
-        player.sendCommand(new Message<>(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
+        player.sendCommand(MessageTranslator.prepareMessage(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
         logger.info(String.format("Komenda została wysłana do gracza: %s", CommandType.PLAYER_REGISTERED_SUCCESSFULLY.toString()));
     }
 
     private <V> void handlePlayerInput(Player player) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            Message<V> message = player.nextCommand();
-            commandType = message.getCommandType();
+            String message = player.nextCommand();
+            commandType = MessageTranslator.getCommandTypeFromMessage(message);
             handlePlayerCommands(player, message);
         }
     }
 
-    private <V> void handlePlayerCommands(Player player, Message<V> message) {
-        executePlayerCommand(message);
-
+    private void handlePlayerCommands(Player player, String message) {
         //logging
-        CommandType commandType = message.getCommandType();
-        String commandValue = message.getValue().toString();
+        CommandType commandType = MessageTranslator.getCommandTypeFromMessage(message);
+        String commandValue = MessageTranslator.getMessageContent(message);
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
-    }
-
-    private <V> void executePlayerCommand(Message<V> message) {
-        AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
-        commandImpl.execute(connectedPlayers);
     }
 
     private void tryToDisconnectPlayer(Player player) {
