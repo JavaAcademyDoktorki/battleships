@@ -25,7 +25,6 @@ public class GameWindowController {
                 createButtons(i, j,opponentBoard);
             }
         }
-
     }
 
     private void createButtons(int i, int j, GridPane board) {
@@ -42,9 +41,14 @@ public class GameWindowController {
 
     private void shot(ActionEvent event) {
         RawShot rawShot = new RawShot(((Button) event.getSource()).getId());
-        System.out.println(rawShot.getRow()+" "+rawShot.getColumn());
         Shot shot = new Shot(rawShot.getRow(), rawShot.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT,shot));
+    }
+
+    public void sendToActivePlayerIamReady(ActionEvent actionEvent) {
+        Message<Boolean> message = new Message<>(CommandType.PLAYER_READY, true);
+        Connection.INSTANCE.sendToServer(message);
+        // TODO add validation of ships placement
     }
 }

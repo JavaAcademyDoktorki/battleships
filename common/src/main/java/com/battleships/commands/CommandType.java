@@ -6,5 +6,6 @@ public enum CommandType {
     PLAYER_REGISTERED_SUCCESSFULLY,
     REGISTER_NEW_PLAYER,
     SHOT,
-    MESSAGE
+    MESSAGE,
+    PLAYER_READY
 }
