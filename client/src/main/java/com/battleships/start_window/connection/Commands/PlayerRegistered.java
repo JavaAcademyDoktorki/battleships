@@ -1,11 +1,12 @@
 package com.battleships.start_window.connection.Commands;
 
-import com.battleships.commands.PlayerRegisteredValue;
+import com.battleships.commands.Values.PlayerRegisteredValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PlayerRegistered<V> extends AbstractServerCommand {
     private final static Logger logger = LogManager.getLogger(PlayerRegistered.class);
+
     protected PlayerRegistered(V value) {
         super(value);
     }

@@ -1,4 +1,4 @@
-package com.battleships.commands;
+package com.battleships.commands.Values;
 
 import java.io.Serializable;
 

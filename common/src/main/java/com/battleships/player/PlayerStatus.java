@@ -1,4 +1,4 @@
-package com.battleships.commands;
+package com.battleships.player;
 
 public enum PlayerStatus {
     ACTIVE() {

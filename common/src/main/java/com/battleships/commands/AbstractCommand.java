@@ -1,6 +1,6 @@
-package com.battleships.Commands;
+package com.battleships.commands;
 
-import com.battleships.Player.Player;
+import com.battleships.player.Player;
 
 public abstract class AbstractCommand<V> {
     protected final V value;

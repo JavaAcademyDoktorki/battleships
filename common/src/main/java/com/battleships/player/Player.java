@@ -1,7 +1,6 @@
-package com.battleships.Player;
+package com.battleships.player;
 
 import com.battleships.commands.Message;
-import com.battleships.commands.PlayerStatus;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -40,7 +39,7 @@ public class Player {
         return playerName;
     }
 
-    boolean isSameName(String name) {
+    public boolean isSameName(String name) {
         return playerName.equals(name);
     }
 

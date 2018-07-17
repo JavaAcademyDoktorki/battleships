@@ -1,7 +1,8 @@
 package com.battleships.Player;
 
 import com.battleships.commands.Message;
-import com.battleships.commands.PlayerStatus;
+import com.battleships.player.Player;
+import com.battleships.player.PlayerStatus;
 
 import java.io.IOException;
 import java.net.Socket;

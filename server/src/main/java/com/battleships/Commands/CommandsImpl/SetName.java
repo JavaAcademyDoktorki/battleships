@@ -1,8 +1,8 @@
 package com.battleships.Commands.CommandsImpl;
 
-import com.battleships.Commands.AbstractCommand;
+import com.battleships.commands.AbstractCommand;
 import com.battleships.Player.ConnectedPlayers;
-import com.battleships.Player.Player;
+import com.battleships.player.Player;
 
 public class SetName<V> extends AbstractCommand<V> {
     private ConnectedPlayers connectedPlayers;

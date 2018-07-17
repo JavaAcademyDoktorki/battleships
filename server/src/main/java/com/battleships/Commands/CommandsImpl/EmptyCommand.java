@@ -1,7 +1,7 @@
 package com.battleships.Commands.CommandsImpl;
 
-import com.battleships.Commands.AbstractCommand;
-import com.battleships.Player.Player;
+import com.battleships.commands.AbstractCommand;
+import com.battleships.player.Player;
 
 public class EmptyCommand<V> extends AbstractCommand<V> {
 

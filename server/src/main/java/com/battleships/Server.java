@@ -1,14 +1,14 @@
 package com.battleships;
 
-import com.battleships.Commands.AbstractCommand;
+import com.battleships.commands.AbstractCommand;
 import com.battleships.Commands.CommandFactory;
 import com.battleships.Commands.CommandsImpl.SetName;
 import com.battleships.Messages.LogMessages;
 import com.battleships.Player.ConnectedPlayers;
-import com.battleships.Player.Player;
+import com.battleships.player.Player;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
-import com.battleships.commands.PlayerRegisteredValue;
+import com.battleships.commands.Values.PlayerRegisteredValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

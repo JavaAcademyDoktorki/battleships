@@ -1,4 +1,4 @@
-package com.battleships.Player;
+package com.battleships.player;
 
 import com.battleships.commands.Message;
 
