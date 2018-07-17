@@ -4,7 +4,7 @@ import com.battleships.commands.AbstractCommand;
 import com.battleships.Commands.CommandFactory;
 import com.battleships.Commands.CommandsImpl.SetName;
 import com.battleships.Messages.LogMessages;
-import com.battleships.Player.ConnectedPlayers;
+import com.battleships.player.ConnectedPlayers;
 import com.battleships.player.Player;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
@@ -29,8 +29,9 @@ class Server {
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
         new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
             connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));
-            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING_WAIT, false));
+            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
         }).start();
+
     }
 
     private void infiniteLoopAcceptingPlayers() {
@@ -70,11 +71,9 @@ class Server {
     private void assignNameToNewUser(Player player) {
         Message userRequest = player.nextCommand();
         if (userRequest.getCommandType() == CommandType.REGISTER_NEW_PLAYER) {
-            SetName setNameCommand = new SetName<>(userRequest.getValue(), connectedPlayers);
-            setNameCommand.execute(player);
+            SetName setNameCommand = new SetName<>(userRequest.getValue(), player);
+            setNameCommand.execute(connectedPlayers);
         }
-        // TODO 16.07.2018 make sure command is REGISTER_NEW_PLAYER - Damian
-        // TODO 16.07.2018 refator that statement - Damian
     }
 
     private void registerPlayer(Player player) {
@@ -95,20 +94,17 @@ class Server {
     }
 
     private <V> void handlePlayerCommands(Player player, Message<V> message) {
-        executePlayerCommand(player, message);
+        executePlayerCommand(message);
 
         //logging
         CommandType commandType = message.getCommandType();
         String commandValue = message.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
-        if (commandType == CommandType.REGISTER_NEW_PLAYER) {
-            player.sendCommand(new Message<>(CommandType.OK, "ok"));
-        }
     }
 
-    private <V> void executePlayerCommand(Player player, Message<V> message) {
+    private <V> void executePlayerCommand(Message<V> message) {
         AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
-        commandImpl.execute(player);
+        commandImpl.execute(connectedPlayers);
     }
 
     private void tryToDisconnectPlayer(Player player) {

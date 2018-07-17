@@ -1,7 +1,7 @@
 package com.battleships.commands;
 
 import com.battleships.commands.Values.PlayersShootCommandValue;
-import com.battleships.player.Player;
+import com.battleships.player.ConnectedPlayers;
 
 public class PlayersShootCommand<V> extends AbstractCommand {
     public PlayersShootCommand(V value) {
@@ -9,7 +9,7 @@ public class PlayersShootCommand<V> extends AbstractCommand {
     }
 
     @Override
-    public void execute(Player playerWhoShot) {
+    public void execute(ConnectedPlayers connectedPlayers) {
         PlayersShootCommandValue playersShotVal = (PlayersShootCommandValue) this.value;
 
     }

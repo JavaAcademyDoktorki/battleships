@@ -1,19 +1,17 @@
-package com.battleships.Player;
+package com.battleships.player;
 
 import com.battleships.commands.Message;
-import com.battleships.player.Player;
-import com.battleships.player.PlayerStatus;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ConnectedPlayers {
     private final List<Player> playerList;
     private int anonymousPlayersCounter = 0;
-    PlayerStatus playerStatus = PlayerStatus.values()[ThreadLocalRandom.current().nextInt(0, 2)];
+    PlayerStatus playerStatus = PlayerStatus.ACTIVE;
+//    PlayerStatus playerStatus = PlayerStatus.values()[ThreadLocalRandom.current().nextInt(0, 2)];
 
     public ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
@@ -67,7 +65,7 @@ public class ConnectedPlayers {
             return playerList.get(1);
     }
 
-    public void sendToInactive(Message<Boolean> stringPlayerCommand) {
+    public <V> void sendToInactive(Message<V> stringPlayerCommand) {
         Player inactive = getInactive();
         inactive.sendCommand(stringPlayerCommand);
     }

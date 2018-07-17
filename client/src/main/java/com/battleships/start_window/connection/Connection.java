@@ -26,6 +26,19 @@ public enum Connection {
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
     private BooleanProperty connected = new SimpleBooleanProperty(false);
+    private BooleanProperty isPlayerActive = new SimpleBooleanProperty(false);
+
+    public boolean isIsPlayerActive() {
+        return isPlayerActive.get();
+    }
+
+    public BooleanProperty isPlayerActiveProperty() {
+        return isPlayerActive;
+    }
+
+    public void setIsPlayerActive(boolean isPlayerActive) {
+        this.isPlayerActive.set(isPlayerActive);
+    }
 
     /**
      * Establishes the server's connection

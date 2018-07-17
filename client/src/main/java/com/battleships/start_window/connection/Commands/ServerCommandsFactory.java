@@ -13,8 +13,8 @@ public class ServerCommandsFactory {
                 return new PlayerRegistered<>(value);
             case START_PLAYING:
                 return new StartGameWindow<>(value);
-            case START_PLAYING_WAIT:
-                return new StartGameWindow<>(value);
+            case MESSAGE:
+                return new PlayerMessageReceived(value);
             default:
                 return new EmptyCommand<>(null);
         }

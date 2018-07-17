@@ -7,6 +7,7 @@ import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -29,6 +30,8 @@ public class ConnectionSettingsPaneController {
     private TextField ipTextField;
     @FXML
     private GridPane connectionSettingsPane;
+    @FXML
+    public Button sendMessageToOtherPlayer;
     private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
     /**
@@ -41,6 +44,7 @@ public class ConnectionSettingsPaneController {
         bindConnectToServerButton();
         setOnActionToButtons();
         initPlayerName();
+        sendMessageToOtherPlayer.disableProperty().bind(Connection.INSTANCE.isPlayerActiveProperty().not());
     }
 
     private void bindTextFieldsWithTranslation() {
@@ -135,5 +139,10 @@ public class ConnectionSettingsPaneController {
 
     private String[] extractIPAndPortFromTextFieldContent() {
         return ipTextField.getText().split(":");
+    }
+
+    public void sendMessageToSecondPlayer(ActionEvent actionEvent) {
+        Message<String> message = new Message<>(CommandType.MESSAGE, "This is example message");
+        Connection.INSTANCE.sendToServer(message);
     }
 }

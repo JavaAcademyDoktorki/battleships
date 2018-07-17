@@ -15,10 +15,12 @@ public class PlayerRegistered<V> extends AbstractServerCommand {
     public void execute() {
         PlayerRegisteredValue playerRegisteredValue = (PlayerRegisteredValue) this.value;
         String message;
-        if (playerRegisteredValue.isSameNameAsGiven())
+        if (playerRegisteredValue.isSameNameAsGiven()) {
             message = String.format("Welcome %s!", playerRegisteredValue.getPlayerName());
-        else
+        }
+        else {
             message = String.format("Given name was already assigned. New player name: %s", playerRegisteredValue.getPlayerName());
+        }
         logger.info(message);
     }
 }

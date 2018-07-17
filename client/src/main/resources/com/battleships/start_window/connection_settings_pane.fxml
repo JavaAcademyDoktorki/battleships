@@ -13,4 +13,5 @@
     <HBox alignment="TOP_CENTER" GridPane.rowIndex="2">
         <TextField fx:id="nameTextField"/>
     </HBox>
+    <Button fx:id="sendMessageToOtherPlayer" text="Send message" GridPane.rowIndex="3" GridPane.columnIndex="1" onAction="#sendMessageToSecondPlayer"/>
 </GridPane>

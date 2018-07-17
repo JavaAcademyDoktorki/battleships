@@ -1,6 +1,7 @@
 package com.battleships.Commands;
 
 import com.battleships.Commands.CommandsImpl.EmptyCommand;
+import com.battleships.Commands.CommandsImpl.MessageToPlayer;
 import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.PlayersShootCommand;
 import com.battleships.commands.CommandType;
@@ -28,9 +29,11 @@ public class CommandFactory {
     public static <V> AbstractCommand getCommandImpl(Message<V> message) {
         CommandType commandType = message.getCommandType();
         V value = message.getValue();
-        switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
+        switch (commandType) {
             case SHOOT:
                 return new PlayersShootCommand<>(value);
+            case MESSAGE:
+                return new MessageToPlayer<>(value);
             default:
                 return new EmptyCommand<>(null);
         }

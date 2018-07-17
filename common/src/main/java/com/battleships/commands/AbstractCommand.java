@@ -1,6 +1,6 @@
 package com.battleships.commands;
 
-import com.battleships.player.Player;
+import com.battleships.player.ConnectedPlayers;
 
 public abstract class AbstractCommand<V> {
     protected final V value;
@@ -9,5 +9,5 @@ public abstract class AbstractCommand<V> {
         this.value = value;
     }
 
-    public abstract void execute(Player player);
+    public abstract void execute(ConnectedPlayers connectedPlayers);
 }

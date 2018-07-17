@@ -1,7 +1,7 @@
 package com.battleships.Commands.CommandsImpl;
 
 import com.battleships.commands.AbstractCommand;
-import com.battleships.player.Player;
+import com.battleships.player.ConnectedPlayers;
 
 public class EmptyCommand<V> extends AbstractCommand<V> {
 
@@ -10,6 +10,7 @@ public class EmptyCommand<V> extends AbstractCommand<V> {
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute(ConnectedPlayers connectedPlayers) {
+        System.out.println("Unknown command was send to server.");
     }
 }
