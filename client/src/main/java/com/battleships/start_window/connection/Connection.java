@@ -169,7 +169,9 @@ public enum Connection {
     }
 
     private void logInfoFromServerIfAvailable(Message<?> message) {
-        logger.info(String.format("Klient odebrał komendę od serwera: %s", message.getCommandType().toString()));
+        logger.info(String.format("Klient odebrał komendę od serwera: %s. Wartość komendy: %s",
+                message.getCommandType().toString(),
+                message.getValue().toString()));
     }
 
     private void tryThreadSleep(int ms) {

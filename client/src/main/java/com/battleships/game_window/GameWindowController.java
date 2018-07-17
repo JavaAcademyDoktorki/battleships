@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.Random;
+
 public class GameWindowController {
     @FXML
     private GridPane myBoard;
@@ -61,8 +63,27 @@ public class GameWindowController {
         Button button = new Button();
         button.setDisable(inActive);
         button.setId(i + " " + j);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                shot(event);
+                colourButton(button, i, j);
+            }
+        });
         button.setOnAction(event);
         board.add(button, i, j);
+    }
+
+    private void colourButton(Button button, int i, int j) {
+        if(shipWasHit(i, j))
+            button.setStyle("-fx-background-color: #AA3939");
+        else
+            button.setStyle("-fx-background-color: #00ff00");
+    }
+
+    private boolean shipWasHit(int i, int j) {
+        int i1 = new Random().nextInt(100) % 2;
+        return i1 == 0; // TODO zmienic to :)
     }
 
     private EventHandler<ActionEvent> getShootEvent() {

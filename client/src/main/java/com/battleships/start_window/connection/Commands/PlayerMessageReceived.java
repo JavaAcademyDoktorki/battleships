@@ -1,7 +1,7 @@
 package com.battleships.start_window.connection.Commands;
 
-public class PlayerMessageReceived extends AbstractServerCommand {
-    public <V> PlayerMessageReceived(V value) {
+public class PlayerMessageReceived<V> extends AbstractServerCommand {
+    public PlayerMessageReceived(V value) {
         super(value);
     }
 
