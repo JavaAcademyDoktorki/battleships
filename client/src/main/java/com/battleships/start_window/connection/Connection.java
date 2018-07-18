@@ -68,7 +68,6 @@ public enum Connection {
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
             tryToEstablishConnection(connectionInfo);
-            establishServerIO();
         }
     }
 
@@ -80,7 +79,7 @@ public enum Connection {
         this.connected.set(connected);
     }
 
-    private boolean isConnected() {
+    public boolean isConnected() {
         checkConnected();
         return connected.get();
     }
@@ -94,11 +93,11 @@ public enum Connection {
             socket = new Socket();
             InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
             socket.connect(endpoint, initialConnectingTimeout);
+            establishServerIO();
         } catch (IOException e) {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
             logger.error(errorMessage);
             //TODO playerName to user that problems occurred
-
         }
     }
 

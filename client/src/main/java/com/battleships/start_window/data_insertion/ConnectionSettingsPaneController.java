@@ -87,8 +87,12 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
         Connection.INSTANCE.establishConnection(connectionInfo);
-        Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
-        Connection.INSTANCE.sendToServer(setNameCommand);
+        if (!Connection.INSTANCE.isConnected())
+            showConnectionFailedDialog();
+        else {
+            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+            Connection.INSTANCE.sendToServer(setNameCommand);
+        }
     }
 
     private void openGameWindow(ActionEvent event) {
