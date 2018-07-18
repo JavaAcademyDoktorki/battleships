@@ -148,9 +148,8 @@ public enum Connection {
     }
 
     private void initThreadReadingCommandsFromServer() {
-        final int breakTimeMillisBetweenReadingFromServer = 100;
         readCommandsFromUserThread = new Thread(() ->
-                readFromServerUntilDisconnected(breakTimeMillisBetweenReadingFromServer));
+                readFromServerUntilDisconnected());
         readCommandsFromUserThread.setDaemon(true);
     }
 
@@ -158,10 +157,9 @@ public enum Connection {
         readCommandsFromUserThread.start();
     }
 
-    private void readFromServerUntilDisconnected(int breakTimeMillisBetweenReadingFromServer) {
-        while (isConnected()) {
-            tryThreadSleep(breakTimeMillisBetweenReadingFromServer);
-            Message<?> message = serverIO.getMessage();
+    private void readFromServerUntilDisconnected() {
+        Message<?> message;
+        while ((message = serverIO.getMessage()) != null) {
             AbstractServerCommand commandImpl = ServerCommandsFactory.getCommandImpl(message);
             commandImpl.execute();
             logInfoFromServerIfAvailable(message);
@@ -172,14 +170,6 @@ public enum Connection {
         logger.info(String.format("Klient odebrał komendę od serwera: %s. Wartość komendy: %s",
                 message.getCommandType().toString(),
                 message.getValue().toString()));
-    }
-
-    private void tryThreadSleep(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

@@ -8,6 +8,7 @@ import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -103,6 +105,7 @@ public class ConnectionSettingsPaneController {
             stage.titleProperty().bind(Translator.createStringBinding("game_window"));
             stage.setScene(new Scene(root, 600, 450));
             stage.show();
+            stage.setOnCloseRequest(event1 -> Connection.INSTANCE.disconnect());
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             ex.printStackTrace();
