@@ -5,6 +5,10 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Values.Shot;
 import com.battleships.start_window.connection.Connection;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,14 +33,23 @@ public class GameWindowController {
     private Button randomShipPlacementButton;
     @FXML
     private Button readyToPlayButton;
+    @FXML
+    private Label turnLabel;
 
     public void initialize() {
         readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
-        Connection.INSTANCE.readyProperty().addListener((observable, oldValue, newValue) -> {
+        Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue)
-                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play"));
+                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
             else
                 readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+        });
+        turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+        Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
+            else
+                turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
         });
         yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
         opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
@@ -44,14 +57,10 @@ public class GameWindowController {
         readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                createButtons(i, j, myBoard, false, getPlaceShipEvent());
-                createButtons(i, j, opponentBoard, true, getShootEvent());
+                createPlayersButtons(i, j, myBoard);
+                createOpponentsButtons(i, j, opponentBoard);
             }
         }
-    }
-
-    private EventHandler<ActionEvent> getPlaceShipEvent() {
-        return this::placeShip;
     }
 
     private void placeShip(ActionEvent event) {
@@ -59,9 +68,9 @@ public class GameWindowController {
         System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
     }
 
-    private void createButtons(int i, int j, GridPane board, boolean inActive, EventHandler<ActionEvent> event) {
+    private void createPlayersButtons(int i, int j, GridPane board) {
         Button button = new Button();
-        button.setDisable(inActive);
+        button.disableProperty().bind(Connection.INSTANCE.playerReadyProperty());
         button.setId(i + " " + j);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -70,12 +79,34 @@ public class GameWindowController {
                 colourButton(button, i, j);
             }
         });
-        button.setOnAction(event);
+        button.setOnAction(this::shot);
+        board.add(button, i, j);
+    }
+
+    private void createOpponentsButtons(int i, int j, GridPane board) {
+        Button button = new Button();
+        button.disableProperty().bind(new BooleanBinding() {
+            @Override
+            protected boolean computeValue() {
+                return !(Connection.INSTANCE.isPlayerReady() &&
+                        Connection.INSTANCE.isOpponentReady() &&
+                        !Connection.INSTANCE.getPlayerActive());
+            }
+        });
+        button.setId(i + " " + j);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                shot(event);
+                colourButton(button, i, j);
+            }
+        });
+        button.setOnAction(this::shot);
         board.add(button, i, j);
     }
 
     private void colourButton(Button button, int i, int j) {
-        if(shipWasHit(i, j))
+        if (shipWasHit(i, j))
             button.setStyle("-fx-background-color: #AA3939");
         else
             button.setStyle("-fx-background-color: #00ff00");
@@ -103,7 +134,10 @@ public class GameWindowController {
     }
 
     public void confirmReady(ActionEvent event) {
-        validateBoard();
+        Connection.INSTANCE.setPlayerReady(validateBoard());
+//        readyToPlayButton.setDisable(true);
+        readyToPlayButton.setVisible(false);
+        randomShipPlacementButton.setVisible(false);
     }
 
     private boolean validateBoard() {

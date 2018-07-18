@@ -10,10 +10,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Optional;
 
 /**
  *
@@ -27,25 +28,8 @@ public enum Connection {
     private static final int initialConnectingTimeout = 2000;
     private BooleanProperty connected = new SimpleBooleanProperty(false);
     private BooleanProperty playerActive = new SimpleBooleanProperty(false);
-    private BooleanProperty ready = new SimpleBooleanProperty(false);
-
-    public void setOtherPlayerReady(boolean otherPlayerReady) {
-        this.otherPlayerReady = otherPlayerReady;
-    }
-
-    private boolean otherPlayerReady = false;
-
-    public boolean getReady() {
-        return ready.get();
-    }
-
-    public BooleanProperty readyProperty() {
-        return ready;
-    }
-
-    public void setReady(boolean ready) {
-        this.ready.set(ready);
-    }
+    private BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
+    private boolean opponentReady = false;
 
     public boolean getPlayerActive() {
         return playerActive.get();
@@ -59,6 +43,22 @@ public enum Connection {
         this.playerActive.set(playerActive);
     }
 
+    public boolean isPlayerReady() {
+        return playerReadyProperty.get();
+    }
+
+    public void setPlayerReady(boolean playerReady) {
+        this.playerReadyProperty.setValue(playerReady);
+    }
+
+    public BooleanProperty playerReadyProperty() {
+        return this.playerReadyProperty;
+    }
+
+    public boolean isOpponentReady() {
+        return opponentReady;
+    }
+
     /**
      * Establishes the server's connection
      *
@@ -68,6 +68,7 @@ public enum Connection {
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
             tryToEstablishConnection(connectionInfo);
+            establishServerIO();
         }
     }
 
@@ -174,7 +175,7 @@ public enum Connection {
     /**
      * Initializes input and output of the server client connected to
      */
-    public void establishServerIO() {
+    private void establishServerIO() {
         ObjectInputStream inputStream = getInputStream();
         ObjectOutputStream outputStream = getOutputStream();
 
