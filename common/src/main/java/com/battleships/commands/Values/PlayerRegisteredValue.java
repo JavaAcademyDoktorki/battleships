@@ -18,4 +18,9 @@ public class PlayerRegisteredValue implements Serializable {
     public boolean isSameNameAsGiven() {
         return sameNameAsGiven;
     }
+
+    @Override
+    public String toString() {
+        return this.playerName;
+    }
 }

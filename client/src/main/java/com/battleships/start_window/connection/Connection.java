@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public enum Connection {
     INSTANCE;
-    private Optional<Socket> socketOptional = Optional.empty();
+    private Socket socket;
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);
     private Thread readCommandsFromUserThread;
@@ -85,13 +85,12 @@ public enum Connection {
     }
 
     private void checkConnected() {
-        setConnected(socketOptional.isPresent() && socketOptional.get().isConnected());
+        setConnected(socket != null && socket.isConnected());
     }
 
     private void tryToEstablishConnection(ConnectionInfo connectionInfo) {
         try {
-            socketOptional = Optional.of(new Socket());
-            Socket socket = socketOptional.get();
+            socket = new Socket();
             InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
             socket.connect(endpoint, initialConnectingTimeout);
         } catch (IOException e) {
@@ -119,7 +118,7 @@ public enum Connection {
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_DISCONNECT + e.getMessage());
         } finally {
-            socketOptional = Optional.empty();
+            socket = null;
         }
     }
 
@@ -139,8 +138,8 @@ public enum Connection {
     }
 
     private void disconnectPlayer() throws IOException {
-        if (socketOptional.isPresent()) {
-            socketOptional.get().close();
+        if (socket != null) {
+            socket.close();
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
             logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
@@ -174,50 +173,44 @@ public enum Connection {
 
     /**
      * Initializes input and output of the server client connected to
-     *
-     * @throws IOException - if input or output might not be obtained
      */
-    public void establishServerIO() throws IOException {
-        Optional<OutputStream> outputStreamOptional = tryGetOutputStreamOptional();
-        Optional<InputStream> inputStreamOptional = tryGetInputStreamOptional();
+    public void establishServerIO() {
+        ObjectInputStream inputStream = getInputStream();
+        ObjectOutputStream outputStream = getOutputStream();
 
-        if (outputStreamOptional.isPresent() && inputStreamOptional.isPresent()) {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStreamOptional.get());
-            ObjectInputStream socketInputStream = new ObjectInputStream(inputStreamOptional.get());
-            serverIO = new ServerIO(objectOutputStream, socketInputStream);
+        if (outputStream != null && inputStream != null) {
+            serverIO = new ServerIO(outputStream, inputStream);
+        } else {
+            throw new RuntimeException("strumienie we/wy są nullami...");
         }
 
         initThreadReadingCommandsFromServer();
         startThreadReadingCommandsFromServer();
     }
 
-    private Optional<OutputStream> tryGetOutputStreamOptional() throws IOException {
-        Optional<OutputStream> outputStreamOptional = Optional.empty();
-        try {
-            if (socketOptional.isPresent()) {
-                Socket socket = socketOptional.get();
-                OutputStream socketOutputStream = socket.getOutputStream();
-                outputStreamOptional = Optional.of(socketOutputStream);
+    private ObjectOutputStream getOutputStream() {
+        ObjectOutputStream outputStream = null;
+        if (socket != null) {
+            try {
+                outputStream = new ObjectOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_OUTPUSTREAM);
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_OUTPUSTREAM);
-            throw e;
         }
-        return outputStreamOptional;
+        return outputStream;
     }
 
-    private Optional<InputStream> tryGetInputStreamOptional() throws IOException {
-        Optional<InputStream> inputStreamOptional = Optional.empty();
+    private ObjectInputStream getInputStream() {
+        ObjectInputStream inputStream = null;
         try {
-            if (socketOptional.isPresent()) {
-                Socket socket = socketOptional.get();
-                InputStream socketInputStream = socket.getInputStream();
-                inputStreamOptional = Optional.of(socketInputStream);
+            if (socket != null) {
+                inputStream = new ObjectInputStream(socket.getInputStream());
             }
         } catch (IOException e) {
             logger.error(LogMessages.CANNOT_OBTAIN_SOCKET_INPUTSTREAM);
-            throw e;
+            throw new RuntimeException(e);
         }
-        return inputStreamOptional;
+        return inputStream;
     }
 }

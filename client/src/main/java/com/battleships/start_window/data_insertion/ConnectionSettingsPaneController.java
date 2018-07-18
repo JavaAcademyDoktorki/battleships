@@ -85,17 +85,11 @@ public class ConnectionSettingsPaneController {
     }
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
-        try {
-            Connection.INSTANCE.establishConnection(connectionInfo);
-            Connection.INSTANCE.establishServerIO();
-            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
-            Connection.INSTANCE.sendToServer(setNameCommand);
-            openGameWindow(event);
-        } catch (IOException e) {
-            // TODO playerName to GUI that sth went wrong with connection
-            showConnectionFailedDialog();
-            logger.error(LogMessages.SERVERIO_OBJECT_NOT_CREATED);
-        }
+        Connection.INSTANCE.establishConnection(connectionInfo);
+        Connection.INSTANCE.establishServerIO();
+        Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+        Connection.INSTANCE.sendToServer(setNameCommand);
+        openGameWindow(event);
     }
 
     private void openGameWindow(ActionEvent event) {
