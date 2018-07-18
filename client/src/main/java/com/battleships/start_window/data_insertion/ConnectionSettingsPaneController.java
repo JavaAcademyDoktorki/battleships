@@ -6,6 +6,7 @@ import com.battleships.commands.Message;
 import com.battleships.Translator;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -84,7 +87,6 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
         Connection.INSTANCE.establishConnection(connectionInfo);
-        Connection.INSTANCE.establishServerIO();
         Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
         Connection.INSTANCE.sendToServer(setNameCommand);
     }
@@ -97,6 +99,13 @@ public class ConnectionSettingsPaneController {
             stage.setScene(new Scene(root, 600, 450));
             stage.show();
             stage.setOnCloseRequest(event1 -> Connection.INSTANCE.disconnect());
+            stage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+                if (e.getCode() == KeyCode.ESCAPE) {
+                    logger.info(LogMessages.QUIT_WITH_ESCAPE);
+                    Connection.INSTANCE.disconnect();
+                    Platform.exit();
+                }
+            });
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -1,6 +1,7 @@
 package com.battleships.start_window.connection.Commands;
 
 import com.battleships.start_window.connection.Connection;
+import javafx.application.Platform;
 
 public class StartGameWindow<V> extends AbstractServerCommand {
 
@@ -16,6 +17,6 @@ public class StartGameWindow<V> extends AbstractServerCommand {
         else
             System.out.println("starting and waiting for opponents move!");
 
-        Connection.INSTANCE.setPlayerActive(value);
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(value));
     }
 }
