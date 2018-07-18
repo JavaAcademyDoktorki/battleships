@@ -8,7 +8,6 @@ import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +36,7 @@ public class ConnectionSettingsPaneController {
     @FXML
     private GridPane connectionSettingsPane;
     @FXML
-    public Button sendMessageToOtherPlayer;
+    public Button startGameButton;
     private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
     /**
@@ -51,7 +49,6 @@ public class ConnectionSettingsPaneController {
         bindConnectToServerButton();
         setOnActionToButtons();
         initPlayerName();
-        sendMessageToOtherPlayer.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
     }
 
     private void bindTextFieldsWithTranslation() {
@@ -69,6 +66,8 @@ public class ConnectionSettingsPaneController {
         connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
+        startGameButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
+        startGameButton.setOnAction(e-> startGame(e));
     }
 
     private void connectToServerButtonAction(ActionEvent e) {
@@ -159,8 +158,8 @@ public class ConnectionSettingsPaneController {
         return ipTextField.getText().split(":");
     }
 
-    public void sendMessageToSecondPlayer(ActionEvent actionEvent) {
-        Message<String> message = new Message<>(CommandType.MESSAGE, "This is example message");
+    public void startGame(ActionEvent actionEvent) {
+        Message<String> message = new Message<>(CommandType.START_PLAYING, "");
         Connection.INSTANCE.sendToServer(message);
     }
 }

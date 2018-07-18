@@ -9,7 +9,4 @@
     <VBox GridPane.rowIndex="1" GridPane.columnSpan="1" style="-fx-padding: 4 4 4 4">
         <fx:include fx:id="connectionSettingsPane" source="connection_settings_pane.fxml"/>
     </VBox>
-    <VBox GridPane.rowIndex="2" GridPane.columnSpan="1" style="-fx-padding: 4 4 4 4">
-        <fx:include fx:id="boardSettingsPane" source="board_settings_pane.fxml"/>
-    </VBox>
 </GridPane>

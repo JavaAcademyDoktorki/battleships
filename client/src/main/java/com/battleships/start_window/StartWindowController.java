@@ -6,24 +6,15 @@ import com.battleships.start_window.data_insertion.SettingsDataController;
 import javafx.fxml.FXML;
 
 public class StartWindowController {
-    private BoardSettings boardSettings;
     private Connection connection;
 
-    @FXML
-    private RoomListController roomListController;
     @FXML
     private SettingsDataController settingsDataController;
     @FXML
     private FooterController footerController;
 
     public void initialize() {
-        boardSettings = settingsDataController.getBoardSettings();
         connection = settingsDataController.getConnection();
-        roomListController.setStartWindowController(this);
-    }
-
-    BoardSettings getBoardSettings() {
-        return boardSettings;
     }
 
     public Connection getConnection() {
