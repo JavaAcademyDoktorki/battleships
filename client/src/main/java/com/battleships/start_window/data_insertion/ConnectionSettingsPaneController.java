@@ -55,6 +55,7 @@ public class ConnectionSettingsPaneController {
         Translator.bind(connectToServerButton.textProperty(), "connect");
         Translator.bind(disconnectFromServerButton.textProperty(), "disconnect");
         Translator.bind(nameTextField.promptTextProperty(), "player_name");
+        Translator.bind(startGameButton.textProperty(), "start_game");
     }
 
     private void bindConnectToServerButton() {
@@ -67,7 +68,7 @@ public class ConnectionSettingsPaneController {
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
         startGameButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
-        startGameButton.setOnAction(e-> startGame(e));
+        startGameButton.setOnAction(e -> startGame(e));
     }
 
     private void connectToServerButtonAction(ActionEvent e) {
@@ -79,8 +80,6 @@ public class ConnectionSettingsPaneController {
         } else {
             logErrorsAboutIPAndPort();
         }
-
-
     }
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
@@ -88,7 +87,6 @@ public class ConnectionSettingsPaneController {
         Connection.INSTANCE.establishServerIO();
         Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
         Connection.INSTANCE.sendToServer(setNameCommand);
-        openGameWindow(event);
     }
 
     private void openGameWindow(ActionEvent event) {
@@ -158,8 +156,9 @@ public class ConnectionSettingsPaneController {
         return ipTextField.getText().split(":");
     }
 
-    public void startGame(ActionEvent actionEvent) {
-        Message<String> message = new Message<>(CommandType.START_PLAYING, "");
+    public void startGame(ActionEvent event) {
+        Message<String> message = new Message<>(CommandType.START_PLAYING, playerName.getPlayerName());
         Connection.INSTANCE.sendToServer(message);
+        openGameWindow(event);
     }
 }

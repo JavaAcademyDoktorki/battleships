@@ -97,6 +97,7 @@ public enum Connection {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
             logger.error(errorMessage);
             //TODO playerName to user that problems occurred
+
         }
     }
 

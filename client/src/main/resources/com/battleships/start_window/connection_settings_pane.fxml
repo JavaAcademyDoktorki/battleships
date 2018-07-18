@@ -14,7 +14,7 @@
         <TextField fx:id="nameTextField"/>
     </HBox>
     <HBox alignment="BASELINE_CENTER"  GridPane.rowIndex="4">
-        <Button fx:id="startGameButton" text="Start Game" GridPane.rowIndex="3" GridPane.columnIndex="1"
+        <Button fx:id="startGameButton" GridPane.rowIndex="3" GridPane.columnIndex="1"
                 onAction="#startGame"/>
     </HBox>
 </GridPane>
