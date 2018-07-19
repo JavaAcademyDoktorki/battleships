@@ -141,6 +141,7 @@ public enum Connection {
     private void disconnectPlayer() throws IOException {
         if (socket != null) {
             socket.close();
+            setConnected(false);
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
             logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
