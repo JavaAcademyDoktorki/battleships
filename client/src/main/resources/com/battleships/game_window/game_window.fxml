@@ -7,7 +7,9 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.battleships.game_window.GameWindowController"
-            style="-fx-padding: 16 16 16 16">
+            style="-fx-padding: 16 16 16 16;
+            -fx-background-image: url(battleship_start.jpeg);
+            -fx-background-size: cover">
     <top>
         <Label fx:id="readyLabel"/>
     </top>
@@ -15,11 +17,14 @@
         <GridPane hgap="20" alignment="CENTER">
             <GridPane fx:id="myBoard" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <GridPane fx:id="opponentBoard" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Label fx:id="yourBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="opponentBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label fx:id="yourBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-text-fill: white"/>
+            <Label fx:id="opponentBoardLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                   style="-fx-text-fill: white"/>
             <Button fx:id="randomShipPlacementButton" GridPane.rowIndex="2" GridPane.columnIndex="0"
                     onAction="#placeShipsRandomly"/>
-            <Label fx:id="turnLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="turnLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"
+            style="-fx-text-fill: white"/>
             <Button fx:id="readyToPlayButton" GridPane.rowIndex="3" GridPane.columnIndex="0"
                     onAction="#confirmReady"/>
         </GridPane>

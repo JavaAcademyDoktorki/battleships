@@ -4,7 +4,9 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.battleships.start_window.StartWindowController"
-            style="-fx-padding: 16 16 16 16">
+            style="-fx-padding: 16 16 16 16;
+            -fx-background-image: url(battleship_start.jpeg);
+            -fx-background-size: cover">
     <top>
         <fx:include source="header.fxml" style="-fx-padding: 4 4 4 4"/>
     </top>

@@ -4,7 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 public class ScreenSize {
-    private static final double GOLDEN_RATIO = 1.62;
+    private static final double GOLDEN_RATIO = 1.4; //TODO: test, it was 1.62
     private final double width;
     private final double height;
 
