@@ -1,9 +1,12 @@
 package com.battleships.game_window;
 
+import com.battleships.Models.Board.CoordState;
+import com.battleships.Models.Board.Coordinate;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Values.Shot;
+import com.battleships.game_window.Services.GameWindowsControllerService;
 import com.battleships.start_window.connection.Connection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,8 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-
-import java.util.Random;
 
 public class GameWindowController {
     @FXML
@@ -30,6 +31,8 @@ public class GameWindowController {
     @FXML
     private Button readyToPlayButton;
 
+    private GameWindowsControllerService service;
+
     public void initialize() {
         readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
         Connection.INSTANCE.readyProperty().addListener((observable, oldValue, newValue) -> {
@@ -42,12 +45,13 @@ public class GameWindowController {
         opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
         randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
         readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
                 createButtons(i, j, myBoard, false, getPlaceShipEvent());
                 createButtons(i, j, opponentBoard, true, getShootEvent());
             }
         }
+        service = new GameWindowsControllerService(10, 10);
     }
 
     private EventHandler<ActionEvent> getPlaceShipEvent() {
@@ -66,12 +70,15 @@ public class GameWindowController {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                shot(event);
+//                shot(event);
                 colourButton(button, i, j);
+//                ButtonCoordinates buttonCoordinates = new ButtonCoordinates(((Button) event.getSource()).getId());
+//                service.addShipCoord(buttonCoordinates);
+//                System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());
             }
         });
-        button.setOnAction(event);
-        board.add(button, i, j);
+//        button.setOnAction(event);
+        board.add(button, j, i);
     }
 
     private void colourButton(Button button, int i, int j) {
@@ -82,8 +89,8 @@ public class GameWindowController {
     }
 
     private boolean shipWasHit(int i, int j) {
-        int i1 = new Random().nextInt(100) % 2;
-        return i1 == 0; // TODO zmienic to :)
+        CoordState fieldStatus = service.getFieldStatus(new Coordinate(i, j));
+        return fieldStatus.equals(CoordState.SHIP);
     }
 
     private EventHandler<ActionEvent> getShootEvent() {
@@ -99,11 +106,14 @@ public class GameWindowController {
     }
 
     public void placeShipsRandomly(ActionEvent event) {
+        service.placeShipsRandomly();
         System.out.println("ships placed");
     }
 
     public void confirmReady(ActionEvent event) {
         validateBoard();
+        Message<Boolean> msg = new Message<>(CommandType.PLAYER_READY, true);
+        Connection.INSTANCE.sendToServer(msg);
     }
 
     private boolean validateBoard() {
