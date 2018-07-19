@@ -133,11 +133,11 @@ public class GameWindowController {
     public void confirmReady(ActionEvent event) {
         boolean boardSetupValid = validateBoard();
         if (boardSetupValid) {
-            Connection.INSTANCE.setPlayerReady(validateBoard());
+            Connection.INSTANCE.setPlayerReady(true);
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
             if (Connection.INSTANCE.isOpponentReady()) {
-                Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, true));
+                Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
             }
         }
     }
