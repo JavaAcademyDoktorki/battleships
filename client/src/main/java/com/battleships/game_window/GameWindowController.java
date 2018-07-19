@@ -97,7 +97,6 @@ public class GameWindowController {
 //                return !(Connection.INSTANCE.isPlayerReady() && Connection.INSTANCE.getPlayerActive());
 //            }
 //        });
-        System.out.println(!(Connection.INSTANCE.isPlayerReady() && Connection.INSTANCE.getPlayerActive()));
         button.setId(i + " " + j);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -141,17 +140,15 @@ public class GameWindowController {
     public void confirmReady(ActionEvent event) {
         boolean boardSetupValid = validateBoard();
         if (boardSetupValid && Connection.INSTANCE.getPlayerActive()) {
-            Connection.INSTANCE.setPlayerReady(true);
+//            Connection.INSTANCE.setPlayerReady(true);
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
 //            if (Connection.INSTANCE.isOpponentReady()) { //TODO opponentReady is always false, some other condition here is needed
 
             Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
-            Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
             turnLabel.setVisible(true);
         }
-        System.out.println("Po wysłąniu setup completed jestem aktywny "+Connection.INSTANCE.getPlayerActive());
     }
 
     private boolean validateBoard() {
