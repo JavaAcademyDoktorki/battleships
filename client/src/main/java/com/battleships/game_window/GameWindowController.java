@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.beans.binding.Bindings;
 
 import java.util.Random;
 
@@ -51,7 +52,10 @@ public class GameWindowController {
         yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
         opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
         randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
+
         readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
+        readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 createPlayersButtons(i, j, myBoard);
@@ -132,13 +136,15 @@ public class GameWindowController {
 
     public void confirmReady(ActionEvent event) {
         boolean boardSetupValid = validateBoard();
-        if (boardSetupValid) {
+        if (boardSetupValid && Connection.INSTANCE.getPlayerActive()) {
             Connection.INSTANCE.setPlayerReady(true);
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
-            if (Connection.INSTANCE.isOpponentReady()) {
+//            if (Connection.INSTANCE.isOpponentReady()) { //TODO opponentReady is always false, some other condition here is needed
+
                 Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
-            }
+            }else{
+            System.out.println("you cannot click on that buutonn");
         }
     }
 
