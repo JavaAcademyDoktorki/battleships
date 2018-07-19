@@ -26,11 +26,8 @@ class Server {
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
-        new Thread(() -> {  // todo (na razie rozgrywka tylko dwóch graczy)
-            connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));
-            connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
-        }).start();
-
+        connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));  // todo (na razie rozgrywka tylko dwóch graczy)
+        connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
     }
 
     private void infiniteLoopAcceptingPlayers() {

@@ -6,9 +6,6 @@ import com.battleships.commands.Message;
 import com.battleships.commands.Values.Shot;
 import com.battleships.start_window.connection.Connection;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -134,10 +131,15 @@ public class GameWindowController {
     }
 
     public void confirmReady(ActionEvent event) {
-        Connection.INSTANCE.setPlayerReady(validateBoard());
-//        readyToPlayButton.setDisable(true);
-        readyToPlayButton.setVisible(false);
-        randomShipPlacementButton.setVisible(false);
+        boolean boardSetupValid = validateBoard();
+        if (boardSetupValid) {
+            Connection.INSTANCE.setPlayerReady(validateBoard());
+            readyToPlayButton.setVisible(false);
+            randomShipPlacementButton.setVisible(false);
+            if (Connection.INSTANCE.isOpponentReady()) {
+                Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, true));
+            }
+        }
     }
 
     private boolean validateBoard() {
