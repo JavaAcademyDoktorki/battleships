@@ -1,23 +1,23 @@
 package com.battleships.start_window.data_insertion;
 
-import com.battleships.commands.CommandType;
 import com.battleships.LogMessages;
-import com.battleships.commands.Message;
 import com.battleships.Translator;
+import com.battleships.commands.CommandType;
+import com.battleships.commands.Message;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

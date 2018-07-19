@@ -11,7 +11,15 @@ public class Coordinate {
         this.col = col;
     }
 
-//    //AutoValue part
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    //    //AutoValue part
 //
 //    public static Coordinate of(int row, int col) {
 //        return new AutoValue_Coordinate(row, col);
