@@ -170,7 +170,7 @@ public class ConnectionSettingsPaneController {
     }
 
     public void startGame(ActionEvent event) {
-        Message<String> message = new Message<>(CommandType.START_PLAYING, playerName.getPlayerName()); // todo string, może inny typ??
+        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName()); // todo string, może inny typ??
         Connection.INSTANCE.sendToServer(message);
         openGameWindow(event);
     }

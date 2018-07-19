@@ -8,5 +8,6 @@ public enum CommandType {
     SHOT,
     MESSAGE,
     PLAYER_READY,
-    SETUP_COMPLETED
+    SETUP_COMPLETED,
+    MOVE_TO_GAME_STATE
 }
