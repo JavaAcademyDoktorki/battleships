@@ -5,14 +5,15 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Values.Shot;
 import com.battleships.start_window.connection.Connection;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.beans.binding.Bindings;
 
 import java.util.Random;
 
@@ -49,6 +50,8 @@ public class GameWindowController {
             else
                 turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
         });
+        turnLabel.setVisible(false);
+
         yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
         opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
         randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
@@ -71,7 +74,8 @@ public class GameWindowController {
 
     private void createPlayersButtons(int i, int j, GridPane board) {
         Button button = new Button();
-        button.disableProperty().bind(Connection.INSTANCE.playerReadyProperty());
+        button.setDisable(true);
+//        button.disableProperty().bind(Connection.INSTANCE.playerReadyProperty());
         button.setId(i + " " + j);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -86,14 +90,14 @@ public class GameWindowController {
 
     private void createOpponentsButtons(int i, int j, GridPane board) {
         Button button = new Button();
-        button.disableProperty().bind(new BooleanBinding() {
-            @Override
-            protected boolean computeValue() {
-                return !(Connection.INSTANCE.isPlayerReady() &&
-                        Connection.INSTANCE.isOpponentReady() &&
-                        !Connection.INSTANCE.getPlayerActive());
-            }
-        });
+        button.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
+//        button.disableProperty().bind(new BooleanBinding() {
+//            @Override
+//            protected boolean computeValue() {
+//                return !(Connection.INSTANCE.isPlayerReady() && Connection.INSTANCE.getPlayerActive());
+//            }
+//        });
+        System.out.println(!(Connection.INSTANCE.isPlayerReady() && Connection.INSTANCE.getPlayerActive()));
         button.setId(i + " " + j);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -142,10 +146,12 @@ public class GameWindowController {
             randomShipPlacementButton.setVisible(false);
 //            if (Connection.INSTANCE.isOpponentReady()) { //TODO opponentReady is always false, some other condition here is needed
 
-                Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
-            }else{
-            System.out.println("you cannot click on that buutonn");
+            Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
+            Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
+            Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
+            turnLabel.setVisible(true);
         }
+        System.out.println("Po wysłąniu setup completed jestem aktywny "+Connection.INSTANCE.getPlayerActive());
     }
 
     private boolean validateBoard() {

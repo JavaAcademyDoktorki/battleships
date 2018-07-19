@@ -6,14 +6,15 @@ import javafx.application.Platform;
 public class SetupCompleted<V> extends AbstractServerCommand {
 
 
-    protected SetupCompleted(Object value) {
+    protected SetupCompleted(V value) {
         super(value);
     }
 
     @Override
     public void execute() {
-        System.out.println("setup "+value);
         Boolean value = (Boolean) this.value;
+
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(value));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(value));
     }
 }

@@ -14,5 +14,6 @@ public class SetupCompletedCommand<V> extends AbstractCommand {
     public void execute(ConnectedPlayers connectedPlayers) {
         connectedPlayers.sendToInactive(new Message<>(CommandType.SETUP_COMPLETED, true));
         connectedPlayers.switchActive();
+        System.out.println("Aktywny jest: "+connectedPlayers.getActive());
     }
 }

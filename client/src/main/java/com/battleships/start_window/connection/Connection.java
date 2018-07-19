@@ -29,7 +29,7 @@ public enum Connection {
     private BooleanProperty connected = new SimpleBooleanProperty(false);
     private BooleanProperty playerActive = new SimpleBooleanProperty(false);
     private BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
-    private boolean opponentReady = false;
+//    private boolean opponentReady = false;
 
     public boolean getPlayerActive() {
         return playerActive.get();
@@ -55,9 +55,10 @@ public enum Connection {
         return this.playerReadyProperty;
     }
 
-    public boolean isOpponentReady() {
-        return opponentReady;
-    }
+
+//    public boolean isOpponentReady() {
+//        return opponentReady;
+//    }
 
     /**
      * Establishes the server's connection

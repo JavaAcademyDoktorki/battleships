@@ -58,7 +58,7 @@ public class ConnectedPlayers {
         active.sendCommand(playerCommand);
     }
 
-    private Player getActive() {
+    public Player getActive() {
         if (playerList.get(0).isActive())
             return playerList.get(0);
         else
