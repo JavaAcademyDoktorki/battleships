@@ -61,7 +61,7 @@ public class BoardService {
         }
     }
 
-    private List<Coordinate> getHardcodedCords() {
+    private List<Coordinate> getHardcodedCords() { //TODO this is a temporary code, in the future ship placement will be randomized
         List<Coordinate> cords = new ArrayList<>();
         cords.add(new Coordinate(5, 1));
         cords.add(new Coordinate(2, 2));
