@@ -5,8 +5,8 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.player.ConnectedPlayers;
 
-public class PlayerReadyMessage<V> extends AbstractCommand {
-    public PlayerReadyMessage(V value) {
+public class PlayerReadyCommand<V> extends AbstractCommand {
+    public PlayerReadyCommand(V value) {
         super(value);
     }
 

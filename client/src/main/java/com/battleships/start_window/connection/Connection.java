@@ -10,10 +10,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Optional;
 
 /**
  *
@@ -27,25 +28,8 @@ public enum Connection {
     private static final int initialConnectingTimeout = 2000;
     private BooleanProperty connected = new SimpleBooleanProperty(false);
     private BooleanProperty playerActive = new SimpleBooleanProperty(false);
-    private BooleanProperty ready = new SimpleBooleanProperty(false);
-
-    public void setOtherPlayerReady(boolean otherPlayerReady) {
-        this.otherPlayerReady = otherPlayerReady;
-    }
-
-    private boolean otherPlayerReady = false;
-
-    public boolean getReady() {
-        return ready.get();
-    }
-
-    public BooleanProperty readyProperty() {
-        return ready;
-    }
-
-    public void setReady(boolean ready) {
-        this.ready.set(ready);
-    }
+    private BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
+//    private boolean opponentReady = false;
 
     public boolean getPlayerActive() {
         return playerActive.get();
@@ -58,6 +42,23 @@ public enum Connection {
     public void setPlayerActive(boolean playerActive) {
         this.playerActive.set(playerActive);
     }
+
+    public boolean isPlayerReady() {
+        return playerReadyProperty.get();
+    }
+
+    public void setPlayerReady(boolean playerReady) {
+        this.playerReadyProperty.setValue(playerReady);
+    }
+
+    public BooleanProperty playerReadyProperty() {
+        return this.playerReadyProperty;
+    }
+
+
+//    public boolean isOpponentReady() {
+//        return opponentReady;
+//    }
 
     /**
      * Establishes the server's connection
@@ -79,7 +80,7 @@ public enum Connection {
         this.connected.set(connected);
     }
 
-    private boolean isConnected() {
+    public boolean isConnected() {
         checkConnected();
         return connected.get();
     }
@@ -93,6 +94,7 @@ public enum Connection {
             socket = new Socket();
             InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
             socket.connect(endpoint, initialConnectingTimeout);
+            establishServerIO();
         } catch (IOException e) {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
             logger.error(errorMessage);
@@ -140,6 +142,7 @@ public enum Connection {
     private void disconnectPlayer() throws IOException {
         if (socket != null) {
             socket.close();
+            setConnected(false);
             logger.info(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_SUCCEED);
         } else {
             logger.error(LogMessages.DISCONNECTED_AFTER_PLAYER_REQ_FAILED);
@@ -174,7 +177,7 @@ public enum Connection {
     /**
      * Initializes input and output of the server client connected to
      */
-    public void establishServerIO() {
+    private void establishServerIO() {
         ObjectInputStream inputStream = getInputStream();
         ObjectOutputStream outputStream = getOutputStream();
 

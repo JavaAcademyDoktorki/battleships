@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
+<GridPane vgap="10" hgap="10" xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.battleships.start_window.data_insertion.ConnectionSettingsPaneController"
           fx:id="connectionSettingsPane">
@@ -13,5 +13,8 @@
     <HBox alignment="TOP_CENTER" GridPane.rowIndex="2">
         <TextField fx:id="nameTextField"/>
     </HBox>
-    <Button fx:id="sendMessageToOtherPlayer" text="Send message" GridPane.rowIndex="3" GridPane.columnIndex="1" onAction="#sendMessageToSecondPlayer"/>
+    <HBox alignment="BASELINE_CENTER"  GridPane.rowIndex="4">
+        <Button fx:id="startGameButton" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                onAction="#startGame"/>
+    </HBox>
 </GridPane>

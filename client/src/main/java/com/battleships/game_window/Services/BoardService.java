@@ -5,6 +5,7 @@ import com.battleships.Models.Board.CoordState;
 import com.battleships.Models.Board.Coordinate;
 import com.battleships.Models.Events;
 import com.battleships.game_window.ButtonCoordinates;
+import com.battleships.start_window.connection.Connection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -92,22 +93,26 @@ public class BoardService {
     public void createButtonsInBothBoards(Boards boards, Events events) {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
-                createButtons(i, j, boards.getMyBoard(), false, events.getPlaceShipEvent());
-                createButtons(i, j, boards.getOpponentsBoard(), true, events.getShotEvent());
+                createButtons(i, j, boards.getMyBoard(), events.getPlaceShipEvent(), false);
+                createButtons(i, j, boards.getOpponentsBoard(), events.getShotEvent(), true);
             }
         }
     }
 
-    private void createButtons(int i, int j, GridPane board, boolean inActive, EventHandler<ActionEvent> event) {
+    private void createButtons(int i, int j, GridPane board, EventHandler<ActionEvent> event, boolean opponnentsBoard) {
         Button button = new Button();
-        button.setDisable(inActive);
+        if (opponnentsBoard) {
+            button.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
+        } else {
+            button.setDisable(true);
+        }
         button.setId(i + " " + j);
         button.setOnAction(event);
         board.add(button, j, i);
     }
 
     public void colourButton(Button button, Coordinate coord) {
-        if(shipWasHit(coord))
+        if (shipWasHit(coord))
             button.setStyle("-fx-background-color: #AA3939");
         else
             button.setStyle("-fx-background-color: #00ff00");

@@ -6,6 +6,7 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.start_window.connection.Connection;
 import com.battleships.start_window.connection.ConnectionInfo;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +41,7 @@ public class ConnectionSettingsPaneController {
     @FXML
     private GridPane connectionSettingsPane;
     @FXML
-    public Button sendMessageToOtherPlayer;
+    public Button startGameButton;
     private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
     /**
@@ -51,13 +54,13 @@ public class ConnectionSettingsPaneController {
         bindConnectToServerButton();
         setOnActionToButtons();
         initPlayerName();
-        sendMessageToOtherPlayer.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
     }
 
     private void bindTextFieldsWithTranslation() {
         Translator.bind(connectToServerButton.textProperty(), "connect");
         Translator.bind(disconnectFromServerButton.textProperty(), "disconnect");
         Translator.bind(nameTextField.promptTextProperty(), "player_name");
+        Translator.bind(startGameButton.textProperty(), "start_game");
     }
 
     private void bindConnectToServerButton() {
@@ -69,6 +72,8 @@ public class ConnectionSettingsPaneController {
         connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
+        startGameButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
+        startGameButton.setOnAction(e -> startGame(e));
     }
 
     private void connectToServerButtonAction(ActionEvent e) {
@@ -80,16 +85,16 @@ public class ConnectionSettingsPaneController {
         } else {
             logErrorsAboutIPAndPort();
         }
-
-
     }
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
         Connection.INSTANCE.establishConnection(connectionInfo);
-        Connection.INSTANCE.establishServerIO();
-        Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
-        Connection.INSTANCE.sendToServer(setNameCommand);
-        openGameWindow(event);
+        if (!Connection.INSTANCE.isConnected())
+            showConnectionFailedDialog();
+        else {
+            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+            Connection.INSTANCE.sendToServer(setNameCommand);
+        }
     }
 
     private void openGameWindow(ActionEvent event) {
@@ -100,6 +105,13 @@ public class ConnectionSettingsPaneController {
             stage.setScene(new Scene(root, 600, 450));
             stage.show();
             stage.setOnCloseRequest(event1 -> Connection.INSTANCE.disconnect());
+            stage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+                if (e.getCode() == KeyCode.ESCAPE) {
+                    logger.info(LogMessages.QUIT_WITH_ESCAPE);
+                    Connection.INSTANCE.disconnect();
+                    Platform.exit();
+                }
+            });
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -159,8 +171,9 @@ public class ConnectionSettingsPaneController {
         return ipTextField.getText().split(":");
     }
 
-    public void sendMessageToSecondPlayer(ActionEvent actionEvent) {
-        Message<String> message = new Message<>(CommandType.MESSAGE, "This is example message");
+    public void startGame(ActionEvent event) {
+        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName()); // todo string, może inny typ??
         Connection.INSTANCE.sendToServer(message);
+        openGameWindow(event);
     }
 }

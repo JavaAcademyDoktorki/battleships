@@ -19,6 +19,10 @@ public class ServerCommandsFactory {
                 return new ShotMessageReceived<>(value);
             case PLAYER_READY:
                 return new PlayerReadyMessage<>(value);
+            case SETUP_COMPLETED:
+                return new SetupCompleted<>(value);
+            case YOU_ARE_READY:
+                return new YouAreReady<>(value);
             default:
                 return new EmptyCommand<>(null);
         }
