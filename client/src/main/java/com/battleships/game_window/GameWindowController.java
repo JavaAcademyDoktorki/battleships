@@ -131,6 +131,8 @@ public class GameWindowController {
         Shot shot = new Shot(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT, shot));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
     }
 
     public void placeShipsRandomly(ActionEvent event) {
