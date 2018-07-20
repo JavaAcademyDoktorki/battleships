@@ -1,10 +1,10 @@
-package com.battleships.commands.Values;
+package com.battleships.commands.values;
 
 import java.io.Serializable;
 
 public class PlayerRegisteredValue implements Serializable {
-    private String playerName;
-    private boolean sameNameAsGiven;
+    private final String playerName;
+    private final boolean sameNameAsGiven;
 
     public PlayerRegisteredValue(String playerName, boolean sameNameAsGiven) {
         this.playerName = playerName;

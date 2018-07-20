@@ -1,35 +1,14 @@
 package com.battleships.models.board;
 
-//@AutoValue
 public class Coordinate {
 
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     public Coordinate(int row, int col) {
         this.row = row;
         this.col = col;
     }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-
-    //    //AutoValue part
-//
-//    public static Coordinate of(int row, int col) {
-//        return new AutoValue_Coordinate(row, col);
-//    }
-//
-//    abstract int getRow();
-//    abstract int getCol();
-
-
-
 
     @Override
     public boolean equals(Object o) {

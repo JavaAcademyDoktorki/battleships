@@ -1,17 +1,17 @@
-package com.battleships.startwindow.data_insertion;
+package com.battleships.startwindow.datainsertion;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class PlayerName {
+class PlayerName {
     private final StringProperty playerName = new SimpleStringProperty();
 
 
-    public String getPlayerName() {
+    String getPlayerName() {
         return playerName.get();
     }
 
-    public StringProperty playerNameProperty() {
+    StringProperty playerNameProperty() {
         return playerName;
     }
 }

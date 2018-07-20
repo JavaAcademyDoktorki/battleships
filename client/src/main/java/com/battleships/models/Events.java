@@ -5,8 +5,8 @@ import javafx.event.EventHandler;
 
 public class Events {
 
-    EventHandler<ActionEvent> placeShipEvent;
-    EventHandler<ActionEvent> shotEvent;
+    private final EventHandler<ActionEvent> placeShipEvent;
+    private final EventHandler<ActionEvent> shotEvent;
 
     public Events(EventHandler<ActionEvent> placeShipEvent, EventHandler<ActionEvent> shotEvent) {
         this.placeShipEvent = placeShipEvent;

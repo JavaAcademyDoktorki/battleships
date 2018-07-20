@@ -26,10 +26,9 @@ public enum Connection {
     private final static Logger logger = LogManager.getLogger(Connection.class);
     private Thread readCommandsFromUserThread;
     private static final int initialConnectingTimeout = 2000;
-    private BooleanProperty connected = new SimpleBooleanProperty(false);
-    private BooleanProperty playerActive = new SimpleBooleanProperty(false);
-    private BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
-//    private boolean opponentReady = false;
+    private final BooleanProperty connected = new SimpleBooleanProperty(false);
+    private final BooleanProperty playerActive = new SimpleBooleanProperty(false);
+    private final BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
 
     public boolean getPlayerActive() {
         return playerActive.get();
@@ -43,10 +42,6 @@ public enum Connection {
         this.playerActive.set(playerActive);
     }
 
-    public boolean isPlayerReady() {
-        return playerReadyProperty.get();
-    }
-
     public void setPlayerReady(boolean playerReady) {
         this.playerReadyProperty.setValue(playerReady);
     }
@@ -54,11 +49,6 @@ public enum Connection {
     public BooleanProperty playerReadyProperty() {
         return this.playerReadyProperty;
     }
-
-
-//    public boolean isOpponentReady() {
-//        return opponentReady;
-//    }
 
     /**
      * Establishes the server's connection
@@ -76,7 +66,7 @@ public enum Connection {
         return connected;
     }
 
-    public void setConnected(boolean connected) {
+    private void setConnected(boolean connected) {
         this.connected.set(connected);
     }
 

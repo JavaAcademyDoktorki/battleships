@@ -5,7 +5,7 @@ import com.battleships.player.ConnectedPlayers;
 
 public class MoveToGameState<V> extends AbstractCommand {
 
-    public <V> MoveToGameState(V value) {
+    public MoveToGameState(V value) {
         super(value);
     }
 

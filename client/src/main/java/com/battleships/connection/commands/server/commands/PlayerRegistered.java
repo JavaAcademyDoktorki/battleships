@@ -1,6 +1,6 @@
 package com.battleships.connection.commands.server.commands;
 
-import com.battleships.commands.Values.PlayerRegisteredValue;
+import com.battleships.commands.values.PlayerRegisteredValue;
 import com.battleships.connection.commands.AbstractServerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

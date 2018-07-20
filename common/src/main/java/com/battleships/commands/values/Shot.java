@@ -1,4 +1,4 @@
-package com.battleships.commands.Values;
+package com.battleships.commands.values;
 
 import java.io.Serializable;
 
@@ -9,14 +9,6 @@ public class Shot implements Serializable {
     public Shot(int row, int column) {
         this.row = row;
         this.column = column;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
     }
 
     @Override

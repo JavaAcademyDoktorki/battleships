@@ -1,6 +1,6 @@
 package com.battleships;
 
-import com.battleships.startwindow.window_scaling.ScreenSize;
+import com.battleships.windowScalling.ScreenSize;
 import com.battleships.windowScalling.WindowScalling;
 import javafx.application.Application;
 import javafx.application.Platform;

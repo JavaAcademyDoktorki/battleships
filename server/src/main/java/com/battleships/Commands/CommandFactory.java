@@ -1,12 +1,11 @@
 package com.battleships.Commands;
 
 import com.battleships.Commands.CommandsImpl.EmptyCommand;
-import com.battleships.Commands.CommandsImpl.MessageToPlayer;
 import com.battleships.Commands.CommandsImpl.PlayerReadyCommand;
 import com.battleships.commands.AbstractCommand;
-import com.battleships.commands.PlayersShootCommand;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
+import com.battleships.commands.PlayersShootCommand;
 
 
 /**

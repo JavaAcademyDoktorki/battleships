@@ -5,7 +5,7 @@ import com.battleships.Messages.LogMessages;
 import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
-import com.battleships.commands.Values.PlayerRegisteredValue;
+import com.battleships.commands.values.PlayerRegisteredValue;
 import com.battleships.player.ConnectedPlayers;
 import com.battleships.player.Player;
 import org.apache.logging.log4j.LogManager;

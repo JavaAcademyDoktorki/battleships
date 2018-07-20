@@ -1,6 +1,6 @@
 package com.battleships.commands;
 
-import com.battleships.commands.Values.Shot;
+import com.battleships.commands.values.Shot;
 import com.battleships.player.ConnectedPlayers;
 
 public class PlayersShootCommand<V> extends AbstractCommand {

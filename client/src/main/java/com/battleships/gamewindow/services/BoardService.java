@@ -19,8 +19,8 @@ import java.util.Map;
 public class BoardService {
 
     private final Map<Coordinate, CoordState> board;
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
 
 
     public BoardService(int rows, int cols) {
@@ -37,7 +37,7 @@ public class BoardService {
 
     public void addShipCoord(ButtonCoordinates buttonCoordinates) {
         Coordinate cord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        board.put(cord, CoordState.SHIP);
+        board.put(cord, CoordState.SHIP); // TODO - will be used later
     }
 
     private void fillBoard(Map<Coordinate, CoordState> board) {
@@ -86,7 +86,7 @@ public class BoardService {
         return cords;
     }
 
-    public CoordState getFieldStatus(Coordinate cords) {
+    public CoordState getFieldStatus(Coordinate cords) { // TODO will be used later
         return board.get(cords);
     }
 

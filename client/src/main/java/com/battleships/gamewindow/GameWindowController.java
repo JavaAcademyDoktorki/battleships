@@ -3,7 +3,7 @@ package com.battleships.gamewindow;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
-import com.battleships.commands.Values.Shot;
+import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.models.ButtonCoordinates;
 import com.battleships.gamewindow.services.BoardService;
@@ -16,8 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-
-import java.util.Random;
 
 public class GameWindowController {
     @FXML
@@ -74,18 +72,6 @@ public class GameWindowController {
         System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
     }
 
-    private void colourButton(Button button, int i, int j) {
-        if (shipWasHit(i, j))
-            button.setStyle("-fx-background-color: #AA3939");
-        else
-            button.setStyle("-fx-background-color: #00ff00");
-    }
-
-    private boolean shipWasHit(int i, int j) {
-        int i1 = new Random().nextInt(100) % 2;
-        return i1 == 0; // TODO zmienic to :)
-    }
-
     private void shot(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
         ButtonCoordinates buttonCoordinates = new ButtonCoordinates(clickedButton.getId());
@@ -116,7 +102,7 @@ public class GameWindowController {
     }
 
     private boolean validateBoard() {
-        System.out.println("zwalidowane");
+        System.out.println("zwalidowane"); // TODO krzychu
         return true;
     }
 }

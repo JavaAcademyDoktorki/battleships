@@ -1,7 +1,7 @@
 package com.battleships.startwindow;
 
 import com.battleships.connection.Connection;
-import com.battleships.startwindow.data_insertion.SettingsDataController;
+import com.battleships.startwindow.datainsertion.SettingsDataController;
 import javafx.fxml.FXML;
 
 public class StartWindowController {

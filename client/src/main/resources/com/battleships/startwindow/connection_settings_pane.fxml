@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <GridPane vgap="10" hgap="10" xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.battleships.startwindow.data_insertion.ConnectionSettingsPaneController"
+          fx:controller="com.battleships.startwindow.datainsertion.ConnectionSettingsPaneController"
           fx:id="connectionSettingsPane">
     <TextField fx:id="ipTextField" text="127.0.0.1:50000" promptText="127.0.0.1:50000" GridPane.rowIndex="0"
                GridPane.columnIndex="0"/>

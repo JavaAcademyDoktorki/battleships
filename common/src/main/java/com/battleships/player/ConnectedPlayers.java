@@ -10,8 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ConnectedPlayers {
     private final List<Player> playerList;
     private int anonymousPlayersCounter = 0;
-    PlayerStatus playerStatus = PlayerStatus.ACTIVE;
-//    PlayerStatus playerStatus = PlayerStatus.values()[ThreadLocalRandom.current().nextInt(0, 2)];
+    private PlayerStatus playerStatus = PlayerStatus.ACTIVE;
 
     public ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
@@ -43,10 +42,6 @@ public class ConnectedPlayers {
     public String generateNewName() {
         ++anonymousPlayersCounter;
         return "Player" + anonymousPlayersCounter;
-    }
-
-    Player getLastAddedPlayer() {
-        return playerList.get(playerList.size() - 1);
     }
 
     public boolean notFull() {

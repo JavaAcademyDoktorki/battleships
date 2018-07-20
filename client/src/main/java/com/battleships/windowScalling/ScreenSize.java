@@ -1,4 +1,4 @@
-package com.battleships.startwindow.window_scaling;
+package com.battleships.windowScalling;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;

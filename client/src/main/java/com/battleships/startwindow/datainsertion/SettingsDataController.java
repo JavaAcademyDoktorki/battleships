@@ -1,4 +1,4 @@
-package com.battleships.startwindow.data_insertion;
+package com.battleships.startwindow.datainsertion;
 
 import com.battleships.connection.Connection;
 

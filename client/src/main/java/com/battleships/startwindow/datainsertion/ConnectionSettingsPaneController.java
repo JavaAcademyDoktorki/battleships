@@ -1,4 +1,4 @@
-package com.battleships.startwindow.data_insertion;
+package com.battleships.startwindow.datainsertion;
 
 import com.battleships.Client;
 import com.battleships.LogMessages;
@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
-    private PlayerName playerName = new PlayerName();
+    private final PlayerName playerName = new PlayerName();
 
     @FXML
     private Button connectToServerButton;
@@ -40,7 +40,7 @@ public class ConnectionSettingsPaneController {
     @FXML
     private TextField ipTextField;
     @FXML
-    public Button startGameButton;
+    private Button startGameButton;
 
     private final static Logger logger = LogManager.getLogger(ConnectionSettingsPaneController.class);
 
@@ -68,7 +68,7 @@ public class ConnectionSettingsPaneController {
     }
 
     private void setOnActionToButtons() {
-        connectToServerButton.setOnAction(e -> connectToServerButtonAction(e));
+        connectToServerButton.setOnAction(e -> connectToServerButtonAction());
         connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
         disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
@@ -76,18 +76,18 @@ public class ConnectionSettingsPaneController {
         startGameButton.setOnAction(e -> startGame(e));
     }
 
-    private void connectToServerButtonAction(ActionEvent e) {
+    private void connectToServerButtonAction() {
         if (isPortAndIPPresent()) {
             String ip = getOptionalIPIfInsertedCorrectly().get();
             int port = extractPortIfPlayerInserted().get();
             ConnectionInfo connectionInfo = new ConnectionInfo(ip, port);
-            handleConnectButtonAction(connectionInfo, e);
+            handleConnectButtonAction(connectionInfo);
         } else {
             logErrorsAboutIPAndPort();
         }
     }
 
-    private void handleConnectButtonAction(ConnectionInfo connectionInfo, ActionEvent event) {
+    private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         Connection.INSTANCE.establishConnection(connectionInfo);
         if (!Connection.INSTANCE.isConnected())
             showConnectionFailedDialog();
@@ -100,7 +100,6 @@ public class ConnectionSettingsPaneController {
     private void openGameWindow(ActionEvent event) {
         try {
             URL resource = Client.class.getResource("gamewindow/game_window.fxml");
-            System.out.println(resource);
             Parent root = FXMLLoader.load(resource);
             Stage stage = new Stage();
             stage.titleProperty().bind(Translator.createStringBinding("game_window"));
@@ -174,7 +173,7 @@ public class ConnectionSettingsPaneController {
     }
 
     public void startGame(ActionEvent event) {
-        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName()); // todo string, może inny typ??
+        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName());
         Connection.INSTANCE.sendToServer(message);
         openGameWindow(event);
     }

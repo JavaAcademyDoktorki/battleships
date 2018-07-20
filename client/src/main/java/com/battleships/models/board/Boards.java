@@ -4,8 +4,8 @@ import javafx.scene.layout.GridPane;
 
 public class Boards {
 
-    private GridPane myBoard;
-    private GridPane opponentsBoard;
+    private final GridPane myBoard;
+    private final GridPane opponentsBoard;
 
     public Boards(GridPane myBoard, GridPane opponentsBoard) {
         this.myBoard = myBoard;
