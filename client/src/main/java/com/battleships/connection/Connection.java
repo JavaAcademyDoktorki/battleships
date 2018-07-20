@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
- *
+ * Creates server's connection
  */
 public enum Connection {
     INSTANCE;
@@ -25,7 +25,7 @@ public enum Connection {
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);
     private Thread readCommandsFromUserThread;
-    private static final int initialConnectingTimeout = 2000;
+    private static final int INITIAL_CONNECTING_TIMEOUT = 2000;
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private final BooleanProperty playerActive = new SimpleBooleanProperty(false);
     private final BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
@@ -83,7 +83,7 @@ public enum Connection {
         try {
             socket = new Socket();
             InetSocketAddress endpoint = new InetSocketAddress(connectionInfo.getIp(), connectionInfo.getPort());
-            socket.connect(endpoint, initialConnectingTimeout);
+            socket.connect(endpoint, INITIAL_CONNECTING_TIMEOUT);
             establishServerIO();
         } catch (IOException e) {
             String errorMessage = String.format(LogMessages.CANNOT_CONNECT_TO_SERVER, connectionInfo.getIp(), connectionInfo.getPort());
