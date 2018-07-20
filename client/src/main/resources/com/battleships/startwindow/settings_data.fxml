@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.battleships.startwindow.datainsertion.SettingsDataController"
+          alignment="TOP_CENTER"
+          style="-fx-padding: 16 16 16 16">
+    <VBox GridPane.rowIndex="1" GridPane.columnSpan="1" style="-fx-padding: 4 4 4 4">
+        <fx:include fx:id="connectionSettingsPane" source="connection_settings_pane.fxml"/>
+    </VBox>
+</GridPane>

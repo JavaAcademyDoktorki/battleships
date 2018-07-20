@@ -17,6 +17,7 @@
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <log4j.version>2.11.0</log4j.version>
+        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -24,11 +25,11 @@
     <parent>
         <groupId>com.battleships</groupId>
         <artifactId>battleships</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
     </parent>
 
     <artifactId>client</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <name>Battleship game client</name>
     <description>Battleship game in Java</description>
     <url>https://github.com/JavaAcademyDoktorki/battleships</url>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>com.battleships</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1</version>
+            <version>0.1.0</version>
         </dependency>
     </dependencies>
 
@@ -124,6 +125,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
                 <configuration>
                     <mainClass>com.battleships.Client</mainClass>
                     <executable>mvn</executable>

@@ -1,6 +1,6 @@
 package com.battleships;
 
-import com.battleships.start_window.window_scaling.ScreenSize;
+import com.battleships.windowScalling.ScreenSize;
 import com.battleships.windowScalling.WindowScalling;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -65,7 +65,7 @@ public class Client extends Application {
     }
 
     private Optional<Parent> tryToGetRootFxmlOptional() {
-        String mainFxmlPath = "start_window/start_window.fxml";
+        String mainFxmlPath = "startwindow/start_window.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(mainFxmlPath));
         return tryToLoadRoot(mainFxmlPath, loader);
     }

@@ -1,8 +1,11 @@
 package com.battleships.Commands;
 
 import com.battleships.Commands.CommandsImpl.EmptyCommand;
+import com.battleships.Commands.CommandsImpl.PlayerReadyCommand;
+import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
-import com.battleships.commands.PlayerCommand;
+import com.battleships.commands.Message;
+import com.battleships.commands.PlayersShootCommand;
 
 
 /**
@@ -12,7 +15,7 @@ import com.battleships.commands.PlayerCommand;
  * null pointer exception.
  *
  * @author Krzysztof Dzioba
- * @see com.battleships.Commands.AbstractCommand
+ * @see AbstractCommand
  */
 
 public class CommandFactory {
@@ -20,14 +23,21 @@ public class CommandFactory {
     /**
      * Creates new instance of proper command.
      *
-     * @param playerCommand Player given command to execute
+     * @param message Player given command to execute
      */
 
-    public static <V> AbstractCommand getCommandImpl(PlayerCommand<V> playerCommand) {
-        CommandType commandType = playerCommand.getCommandType();
-        V value = playerCommand.getValue();
-        switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
-
+    public static <V> AbstractCommand getCommandImpl(Message<V> message) {
+        CommandType commandType = message.getCommandType();
+        V value = message.getValue();
+        switch (commandType) {
+            case SHOT:
+                return new PlayersShootCommand<>(value);
+            case PLAYER_READY:
+                return new PlayerReadyCommand<>(value);
+            case SETUP_COMPLETED:
+                return new SetupCompletedCommand<>(value);
+            case MOVE_TO_GAME_STATE:
+                return new MoveToGameState<>(value);
             default:
                 return new EmptyCommand<>(null);
         }

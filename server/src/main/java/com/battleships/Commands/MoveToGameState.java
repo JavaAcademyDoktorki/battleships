@@ -1,16 +1,15 @@
-package com.battleships.Commands.CommandsImpl;
+package com.battleships.Commands;
 
 import com.battleships.commands.AbstractCommand;
 import com.battleships.player.ConnectedPlayers;
 
-public class EmptyCommand<V> extends AbstractCommand<V> {
+public class MoveToGameState<V> extends AbstractCommand {
 
-    public EmptyCommand(V value) {
+    public MoveToGameState(V value) {
         super(value);
     }
 
     @Override
     public void execute(ConnectedPlayers connectedPlayers) {
-        System.out.println("Unknown command was send to server.");
     }
 }

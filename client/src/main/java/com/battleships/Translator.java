@@ -14,26 +14,26 @@ import java.util.ResourceBundle;
  * Responsible for a translation according to chosen language settings
  */
 public class Translator {
-    private static final ObjectProperty<Locale> locale;
+    private static final ObjectProperty<Locale> LOCALE;
 
     static {
-        locale = new SimpleObjectProperty<>(Locale.getDefault());
-        locale.addListener(((observable, oldValue, newValue) -> Locale.setDefault(newValue)));
+        LOCALE = new SimpleObjectProperty<>(Locale.getDefault());
+        LOCALE.addListener(((observable, oldValue, newValue) -> Locale.setDefault(newValue)));
     }
 
     private Translator() { }
 
     private static Locale getLocale() {
-        return locale.get();
+        return LOCALE.get();
     }
 
     /**
-     * Sets a new locale based on a new value provided by a player
+     * Sets a new LOCALE based on a new value provided by a player
      *
-     * @param locale -a new locale to be set up
+     * @param locale -a new LOCALE to be set up
      */
     public static void setLocale(Locale locale) {
-        Translator.locale.set(locale);
+        Translator.LOCALE.set(locale);
         Locale.setDefault(locale);
     }
 
@@ -43,7 +43,7 @@ public class Translator {
     }
 
     public static StringBinding createStringBinding(final String key, Object... args) {
-        return Bindings.createStringBinding(() -> getTranslation(key, args), locale);
+        return Bindings.createStringBinding(() -> getTranslation(key, args), LOCALE);
     }
 
     /**
