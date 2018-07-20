@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.battleships.startwindow.StartWindowController"
+            style="-fx-padding: 16 16 16 16;
+            -fx-background-image: url(battleship_start.jpeg);
+            -fx-background-size: cover">
+    <top>
+        <fx:include source="header.fxml" style="-fx-padding: 4 4 4 4"/>
+    </top>
+    <center>
+        <fx:include fx:id="settingsData" source="settings_data.fxml" style="-fx-padding: 4 4 4 4"/>
+    </center>
+    <bottom>
+        <fx:include fx:id="footer" source="footer.fxml" style="-fx-padding: 4 4 4 4"/>
+    </bottom>
+</BorderPane>
