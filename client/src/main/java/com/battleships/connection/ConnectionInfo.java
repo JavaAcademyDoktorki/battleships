@@ -1,7 +1,7 @@
 package com.battleships.connection;
 
 /**
- * Creates server's connection
+ * Returns information about the connection ip and port
  */
 
 public class ConnectionInfo {
