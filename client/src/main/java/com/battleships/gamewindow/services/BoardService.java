@@ -20,6 +20,7 @@ import java.util.Map;
 public class BoardService {
 
     private Map<Coordinate, BoardField> board;
+    private GridPane myGridPaneBoard;
     private final int rows;
     private final int cols;
     private final RandomFleetPlacement randomFleetPlacement;
@@ -34,7 +35,6 @@ public class BoardService {
 
     private Map<Coordinate, BoardField> createEmptyBoard() {
         this.board = new HashMap<>();
-        fillBoardWithSea();
         return board;
     }
 
@@ -43,26 +43,32 @@ public class BoardService {
         board.put(cord, new ShipField()); // TODO - will be used later
     }
 
-    private void fillBoardWithSea() {
+    private void fillBoardWithSea(GridPane myBoard) {
+        myBoard.getChildren().clear();
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
                 Coordinate cord = Coordinate.fromIntCoords(row, col);
-                board.put(cord, new SeaField());
+                BoardField seaField = new SeaField();
+                myBoard.add(seaField, col, row);
+                board.put(cord, seaField);
             }
         }
     }
 
-    public void placeShipsRandomly() {
-        fillBoardWithSea();
-        List<Coordinate> randomCoords = randomFleetPlacement.getRandomBoards();
-        placeShips(randomCoords);
+    public void placeShipsRandomly(GridPane myBoard) {
+        fillBoardWithSea(myBoard);
+        placeShips(randomFleetPlacement.getRandomBoards(), myBoard);
     }
 
-    private void placeShips(List<Coordinate> cords) {
+    private void placeShips(List<Coordinate> cords, GridPane myBoard) {
         for (int i = 0; i < cords.size(); i++) {
-//            System.out.println(String.format("Coords: %d %d, new ShipField()", cords.get(i).getRow(), cords.get(i).getColumn()));
-            board.put(cords.get(i), new ShipField());
-            board.get(cords.get(i)).refreshColor();
+            BoardField boardField = new ShipField();
+            Coordinate fieldCord = cords.get(i);
+            int fieldColumn = fieldCord.getColumn();
+            int fieldRow = fieldCord.getRow();
+
+            board.put(fieldCord, boardField);
+            myBoard.add(boardField, fieldColumn, fieldRow);
         }
     }
 
@@ -84,14 +90,14 @@ public class BoardService {
         }
         seaField.setId(i + " " + j); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class
         seaField.setOnAction(event);
-        board.add(seaField, j, i);
+//        this.board.add(seaField, j, i); // TODO uncomment
     }
 
     public void showMyBoardToPlayer(ObservableList<Node> myBoardChildren) {
         for (Node node : myBoardChildren) {
             BoardField boardField = (BoardField) node;
 //            Coordinate fieldCoordinate = Coordinate.fromButtonId(boardField.getId());
-            System.out.println(boardField);
+//            System.out.println(boardField);
             boardField.refreshColor();
         }
     }
