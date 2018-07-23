@@ -5,8 +5,8 @@ import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 
-public class ShotMessageReceived<V> extends AbstractServerCommand {
-    public ShotMessageReceived(V value) {
+public class ShotMessageReceived extends AbstractServerCommand {
+    public ShotMessageReceived(Object value) {
         super(value);
     }
 

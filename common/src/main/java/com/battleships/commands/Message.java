@@ -2,11 +2,11 @@ package com.battleships.commands;
 
 import java.io.Serializable;
 
-public class Message<V> implements Serializable {
+public class Message implements Serializable {
     private final CommandType commandType;
-    private final V value;
+    private final Object value;
 
-    public Message(CommandType commandType, V value) {
+    public Message(CommandType commandType, Object value) {
         this.commandType = commandType;
         this.value = value;
     }
@@ -15,7 +15,7 @@ public class Message<V> implements Serializable {
         return commandType;
     }
 
-    public V getValue() {
+    public Object getValue() {
         return value;
     }
 }

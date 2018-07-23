@@ -80,7 +80,7 @@ public class GameWindowController {
         System.out.println("Fired shot on: " + buttonCoordinates.getRow() + " " + buttonCoordinates.getColumn());
         Shot shot = new Shot(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
 
-        Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT, shot));
+        Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
     }
@@ -95,7 +95,7 @@ public class GameWindowController {
         if (boardSetupValid && Connection.INSTANCE.getPlayerActive()) {
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
-            Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
+            Connection.INSTANCE.sendToServer(new Message(CommandType.SETUP_COMPLETED, ""));
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
             turnLabel.setVisible(true);
         }

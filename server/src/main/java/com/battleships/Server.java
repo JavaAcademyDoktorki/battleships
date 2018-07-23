@@ -27,8 +27,8 @@ class Server {
         logger.info(LogMessages.SERVER_RUNS);
         this.connectedPlayers = new ConnectedPlayers();
         infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
-        connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));  // todo (na razie rozgrywka tylko dwóch graczy)
-        connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
+        connectedPlayers.sendToActive(new Message(CommandType.START_PLAYING, true));  // todo (na razie rozgrywka tylko dwóch graczy)
+        connectedPlayers.sendToInactive(new Message(CommandType.START_PLAYING, false));
     }
 
     private void infiniteLoopAcceptingPlayers() {
@@ -84,14 +84,14 @@ class Server {
         connectedPlayers.add(player);
         PlayerRegisteredValue playerRegisteredValue =
                 new PlayerRegisteredValue(player.getPlayerName(), player.isPlayerNameDifferentThanGiven());
-        player.sendCommand(new Message<>(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
+        player.sendCommand(new Message(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
         logger.info(String.format("Komenda została wysłana do gracza: %s", CommandType.PLAYER_REGISTERED_SUCCESSFULLY.toString()));
     }
 
-    private <V> void handlePlayerInput(Player player) {
+    private void handlePlayerInput(Player player) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            Message<V> message = player.nextCommand();
+            Message message = player.nextCommand();
             commandType = message.getCommandType();
             handlePlayerCommands(player, message);
 
@@ -99,18 +99,18 @@ class Server {
         }
     }
 
-    private <V> void sendYouAreReadyMessage(Player player, CommandType commandType, Message<V> message) {
+    private void sendYouAreReadyMessage(Player player, CommandType commandType, Message message) {
         if(commandType.equals(CommandType.SETUP_COMPLETED)){
             setupCount++;
         }
         if(setupCount==2){
-            connectedPlayers.sendToActive(new Message<>(CommandType.YOU_ARE_READY,true));
+            connectedPlayers.sendToActive(new Message(CommandType.YOU_ARE_READY, true));
             logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, message.getValue()));
             setupCount=0;
         }
     }
 
-    private <V> void handlePlayerCommands(Player player, Message<V> message) {
+    private void handlePlayerCommands(Player player, Message message) {
         executePlayerCommand(message);
         //logging
         CommandType commandType = message.getCommandType();
@@ -118,7 +118,7 @@ class Server {
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
     }
 
-    private <V> void executePlayerCommand(Message<V> message) {
+    private void executePlayerCommand(Message message) {
         AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
         commandImpl.execute(connectedPlayers);
     }

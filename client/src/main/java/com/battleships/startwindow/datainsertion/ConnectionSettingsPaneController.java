@@ -92,7 +92,7 @@ public class ConnectionSettingsPaneController {
         if (!Connection.INSTANCE.isConnected())
             showConnectionFailedDialog();
         else {
-            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+            Message setNameCommand = new Message(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
             Connection.INSTANCE.sendToServer(setNameCommand);
         }
     }
@@ -173,7 +173,7 @@ public class ConnectionSettingsPaneController {
     }
 
     public void startGame(ActionEvent event) {
-        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName());
+        Message message = new Message(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName());
         Connection.INSTANCE.sendToServer(message);
         openGameWindow(event);
     }

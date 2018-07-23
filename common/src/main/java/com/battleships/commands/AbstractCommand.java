@@ -2,10 +2,10 @@ package com.battleships.commands;
 
 import com.battleships.player.ConnectedPlayers;
 
-public abstract class AbstractCommand<V> {
-    protected final V value;
+public abstract class AbstractCommand {
+    protected final Object value;
 
-    protected AbstractCommand(V value) {
+    protected AbstractCommand(Object value) {
         this.value = value;
     }
 

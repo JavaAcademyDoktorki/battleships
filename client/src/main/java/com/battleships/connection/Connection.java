@@ -104,7 +104,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            Message<String> message = new Message<>(CommandType.STOP_PLAYING, "");
+            Message message = new Message(CommandType.STOP_PLAYING, "");
             sendToServer(message);
             disconnectPlayer();
         } catch (IOException e) {
@@ -120,7 +120,7 @@ public enum Connection {
      * @param message - <code>Message</code> Player command object with specified command kind and value
      */
 
-    public <V> void sendToServer(Message<V> message) {
+    public void sendToServer(Message message) {
         if (isConnected()) {
             serverIO.trySend(message);
             logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, message.getCommandType()));
@@ -150,7 +150,7 @@ public enum Connection {
     }
 
     private void readFromServerUntilDisconnected() {
-        Message<?> message;
+        Message message;
         while ((message = serverIO.getMessage()) != null) {
             AbstractServerCommand commandImpl = ServerCommandsFactory.getCommandImpl(message);
             commandImpl.execute();
@@ -158,7 +158,7 @@ public enum Connection {
         }
     }
 
-    private void logInfoFromServerIfAvailable(Message<?> message) {
+    private void logInfoFromServerIfAvailable(Message message) {
         logger.info(String.format("Klient odebrał komendę od serwera: %s. Wartość komendy: %s",
                 message.getCommandType().toString(),
                 message.getValue().toString()));

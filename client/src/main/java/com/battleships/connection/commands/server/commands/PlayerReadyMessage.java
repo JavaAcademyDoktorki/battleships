@@ -2,8 +2,8 @@ package com.battleships.connection.commands.server.commands;
 
 import com.battleships.connection.commands.AbstractServerCommand;
 
-public class PlayerReadyMessage<V> extends AbstractServerCommand {
-    public PlayerReadyMessage(V value) {
+public class PlayerReadyMessage extends AbstractServerCommand {
+    public PlayerReadyMessage(Object value) {
         super(value);
     }
 

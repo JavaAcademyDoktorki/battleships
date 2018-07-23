@@ -5,14 +5,14 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.player.ConnectedPlayers;
 
-public class SetupCompletedCommand<V> extends AbstractCommand {
-    public SetupCompletedCommand(V value) {
+public class SetupCompletedCommand extends AbstractCommand {
+    public SetupCompletedCommand(Object value) {
         super(value);
     }
 
     @Override
     public void execute(ConnectedPlayers connectedPlayers) {
-        connectedPlayers.sendToInactive(new Message<>(CommandType.SETUP_COMPLETED, true));
+        connectedPlayers.sendToInactive(new Message(CommandType.SETUP_COMPLETED, true));
         connectedPlayers.switchActive();
         System.out.println("Aktywny jest: "+connectedPlayers.getActive());
     }

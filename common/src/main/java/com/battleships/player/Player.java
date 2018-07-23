@@ -18,11 +18,11 @@ public class Player {
         this.playerStatus = playerStatus;
     }
 
-    public void sendCommand(Message<?> command) {
+    public void sendCommand(Message command) {
         playerIO.sendCommand(command);
     }
 
-    public <V> Message<V> nextCommand() {
+    public Message nextCommand() {
         return playerIO.nextUserCommand();
     }
 

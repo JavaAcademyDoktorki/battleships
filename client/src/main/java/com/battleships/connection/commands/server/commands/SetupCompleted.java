@@ -4,10 +4,10 @@ import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 
-public class SetupCompleted<V> extends AbstractServerCommand {
+public class SetupCompleted extends AbstractServerCommand {
 
 
-    public SetupCompleted(V value) {
+    public SetupCompleted(Object value) {
         super(value);
     }
 

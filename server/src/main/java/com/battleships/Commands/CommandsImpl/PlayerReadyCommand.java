@@ -5,14 +5,14 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.player.ConnectedPlayers;
 
-public class PlayerReadyCommand<V> extends AbstractCommand {
-    public PlayerReadyCommand(V value) {
+public class PlayerReadyCommand extends AbstractCommand {
+    public PlayerReadyCommand(Object value) {
         super(value);
     }
 
     @Override
     public void execute(ConnectedPlayers connectedPlayers) {
-        Message<Boolean> messageToOtherClient = new Message<>(CommandType.PLAYER_READY, Boolean.TRUE);
+        Message messageToOtherClient = new Message(CommandType.PLAYER_READY, Boolean.TRUE);
         connectedPlayers.sendToActive(messageToOtherClient);
     }
 }

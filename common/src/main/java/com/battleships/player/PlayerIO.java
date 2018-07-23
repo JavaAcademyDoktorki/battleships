@@ -16,7 +16,7 @@ class PlayerIO {
         clientObjectReader = new ObjectInputStream(playerSocket.getInputStream());
     }
 
-    void sendCommand(Message<?> command) {
+    void sendCommand(Message command) {
         try {
             clientObjectWriter.writeObject(command);
             clientObjectWriter.flush();
@@ -25,9 +25,9 @@ class PlayerIO {
         }
     }
 
-    <V> Message<V> nextUserCommand() {
+    Message nextUserCommand() {
         try {
-            return (Message<V>) clientObjectReader.readObject(); // TODO 16.07 fix unchecked cast - krzychu
+            return (Message) clientObjectReader.readObject(); // TODO 16.07 fix unchecked cast - krzychu
         } catch (IOException | ClassNotFoundException e) {
             // TODO 16.07.2018 handle - Damian
             e.printStackTrace();

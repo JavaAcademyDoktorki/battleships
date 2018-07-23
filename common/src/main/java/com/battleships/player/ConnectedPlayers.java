@@ -48,7 +48,7 @@ public class ConnectedPlayers {
         return playerList.size() < 2;
     }
 
-    public void sendToActive(Message<Boolean> playerCommand) {
+    public void sendToActive(Message playerCommand) {
         Player active = getActive();
         active.sendCommand(playerCommand);
     }
@@ -60,7 +60,7 @@ public class ConnectedPlayers {
             return playerList.get(1);
     }
 
-    public <V> void sendToInactive(Message<V> stringPlayerCommand) {
+    public void sendToInactive(Message stringPlayerCommand) {
         Player inactive = getInactive();
         inactive.sendCommand(stringPlayerCommand);
     }

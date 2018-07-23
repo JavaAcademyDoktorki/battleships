@@ -6,26 +6,26 @@ import com.battleships.connection.commands.server.commands.*;
 
 public class ServerCommandsFactory {
 
-    public static <V> AbstractServerCommand getCommandImpl(Message<V> message) {
+    public static AbstractServerCommand getCommandImpl(Message message) {
         CommandType commandType = message.getCommandType();
-        V value = message.getValue();
-        switch (commandType) { // TODO Krzysiek 16.07 replace switch with sth better
+        Object value = message.getValue();
+        switch (commandType) {
             case PLAYER_REGISTERED_SUCCESSFULLY:
-                return new PlayerRegistered<>(value);
+                return new PlayerRegistered(value);
             case START_PLAYING:
-                return new StartGameWindow<>(value);
+                return new StartGameWindow(value);
             case MESSAGE:
-                return new PlayerMessageReceived<>(value);
+                return new PlayerMessageReceived(value);
             case SHOT:
-                return new ShotMessageReceived<>(value);
+                return new ShotMessageReceived(value);
             case PLAYER_READY:
-                return new PlayerReadyMessage<>(value);
+                return new PlayerReadyMessage(value);
             case SETUP_COMPLETED:
-                return new SetupCompleted<>(value);
+                return new SetupCompleted(value);
             case YOU_ARE_READY:
-                return new YouAreReady<>(value);
+                return new YouAreReady(value);
             default:
-                return new EmptyCommand<>(null);
+                return new EmptyCommand(null);
         }
     }
 }

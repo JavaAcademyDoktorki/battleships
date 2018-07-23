@@ -5,10 +5,10 @@ import com.battleships.connection.commands.AbstractServerCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class PlayerRegistered<V> extends AbstractServerCommand {
+public class PlayerRegistered extends AbstractServerCommand {
     private final static Logger logger = LogManager.getLogger(PlayerRegistered.class);
 
-    public PlayerRegistered(V value) {
+    public PlayerRegistered(Object value) {
         super(value);
     }
 

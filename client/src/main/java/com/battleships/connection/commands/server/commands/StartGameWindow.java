@@ -4,9 +4,9 @@ import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 
-public class StartGameWindow<V> extends AbstractServerCommand {
+public class StartGameWindow extends AbstractServerCommand {
 
-    public StartGameWindow(V value) {
+    public StartGameWindow(Object value) {
         super(value);
     }
 
