@@ -6,6 +6,7 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
+import com.battleships.gamewindow.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
@@ -37,7 +38,7 @@ public class GameWindowController {
     @FXML
     private Label turnLabel;
 
-    private BoardService service;
+    private BoardService boardService;
     private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
@@ -66,8 +67,8 @@ public class GameWindowController {
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
         Boards boards = new Boards(myBoard, opponentBoard);
         Events events = new Events(this::placeShipsRandomly, this::shot);
-        service = new BoardService(10, 10);
-        service.createButtonsInBothBoards(boards, events);
+        boardService = new BoardService(10, 10);
+        boardService.fillBoardsWithFields(boards, events);
     }
 
     private void placeShip(ActionEvent event) {
@@ -76,10 +77,10 @@ public class GameWindowController {
     }
 
     private void shot(ActionEvent event) {
-        Button clickedButton = (Button) event.getSource();
+        BoardField clickedButton = (BoardField) event.getSource();
         Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
-        service.colourButton(clickedButton, coordinate);
-        logger.info(LogMessages.FIRED_SHOT_ON+" "+ coordinate.getRow() + " " + coordinate.getColumn());
+        clickedButton.refreshColor();
+        logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
         Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
@@ -88,8 +89,8 @@ public class GameWindowController {
     }
 
     public void placeShipsRandomly(ActionEvent event) {
-        service.placeShipsRandomly();
-        service.showMyBoardToPlayer(myBoard.getChildren());
+        boardService.placeShipsRandomly();
+        boardService.showMyBoardToPlayer(myBoard.getChildren());
         logger.info(LogMessages.SHIP_PLACED);
     }
 

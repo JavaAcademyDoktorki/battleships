@@ -9,11 +9,13 @@ import java.util.Map;
 
 public class RandomFleetPlacement {
 
+    private int lastCombinationProvided;
     private Map<Integer, List<Coordinate>> boards;
 
     public RandomFleetPlacement() {
         this.boards=new HashMap<>();
         this.boards = fillMap();
+        lastCombinationProvided = 0;
     }
 
     private List<Coordinate> getHardcodedCordsVersion1() {
@@ -105,17 +107,18 @@ public class RandomFleetPlacement {
     }
 
     private Map<Integer, List<Coordinate>> fillMap(){
-        boards.put(1,getHardcodedCordsVersion1());
-        boards.put(2,getHardcodedCordsVersion2());
-        boards.put(3,getHardcodedCordsVersion3());
-        boards.put(4,getHardcodedCordsVersion4());
-        boards.put(5,getHardcodedCordsVersion5());
-        boards.put(6,getHardcodedCordsVersion6());
+        boards.put(0,getHardcodedCordsVersion1());
+        boards.put(1,getHardcodedCordsVersion2());
+        boards.put(2,getHardcodedCordsVersion3());
+        boards.put(3,getHardcodedCordsVersion4());
+        boards.put(4,getHardcodedCordsVersion5());
+        boards.put(5,getHardcodedCordsVersion6());
 
         return boards;
     }
 
-    public List<Coordinate> getRandomBoards(int index){
-        return boards.get(index);
+    public List<Coordinate> getRandomBoards(){
+        System.out.println("Kombinacja nr " + lastCombinationProvided%6);
+        return boards.get(++lastCombinationProvided%6);
     }
 }
