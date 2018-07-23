@@ -6,8 +6,10 @@ import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
 import com.battleships.models.board.CoordState;
 import com.battleships.models.board.Coordinate;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -50,7 +52,6 @@ public class BoardService {
     }
 
     public void placeShipsRandomly() {
-        fillBoard(board);
         List<Coordinate> cords = getHardcodedCords();
         placeShips(cords);
     }
@@ -113,13 +114,22 @@ public class BoardService {
 
     public void colourButton(Button button, Coordinate coord) {
         if (shipWasHit(coord))
-            button.setStyle("-fx-background-color: #AA3939");
+            button.setStyle("-fx-background-color: #15b007\n");
         else
-            button.setStyle("-fx-background-color: #00ff00");
+            button.setStyle("-fx-background-color: #0a73fe");
     }
 
     private boolean shipWasHit(Coordinate coord) {
         CoordState fieldStatus = board.get(coord);
         return fieldStatus.equals(CoordState.SHIP);
+    }
+
+    public void showMyBoardToPlayer(ObservableList<Node> myBoardChildren) {
+        for (Node node : myBoardChildren) {
+            Button b = (Button) node;
+            ButtonCoordinates buttonCoordinates = new ButtonCoordinates(b.getId());
+            Coordinate coord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+            colourButton(b, coord);
+        }
     }
 }

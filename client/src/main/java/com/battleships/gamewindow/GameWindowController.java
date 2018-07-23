@@ -87,6 +87,7 @@ public class GameWindowController {
 
     public void placeShipsRandomly(ActionEvent event) {
         service.placeShipsRandomly();
+        service.showMyBoardToPlayer(myBoard.getChildren());
         System.out.println("ships placed");
     }
 
