@@ -5,7 +5,6 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.models.ButtonCoordinates;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
@@ -68,17 +67,16 @@ public class GameWindowController {
     }
 
     private void placeShip(ActionEvent event) {
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(((Button) event.getSource()).getId());
+        Coordinate buttonCoordinates = Coordinate.fromButtonId(((Button) event.getSource()).getId());
         System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
     }
 
     private void shot(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(clickedButton.getId());
-        Coordinate coord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        service.colourButton(clickedButton, coord);
-        System.out.println("Fired shot on: " + buttonCoordinates.getRow() + " " + buttonCoordinates.getColumn());
-        Shot shot = new Shot(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+        Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
+        service.colourButton(clickedButton, coordinate);
+        System.out.println("Fired shot on: " + coordinate.getRow() + " " + coordinate.getColumn());
+        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));

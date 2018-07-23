@@ -1,7 +1,6 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.models.ButtonCoordinates;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
 import com.battleships.models.board.CoordState;
@@ -37,15 +36,15 @@ public class BoardService {
         return board;
     }
 
-    public void addShipCoord(ButtonCoordinates buttonCoordinates) {
-        Coordinate cord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+    public void addShipCoord(Coordinate buttonCoordinates) {
+        Coordinate cord = Coordinate.fromIntCoords(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
         board.put(cord, CoordState.SHIP); // TODO - will be used later
     }
 
     private void fillBoard(Map<Coordinate, CoordState> board) {
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
-                Coordinate cord = new Coordinate(row, col);
+                Coordinate cord = Coordinate.fromIntCoords(row, col);
                 board.put(cord, CoordState.EMPTY);
             }
         }
@@ -64,26 +63,26 @@ public class BoardService {
 
     private List<Coordinate> getHardcodedCords() { //TODO this is a temporary code, in the future ship placement will be randomized
         List<Coordinate> cords = new ArrayList<>();
-        cords.add(new Coordinate(5, 1));
-        cords.add(new Coordinate(2, 2));
-        cords.add(new Coordinate(1, 6));
-        cords.add(new Coordinate(1, 7));
-        cords.add(new Coordinate(1, 8));
-        cords.add(new Coordinate(4, 4));
-        cords.add(new Coordinate(4, 5));
-        cords.add(new Coordinate(4, 6));
-        cords.add(new Coordinate(4, 7));
-        cords.add(new Coordinate(6, 3));
-        cords.add(new Coordinate(7, 3));
-        cords.add(new Coordinate(8, 3));
-        cords.add(new Coordinate(6, 5));
-        cords.add(new Coordinate(7, 5));
-        cords.add(new Coordinate(7, 7));
-        cords.add(new Coordinate(6, 10));
-        cords.add(new Coordinate(9, 5));
-        cords.add(new Coordinate(10, 5));
-        cords.add(new Coordinate(9, 8));
-        cords.add(new Coordinate(9, 9));
+        cords.add(Coordinate.fromIntCoords(5, 1));
+        cords.add(Coordinate.fromIntCoords(2, 2));
+        cords.add(Coordinate.fromIntCoords(1, 6));
+        cords.add(Coordinate.fromIntCoords(1, 7));
+        cords.add(Coordinate.fromIntCoords(1, 8));
+        cords.add(Coordinate.fromIntCoords(4, 4));
+        cords.add(Coordinate.fromIntCoords(4, 5));
+        cords.add(Coordinate.fromIntCoords(4, 6));
+        cords.add(Coordinate.fromIntCoords(4, 7));
+        cords.add(Coordinate.fromIntCoords(6, 3));
+        cords.add(Coordinate.fromIntCoords(7, 3));
+        cords.add(Coordinate.fromIntCoords(8, 3));
+        cords.add(Coordinate.fromIntCoords(6, 5));
+        cords.add(Coordinate.fromIntCoords(7, 5));
+        cords.add(Coordinate.fromIntCoords(7, 7));
+        cords.add(Coordinate.fromIntCoords(6, 10));
+        cords.add(Coordinate.fromIntCoords(9, 5));
+        cords.add(Coordinate.fromIntCoords(10, 5));
+        cords.add(Coordinate.fromIntCoords(9, 8));
+        cords.add(Coordinate.fromIntCoords(9, 9));
         return cords;
     }
 
@@ -126,10 +125,10 @@ public class BoardService {
 
     public void showMyBoardToPlayer(ObservableList<Node> myBoardChildren) {
         for (Node node : myBoardChildren) {
-            Button b = (Button) node;
-            ButtonCoordinates buttonCoordinates = new ButtonCoordinates(b.getId());
-            Coordinate coord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-            colourButton(b, coord);
+            Button button = (Button) node;
+            Coordinate buttonCoordinates = Coordinate.fromButtonId(button.getId());
+            Coordinate coord = Coordinate.fromIntCoords(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+            colourButton(button, coord);
         }
     }
 }
