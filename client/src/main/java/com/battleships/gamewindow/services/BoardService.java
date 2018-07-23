@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ public class BoardService {
     private final int rows;
     private final int cols;
     private final RandomFleetPlacement randomFleetPlacement;
+    private int countButtonPressed;
 
 
     public BoardService(int rows, int cols) {
@@ -31,6 +31,7 @@ public class BoardService {
         this.cols = cols;
         this.board = createEmptyBoard();
         this.randomFleetPlacement=new RandomFleetPlacement();
+        this.countButtonPressed=1;
     }
 
     private Map<Coordinate, CoordState> createEmptyBoard() {
@@ -55,9 +56,13 @@ public class BoardService {
 
     public void placeShipsRandomly() {
         fillBoard(board);
-        int index = (int) Math.ceil(Math.random()*3);
-        List<Coordinate> cords = randomFleetPlacement.getRandomBoards(index);
+        System.out.println(this.countButtonPressed);
+        List<Coordinate> cords = randomFleetPlacement.getRandomBoards(this.countButtonPressed);
         placeShips(cords);
+        this.countButtonPressed++;
+        if(this.countButtonPressed==7){
+            this.countButtonPressed=1;
+        }
     }
 
     private void placeShips(List<Coordinate> cords) {
