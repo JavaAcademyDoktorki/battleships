@@ -5,6 +5,7 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.connection.commands.AbstractServerCommand;
 import com.battleships.connection.commands.ServerCommandsFactory;
+import com.battleships.startwindow.datainsertion.PlayerName;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +30,11 @@ public enum Connection {
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private final BooleanProperty playerActive = new SimpleBooleanProperty(false);
     private final BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
+    private final PlayerName playerName = new PlayerName();
+
+    public PlayerName getPlayerName() {
+        return playerName;
+    }
 
     public boolean getPlayerActive() {
         return playerActive.get();
