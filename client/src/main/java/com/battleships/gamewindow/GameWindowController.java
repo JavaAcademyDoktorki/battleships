@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.HashMap;
+
 public class GameWindowController {
     @FXML
     private GridPane myBoard;
@@ -63,7 +65,7 @@ public class GameWindowController {
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
         Boards boards = new Boards(myBoard, opponentBoard);
         Events events = new Events(this::placeShip, this::shot);
-        service = new BoardService(10, 10);
+        service = new BoardService(10, 10, new HashMap<>());
         service.createButtonsInBothBoards(boards, events);
     }
 

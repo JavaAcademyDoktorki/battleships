@@ -14,8 +14,6 @@ public class ServerCommandsFactory {
                 return new PlayerRegistered(value);
             case START_PLAYING:
                 return new StartGameWindow(value);
-            case MESSAGE:
-                return new PlayerMessageReceived(value);
             case SHOT:
                 return new ShotMessageReceived(value);
             case PLAYER_READY:

@@ -14,35 +14,28 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BoardService {
 
-    private final Map<Coordinate, CoordState> board;
     private final int rows;
     private final int cols;
+    private Map<Coordinate, CoordState> board;
 
 
-    public BoardService(int rows, int cols) {
+    public BoardService(int rows, int cols, Map<Coordinate, CoordState> board) {
         this.rows = rows;
         this.cols = cols;
-        this.board = createEmptyBoard();
+        this.board = board;
+        createEmptyBoard(board);
     }
 
-    private Map<Coordinate, CoordState> createEmptyBoard() {
-        Map<Coordinate, CoordState> board = new HashMap<>();
-        fillBoard(board);
-        return board;
+    void addShipCoord(Coordinate coord) {
+        board.put(coord, CoordState.SHIP); // TODO - will be used later
     }
 
-    public void addShipCoord(ButtonCoordinates buttonCoordinates) {
-        Coordinate cord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        board.put(cord, CoordState.SHIP); // TODO - will be used later
-    }
-
-    private void fillBoard(Map<Coordinate, CoordState> board) {
+    private void createEmptyBoard(Map<Coordinate, CoordState> board) {
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= cols; col++) {
                 Coordinate cord = new Coordinate(row, col);
@@ -85,10 +78,6 @@ public class BoardService {
         cords.add(new Coordinate(9, 8));
         cords.add(new Coordinate(9, 9));
         return cords;
-    }
-
-    public CoordState getFieldStatus(Coordinate cords) { // TODO will be used later
-        return board.get(cords);
     }
 
     public void createButtonsInBothBoards(Boards boards, Events events) {
