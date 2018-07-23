@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,16 @@ public class BoardService {
     private final Map<Coordinate, CoordState> board;
     private final int rows;
     private final int cols;
+    private final RandomFleetPlacement randomFleetPlacement;
+    private int countButtonPressed;
 
 
     public BoardService(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.board = createEmptyBoard();
+        this.randomFleetPlacement=new RandomFleetPlacement();
+        this.countButtonPressed=1;
     }
 
     private Map<Coordinate, CoordState> createEmptyBoard() {
@@ -51,39 +54,20 @@ public class BoardService {
     }
 
     public void placeShipsRandomly() {
-        List<Coordinate> cords = getHardcodedCords();
+        fillBoard(board);
+        System.out.println(this.countButtonPressed);
+        List<Coordinate> cords = randomFleetPlacement.getRandomBoards(this.countButtonPressed);
         placeShips(cords);
-    }
-
-    private void placeShips(List<Coordinate> cords) {
-        for (int i = 0; i < cords.size() - 1; i++) {
-            board.put(cords.get(i), CoordState.SHIP);
+        this.countButtonPressed++;
+        if(this.countButtonPressed==7){
+            this.countButtonPressed=1;
         }
     }
 
-    private List<Coordinate> getHardcodedCords() { //TODO this is a temporary code, in the future ship placement will be randomized
-        List<Coordinate> cords = new ArrayList<>();
-        cords.add(Coordinate.fromIntCoords(5, 1));
-        cords.add(Coordinate.fromIntCoords(2, 2));
-        cords.add(Coordinate.fromIntCoords(1, 6));
-        cords.add(Coordinate.fromIntCoords(1, 7));
-        cords.add(Coordinate.fromIntCoords(1, 8));
-        cords.add(Coordinate.fromIntCoords(4, 4));
-        cords.add(Coordinate.fromIntCoords(4, 5));
-        cords.add(Coordinate.fromIntCoords(4, 6));
-        cords.add(Coordinate.fromIntCoords(4, 7));
-        cords.add(Coordinate.fromIntCoords(6, 3));
-        cords.add(Coordinate.fromIntCoords(7, 3));
-        cords.add(Coordinate.fromIntCoords(8, 3));
-        cords.add(Coordinate.fromIntCoords(6, 5));
-        cords.add(Coordinate.fromIntCoords(7, 5));
-        cords.add(Coordinate.fromIntCoords(7, 7));
-        cords.add(Coordinate.fromIntCoords(6, 10));
-        cords.add(Coordinate.fromIntCoords(9, 5));
-        cords.add(Coordinate.fromIntCoords(10, 5));
-        cords.add(Coordinate.fromIntCoords(9, 8));
-        cords.add(Coordinate.fromIntCoords(9, 9));
-        return cords;
+    private void placeShips(List<Coordinate> cords) {
+        for (int i = 0; i < cords.size(); i++) {
+            board.put(cords.get(i), CoordState.SHIP);
+        }
     }
 
     public CoordState getFieldStatus(Coordinate cords) { // TODO will be used later
@@ -113,7 +97,7 @@ public class BoardService {
 
     public void colourButton(Button button, Coordinate coord) {
         if (shipWasHit(coord))
-            button.setStyle("-fx-background-color: #15b007\n");
+            button.setStyle("-fx-background-color: #15b007");
         else
             button.setStyle("-fx-background-color: #0a73fe");
     }

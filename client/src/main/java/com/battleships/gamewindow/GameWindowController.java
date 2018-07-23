@@ -1,5 +1,6 @@
 package com.battleships.gamewindow;
 
+import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
@@ -15,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GameWindowController {
     @FXML
@@ -35,6 +38,7 @@ public class GameWindowController {
     private Label turnLabel;
 
     private BoardService service;
+    private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
         readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
@@ -61,7 +65,7 @@ public class GameWindowController {
 
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
         Boards boards = new Boards(myBoard, opponentBoard);
-        Events events = new Events(this::placeShip, this::shot);
+        Events events = new Events(this::placeShipsRandomly, this::shot);
         service = new BoardService(10, 10);
         service.createButtonsInBothBoards(boards, events);
     }
@@ -75,7 +79,7 @@ public class GameWindowController {
         Button clickedButton = (Button) event.getSource();
         Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
         service.colourButton(clickedButton, coordinate);
-        System.out.println("Fired shot on: " + coordinate.getRow() + " " + coordinate.getColumn());
+        logger.info(LogMessages.FIRED_SHOT_ON+" "+ coordinate.getRow() + " " + coordinate.getColumn());
         Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
@@ -86,7 +90,7 @@ public class GameWindowController {
     public void placeShipsRandomly(ActionEvent event) {
         service.placeShipsRandomly();
         service.showMyBoardToPlayer(myBoard.getChildren());
-        System.out.println("ships placed");
+        logger.info(LogMessages.SHIP_PLACED);
     }
 
     public void confirmReady(ActionEvent event) {
