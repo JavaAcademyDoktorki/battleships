@@ -4,37 +4,37 @@ public enum FieldStyles {
     Empty{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #00ffd3";
+            return FieldStylesConstants.EMPTY;
         }
     },
     Mast{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #092300";
+            return FieldStylesConstants.MAST;
         }
     },
     HitMast{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #aaa007";
+            return FieldStylesConstants.HIT_MAST;
         }
     },
     Missed{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #15b007";
+            return FieldStylesConstants.MISSED;
         }
     },
     Sea{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #4abbf7";
+            return FieldStylesConstants.SEA;
         }
     },
     SunkMast{
         @Override
         public String getStyle() {
-            return "-fx-background-color: #1fa007";
+            return FieldStylesConstants.SUNK_MAST;
         }
     };
 

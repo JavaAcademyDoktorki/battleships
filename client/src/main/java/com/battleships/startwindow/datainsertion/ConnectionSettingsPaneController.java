@@ -31,6 +31,9 @@ import java.util.Optional;
 public class ConnectionSettingsPaneController {
     private PlayerName playerName = Connection.INSTANCE.getPlayerName();
 
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 450;
+
     @FXML
     private Button connectToServerButton;
     @FXML
@@ -108,7 +111,7 @@ public class ConnectionSettingsPaneController {
             Parent root = FXMLLoader.load(resource);
             Stage stage = new Stage();
             stage.titleProperty().bind(Translator.createStringBinding("game_window"));
-            stage.setScene(new Scene(root, 600, 450));
+            stage.setScene(new Scene(root, WIDTH, HEIGHT));
             stage.show();
             stage.setOnCloseRequest(event1 -> disconnect());
             stage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {

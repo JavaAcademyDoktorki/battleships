@@ -9,7 +9,7 @@ public class SunkMastField extends BoardField {
 
     @Override
     public BoardField hit() {
-        return null;
+        return null; // TODO
     }
 
     @Override

@@ -32,11 +32,9 @@ public class PlayerBoard extends Board {
         List<Coordinate> shipsFleetCoords = randomFleetPlacement.getRandomCoords();
         for (Coordinate mastCoord : shipsFleetCoords) {
             BoardField boardField = new MastField(mastCoord);
-            Coordinate fieldCord = mastCoord;
-            int fieldColumn = fieldCord.getColumn();
-            int fieldRow = fieldCord.getRow();
-
-            this.board.put(fieldCord, boardField);
+            int fieldColumn = mastCoord.getColumn();
+            int fieldRow = mastCoord.getRow();
+            this.board.put(mastCoord, boardField);
             gridPaneBoard.add(boardField, fieldColumn, fieldRow);
         }
     }

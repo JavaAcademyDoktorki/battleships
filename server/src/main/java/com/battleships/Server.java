@@ -19,7 +19,7 @@ class Server {
     private final ServerSocket serverSocket;
     private final ConnectedPlayers connectedPlayers;
     private static final Logger logger = LogManager.getLogger(Server.class.getName());
-    private volatile int setupCount=0;
+    private volatile int setupCount = 0;
 
     Server() throws IOException {
         logger.info(LogMessages.TRY_TO_RUN_SERVER);
@@ -100,13 +100,13 @@ class Server {
     }
 
     private void sendYouAreReadyMessage(Player player, CommandType commandType, Message message) {
-        if(commandType.equals(CommandType.SETUP_COMPLETED)){
+        if (commandType.equals(CommandType.SETUP_COMPLETED)) {
             setupCount++;
         }
-        if(setupCount==2){
+        if (setupCount == 2) {
             connectedPlayers.sendToActive(new Message(CommandType.YOU_ARE_READY, true));
             logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, message.getValue()));
-            setupCount=0;
+            setupCount = 0;
         }
     }
 

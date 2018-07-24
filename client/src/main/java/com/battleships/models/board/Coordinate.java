@@ -37,7 +37,7 @@ public class Coordinate {
             return false;
         } else {
             Coordinate that = (Coordinate)o;
-            return this.row == that.row && this.column == that.column;
+            return (this.row == that.row && this.column == that.column);
         }
     }
 
