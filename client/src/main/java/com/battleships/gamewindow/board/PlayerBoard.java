@@ -13,7 +13,6 @@ public class PlayerBoard extends Board {
     private final RandomFleetPlacement randomFleetPlacement;
 
     public PlayerBoard() {
-        super();
         this.randomFleetPlacement = new RandomFleetPlacement();
     }
 

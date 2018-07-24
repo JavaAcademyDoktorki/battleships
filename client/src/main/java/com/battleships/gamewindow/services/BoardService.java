@@ -56,6 +56,6 @@ public class BoardService {
     }
 
     public void onShootOpponentMessageRecieve(Coordinate coordinate, BoardField boardField) {
-        opponentBoard.changeFieldAtCooord(coordinate, boardField);
+        opponentBoard.applyStyleForCoordinate(coordinate, boardField.getStyle());
     }
 }
