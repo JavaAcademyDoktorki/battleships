@@ -4,21 +4,20 @@ import com.battleships.commands.Message;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectedPlayers {
     private final List<Player> playerList;
     private int anonymousPlayersCounter = 0;
-    private PlayerStatus playerStatus = PlayerStatus.ACTIVE;
 
     public ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
     }
 
     public Player playerForSocket(Socket socket) throws IOException {
-        Player player = new Player(socket, playerStatus);
-        playerStatus = playerStatus.other();
+        Player player = new Player(socket);
         return player;
     }
 
@@ -54,10 +53,7 @@ public class ConnectedPlayers {
     }
 
     public Player getActive() {
-        if (playerList.get(0).isActive())
-            return playerList.get(0);
-        else
-            return playerList.get(1);
+        return playerList.get(0);
     }
 
     public void sendToInactive(Message stringPlayerCommand) {
@@ -66,14 +62,13 @@ public class ConnectedPlayers {
     }
 
     private Player getInactive() {
-        if (playerList.get(0).isInActive())
-            return playerList.get(0);
-        else
+        if (playerList.size() == 2)
             return playerList.get(1);
+        else
+            throw new IllegalStateException();
     }
 
     public void switchActive() {
-        playerList.get(0).switchActive();
-        playerList.get(1).switchActive();
+        Collections.reverse(playerList);
     }
 }

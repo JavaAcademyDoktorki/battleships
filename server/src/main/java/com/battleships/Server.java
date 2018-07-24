@@ -135,6 +135,7 @@ class Server {
     private void disconnect(Player player) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
+        connectedPlayers.sendToActive(new Message(CommandType.SHUT_DOWN, "room orphaned"));
         logger.info(String.format(LogMessages.DISCONNECT_PLAYER, player));
     }
 }

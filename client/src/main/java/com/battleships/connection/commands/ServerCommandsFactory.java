@@ -24,6 +24,8 @@ public class ServerCommandsFactory {
                 return new SetupCompleted(value);
             case YOU_ARE_READY:
                 return new YouAreReady(value);
+            case SHUT_DOWN:
+                return new ShutDown(value);
             default:
                 return new EmptyCommand(null);
         }
