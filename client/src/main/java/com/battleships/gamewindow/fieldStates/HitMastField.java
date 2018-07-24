@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.fieldStates;
 
-public class HitShipField extends BoardField {
+public class HitMastField extends BoardField {
     @Override
     public BoardField hit() {
         return this;

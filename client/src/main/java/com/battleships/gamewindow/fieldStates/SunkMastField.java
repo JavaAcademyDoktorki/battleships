@@ -1,13 +1,13 @@
 package com.battleships.gamewindow.fieldStates;
 
-public class ShipField extends BoardField {
+public class SunkMastField extends BoardField {
     @Override
     public BoardField hit() {
-        return new HitShipField();
+        return null;
     }
 
     @Override
     public void refreshColor() {
-        this.setStyle("-fx-background-color: #092300");
+        this.setStyle("-fx-background-color: #1fa007");
     }
 }
