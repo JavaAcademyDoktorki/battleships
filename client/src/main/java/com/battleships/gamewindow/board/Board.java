@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Board {
-    protected Map<Coordinate, BoardField> board;
+    Map<Coordinate, BoardField> board;
 
-    public Board() {
+    Board() {
         this.board = new HashMap<>();
     }
 
@@ -17,8 +17,7 @@ public class Board {
         this.board.put(coordinate, boardField);
     }
 
-    public void changeFieldAtCooord(Coordinate coordinate, BoardField hitMastField) {
-        System.out.println(coordinate);
-        board.get(coordinate).setStyle(hitMastField.getStyle());
+    public void applyStyleForCoordinate(Coordinate coordinate, String style) {
+        board.get(coordinate).setStyle(style);
     }
 }
