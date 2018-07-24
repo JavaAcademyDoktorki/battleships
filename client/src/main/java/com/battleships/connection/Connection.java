@@ -32,22 +32,42 @@ public enum Connection {
     private final BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
     private final PlayerName playerName = new PlayerName();
 
+    /**
+     * @return PlayerName JavaFX property to read from connection pane
+     * and update from the server's response on connection
+     */
     public PlayerName getPlayerName() {
         return playerName;
     }
 
+    /**
+     * @return boolean value of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     */
     public boolean getPlayerActive() {
         return playerActive.get();
     }
 
+    /**
+     * @return JavaFX PlayerActiveProperty used to control the buttons activity in the UI (for property bindings)
+     */
     public BooleanProperty playerActiveProperty() {
         return playerActive;
     }
 
+    /**
+     * setting of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     *
+     * @param playerActive boolean parameter if player is active
+     */
     public void setPlayerActive(boolean playerActive) {
         this.playerActive.set(playerActive);
     }
 
+    /**
+     * setting of the JavaFX PlayerReadyProperty used to control the buttons activity flow in the UI
+     *
+     * @param playerReady boolean parameter informing if player is ready
+     */
     public void setPlayerReady(boolean playerReady) {
         this.playerReadyProperty.setValue(playerReady);
     }
@@ -61,13 +81,15 @@ public enum Connection {
      *
      * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
      */
-
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
             tryToEstablishConnection(connectionInfo);
         }
     }
 
+    /**
+     * @return JavaFX BooleanProperty
+     */
     public BooleanProperty connectedProperty() {
         return connected;
     }
@@ -76,6 +98,9 @@ public enum Connection {
         this.connected.set(connected);
     }
 
+    /**
+     * @return connection state
+     */
     public boolean isConnected() {
         checkConnected();
         return connected.get();
@@ -101,7 +126,6 @@ public enum Connection {
     /**
      * Disconnects client from the server
      */
-
     public void disconnect() {
         if (isConnected()) {
             tryToDisconnectFromServer();
@@ -125,7 +149,6 @@ public enum Connection {
      *
      * @param message - <code>Message</code> Player command object with specified command kind and value
      */
-
     public void sendToServer(Message message) {
         if (isConnected()) {
             serverIO.trySend(message);
