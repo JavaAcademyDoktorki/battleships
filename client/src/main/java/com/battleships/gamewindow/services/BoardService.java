@@ -7,7 +7,6 @@ import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.EmptyField;
 import com.battleships.gamewindow.board.fieldStates.SeaField;
-import com.battleships.models.Events;
 import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
 import javafx.event.ActionEvent;
@@ -31,25 +30,24 @@ public class BoardService {
         playerBoard.placeFleetRandomly(gridPaneForBoard);
     }
 
-    public void initBoards(BoardGridPanes boardGridPanes, Events events) {
+    public void initBoards(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent) {
         for (int row = 1; row <= 10; row++) {
             for (int col = 1; col <= 10; col++) {
                 Coordinate coordinate = Coordinate.fromIntCoords(row, col);
                 // TODO 30/07/18 damian - is events.getPlaceShipEvent() needed ?
-                addFieldToPlayerBoard(coordinate, boardGridPanes.playerGridPane(), events.getPlaceShipEvent());
-                addFieldToOpponentBoard(coordinate, boardGridPanes.opponentGridPane(), events.getShotEvent());
+                addFieldToPlayerBoard(coordinate, boardGridPanes.playerGridPane());
+                addFieldToOpponentBoard(coordinate, boardGridPanes.opponentGridPane(), shotEvent);
             }
         }
     }
 
     // TODO 30/07/18 damian -  Refactor that method (too many args)
-    private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane, EventHandler<ActionEvent> event) {
+    private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane) {
         BoardField boardField = new SeaField();
         boardField.setDisable(true);
         playerBoard.addNewField(coordinate, boardField);
 
         boardField.setId(coordinate.getRow() + " " + coordinate.getRow()); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class
-        boardField.setOnAction(event);
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }
 
