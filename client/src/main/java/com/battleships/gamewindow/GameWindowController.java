@@ -10,7 +10,7 @@ import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.Events;
-import com.battleships.models.board.Boards;
+import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -54,7 +54,7 @@ public class GameWindowController {
         readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
 
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
-        Boards boards = new Boards(myBoard, opponentBoard);
+        BoardGridPanes boards = new BoardGridPanes(myBoard, opponentBoard);
         Events events = new Events(this::placeShipsRandomly, this::shot);
 
         initBoardService(boards, events);
@@ -81,10 +81,10 @@ public class GameWindowController {
         });
     }
 
-    private void initBoardService(Boards boards, Events events) {
+    private void initBoardService(BoardGridPanes boardGridPanes, Events events) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
-        boardService.initBoards(boards, events);
+        boardService.initBoards(boardGridPanes);
     }
 
     private void placeShip(ActionEvent event) {
