@@ -34,14 +34,12 @@ public class BoardService {
         for (int row = 1; row <= 10; row++) {
             for (int col = 1; col <= 10; col++) {
                 Coordinate coordinate = Coordinate.fromIntCoords(row, col);
-                // TODO 30/07/18 damian - is events.getPlaceShipEvent() needed ?
                 addFieldToPlayerBoard(coordinate, boardGridPanes.playerGridPane());
                 addFieldToOpponentBoard(coordinate, boardGridPanes.opponentGridPane(), shotEvent);
             }
         }
     }
 
-    // TODO 30/07/18 damian -  Refactor that method (too many args)
     private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane) {
         BoardField boardField = new SeaField();
         boardField.setDisable(true);

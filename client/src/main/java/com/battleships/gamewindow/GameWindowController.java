@@ -92,11 +92,6 @@ public class GameWindowController {
         boardService.initBoards(boardGridPanes, shotEvent);
     }
 
-    private void placeShip(ActionEvent event) {
-        Coordinate buttonCoordinates = Coordinate.fromButtonId(((Button) event.getSource()).getId());
-        System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
-    }
-
     private void shot(ActionEvent event) {
         BoardField clickedButton = (BoardField) event.getSource();
         Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
