@@ -71,4 +71,8 @@ public class ConnectedPlayers {
     public void switchActive() {
         Collections.reverse(playerList);
     }
+
+    public boolean areThereAnyPlayer() {
+        return playerList.size() > 0;
+    }
 }

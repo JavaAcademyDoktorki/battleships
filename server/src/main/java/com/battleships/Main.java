@@ -16,7 +16,8 @@ class Main {
      */
     public static void main(String[] args) {
         try {
-            new Server();
+            Server server = new Server();
+            server.start();
         } catch (IOException e) {
             logger.error(LogMessages.PROBLEM_WHEN_TRYING_TO_RUN_SERVER, e);
         }
