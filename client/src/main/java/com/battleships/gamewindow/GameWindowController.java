@@ -94,8 +94,8 @@ public class GameWindowController {
 
     private void shot(ActionEvent event) {
         BoardField clickedButton = (BoardField) event.getSource();
-        Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
-        clickedButton.refreshColor();
+        Coordinate coordinate = clickedButton.getCoordinate();
+        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed
         logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
         Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 

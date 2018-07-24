@@ -41,20 +41,16 @@ public class BoardService {
     }
 
     private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane) {
-        BoardField boardField = new SeaField();
+        BoardField boardField = new SeaField(coordinate);
         boardField.setDisable(true);
         playerBoard.addNewField(coordinate, boardField);
-
-        boardField.setId(coordinate.getRow() + " " + coordinate.getRow()); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }
 
     private void addFieldToOpponentBoard(Coordinate coordinate, GridPane boardGridPane, EventHandler<ActionEvent> event) {
-        BoardField boardField = new EmptyField();
+        BoardField boardField = new EmptyField(coordinate);
         boardField.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
         opponentBoard.addNewField(coordinate, boardField);
-
-        boardField.setId(coordinate.getRow() + " " + coordinate.getRow()); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class
         boardField.setOnAction(event);
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }
