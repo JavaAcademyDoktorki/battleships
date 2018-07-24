@@ -44,19 +44,14 @@ public class GameWindowController {
     private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
+        initListeners();
+        bindGUIComponents();
+        initBoardService(this::shot);
+    }
+
+    private void initListeners() {
         initListenerForTextInfoAboutGameReadiness();
         initListenerForTextInfoAboutPlayerTurn();
-
-        yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
-        opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
-        randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
-
-        readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
-
-        readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
-        BoardGridPanes boards = new BoardGridPanes(myBoard, opponentBoard);
-
-        initBoardService(boards, this::shot);
     }
 
     private void initListenerForTextInfoAboutPlayerTurn() {
@@ -80,9 +75,20 @@ public class GameWindowController {
         });
     }
 
-    private void initBoardService(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent) {
+    private void bindGUIComponents() {
+        yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
+        opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
+
+        randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
+        readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
+        readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
+    }
+
+    private void initBoardService(EventHandler<ActionEvent> shotEvent) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
+
+        BoardGridPanes boardGridPanes = new BoardGridPanes(myBoard, opponentBoard);
         boardService.initBoards(boardGridPanes, shotEvent);
     }
 
