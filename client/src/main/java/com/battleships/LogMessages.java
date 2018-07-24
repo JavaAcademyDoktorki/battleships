@@ -19,4 +19,6 @@ public class LogMessages {
     public static final String CANNOT_OBTAIN_SOCKET_OUTPUSTREAM = "Nie mogę uzyskać strumienia wyjścia (OutputStream) klienta";
     public static final String CANNOT_OBTAIN_SOCKET_INPUTSTREAM = "Nie mogę uzyskać strumienia wejścia (InputStream) klienta";
     public static final String QUIT_WITH_ESCAPE = "Wyjście przy użyciu Escape";
+    public static final String SHIP_PLACED = "Flota została rozlosowana";
+    public static final String FIRED_SHOT_ON = "Starzał oddany na";
 }

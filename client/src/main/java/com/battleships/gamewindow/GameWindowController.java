@@ -1,11 +1,11 @@
 package com.battleships.gamewindow;
 
+import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.models.ButtonCoordinates;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
@@ -16,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
@@ -38,6 +40,7 @@ public class GameWindowController {
     private Label turnLabel;
 
     private BoardService service;
+    private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
         readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
@@ -64,23 +67,22 @@ public class GameWindowController {
 
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
         Boards boards = new Boards(myBoard, opponentBoard);
-        Events events = new Events(this::placeShip, this::shot);
+        Events events = new Events(this::placeShipsRandomly, this::shot);
         service = new BoardService(10, 10, new HashMap<>());
         service.createButtonsInBothBoards(boards, events);
     }
 
     private void placeShip(ActionEvent event) {
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(((Button) event.getSource()).getId());
+        Coordinate buttonCoordinates = Coordinate.fromButtonId(((Button) event.getSource()).getId());
         System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
     }
 
     private void shot(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(clickedButton.getId());
-        Coordinate coord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        service.colourButton(clickedButton, coord);
-        System.out.println("Fired shot on: " + buttonCoordinates.getRow() + " " + buttonCoordinates.getColumn());
-        Shot shot = new Shot(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+        Coordinate coordinate = Coordinate.fromButtonId(clickedButton.getId());
+        service.colourButton(clickedButton, coordinate);
+        logger.info(LogMessages.FIRED_SHOT_ON + " " + coordinate.getRow() + " " + coordinate.getColumn());
+        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
@@ -90,7 +92,7 @@ public class GameWindowController {
     public void placeShipsRandomly(ActionEvent event) {
         service.placeShipsRandomly();
         service.showMyBoardToPlayer(myBoard.getChildren());
-        System.out.println("ships placed");
+        logger.info(LogMessages.SHIP_PLACED);
     }
 
     public void confirmReady(ActionEvent event) {

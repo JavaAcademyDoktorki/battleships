@@ -36,7 +36,7 @@ public class BoardServiceTest {
     public void button_has_brown_style_if_there_is_a_mast() {
         //given
         Button button = new Button();
-        Coordinate mastCoord = new Coordinate(10, 10);
+        Coordinate mastCoord = Coordinate.fromIntCoords(10, 10);
         when(board.get(mastCoord)).thenReturn(CoordState.SHIP);
         //when
         boardService.colourButton(button, mastCoord);
@@ -48,8 +48,8 @@ public class BoardServiceTest {
     public void button_has_blue_style_if_no_mast_is_there() {
         //given
         Button button = new Button();
-        Coordinate shipCoordinate = new Coordinate(10, 10);
-        Coordinate waterCoordinate = new Coordinate(9, 10);
+        Coordinate shipCoordinate = Coordinate.fromIntCoords(10, 10);
+        Coordinate waterCoordinate = Coordinate.fromIntCoords(9, 10);
         when(board.get(shipCoordinate)).thenReturn(CoordState.SHIP);
         when(board.get(waterCoordinate)).thenReturn(CoordState.WATER);
         //when

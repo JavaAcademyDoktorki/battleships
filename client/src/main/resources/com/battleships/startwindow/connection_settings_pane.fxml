@@ -8,8 +8,9 @@
           fx:id="connectionSettingsPane">
     <TextField fx:id="ipTextField" text="127.0.0.1:50000" promptText="127.0.0.1:50000" GridPane.rowIndex="0"
                GridPane.columnIndex="0"/>
-    <Button fx:id="connectToServerButton" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-    <Button fx:id="disconnectFromServerButton" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+    <Button fx:id="connectToServerButton" GridPane.rowIndex="0" GridPane.columnIndex="1"
+            onAction="#connectToServerButtonAction"/>
+    <Button fx:id="disconnectFromServerButton" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#disconnect"/>
     <HBox alignment="TOP_CENTER" GridPane.rowIndex="2">
         <TextField fx:id="nameTextField"/>
     </HBox>
