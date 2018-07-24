@@ -8,6 +8,6 @@ public class MastField extends BoardField {
 
     @Override
     public void refreshColor() {
-        this.setStyle("-fx-background-color: #092300");
+        this.setStyle(FieldStyles.Mast.getStyle());
     }
 }

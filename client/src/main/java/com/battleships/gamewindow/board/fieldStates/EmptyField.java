@@ -9,6 +9,6 @@ public class EmptyField extends BoardField {
 
     @Override
     public void refreshColor() {
-        this.setStyle("-fx-background-color: #00ffd3");
+        this.setStyle(FieldStyles.Empty.getStyle());
     }
 }

@@ -8,6 +8,6 @@ public class SeaField extends BoardField {
 
     @Override
     public void refreshColor() {
-        this.setStyle("-fx-background-color: #4abbf7");
+        this.setStyle(FieldStyles.Sea.getStyle());
     }
 }

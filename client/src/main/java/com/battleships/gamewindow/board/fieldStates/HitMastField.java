@@ -8,6 +8,6 @@ public class HitMastField extends BoardField {
 
     @Override
     public void refreshColor() {
-        this.setStyle("-fx-background-color: #aaa007");
+        this.setStyle(FieldStyles.HitMast.getStyle());
     }
 }
