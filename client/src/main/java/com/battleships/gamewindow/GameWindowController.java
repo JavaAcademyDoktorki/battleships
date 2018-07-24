@@ -84,7 +84,7 @@ public class GameWindowController {
     private void initBoardService(Boards boards, Events events) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
-        boardService.fillBoardsWithFields(boards, events);
+        boardService.initBoards(boards, events);
     }
 
     private void placeShip(ActionEvent event) {

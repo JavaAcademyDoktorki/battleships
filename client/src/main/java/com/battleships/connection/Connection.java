@@ -146,8 +146,7 @@ public enum Connection {
     }
 
     private void initThreadReadingCommandsFromServer() {
-        readCommandsFromUserThread = new Thread(() ->
-                readFromServerUntilDisconnected());
+        readCommandsFromUserThread = new Thread(() -> readFromServerUntilDisconnected());
         readCommandsFromUserThread.setDaemon(true);
     }
 
