@@ -41,7 +41,7 @@ public class BoardServiceTest {
         //when
         boardService.colourButton(button, mastCoord);
         //then
-        assertEquals(button.getStyle(), "-fx-background-color: #15b007\n");
+        assertEquals(button.getStyle(), "-fx-background-color: #15b007");
     }
 
     @Test
