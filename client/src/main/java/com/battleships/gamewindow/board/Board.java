@@ -1,8 +1,6 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldStyles;
-import com.battleships.gamewindow.board.fieldStates.HitMastField;
 import com.battleships.models.board.Coordinate;
 
 import java.util.HashMap;
@@ -19,8 +17,8 @@ public class Board {
         this.board.put(coordinate, boardField);
     }
 
-    public void changeFieldAtCooord(Coordinate coordinate, HitMastField hitMastField) {
+    public void changeFieldAtCooord(Coordinate coordinate, BoardField hitMastField) {
         System.out.println(coordinate);
-        board.get(coordinate).setStyle(FieldStyles.SunkMast.getStyle());
+        board.get(coordinate).setStyle(hitMastField.getStyle());
     }
 }
