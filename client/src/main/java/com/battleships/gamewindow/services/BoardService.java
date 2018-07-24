@@ -32,11 +32,15 @@ public class BoardService {
 
     public void initBoards(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent) {
         for (int row = 1; row <= 10; row++) {
-            for (int col = 1; col <= 10; col++) {
-                Coordinate coordinate = Coordinate.fromIntCoords(row, col);
-                addFieldToPlayerBoard(coordinate, boardGridPanes.playerGridPane());
-                addFieldToOpponentBoard(coordinate, boardGridPanes.opponentGridPane(), shotEvent);
-            }
+            iterateOnColumns(boardGridPanes, shotEvent, row);
+        }
+    }
+
+    private void iterateOnColumns(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent, int row) {
+        for (int col = 1; col <= 10; col++) {
+            Coordinate coordinate = Coordinate.fromIntCoords(row, col);
+            addFieldToPlayerBoard(coordinate, boardGridPanes.playerGridPane());
+            addFieldToOpponentBoard(coordinate, boardGridPanes.opponentGridPane(), shotEvent);
         }
     }
 

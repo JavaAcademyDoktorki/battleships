@@ -58,10 +58,11 @@ public class GameWindowController {
     private void initListenerForTextInfoAboutPlayerTurn() {
         turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
         Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
+            if (newValue) {
                 turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
-            else
+            } else {
                 turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+            }
         });
         turnLabel.setVisible(false);
     }
@@ -69,10 +70,11 @@ public class GameWindowController {
     private void initListenerForTextInfoAboutGameReadiness() {
         readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
         Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
+            if (newValue) {
                 readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
-            else
+            } else {
                 readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+            }
         });
     }
 
@@ -97,15 +99,24 @@ public class GameWindowController {
         BoardField clickedButton = (BoardField) event.getSource();
         Coordinate coordinate = clickedButton.getCoordinate();
         clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed
-        logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
-        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
 
-        Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
+        sendShootMessageToServer(coordinate);
+        makePlayerInactiveAndUnreadyAfterShoot();
 
         // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING
         boardService.onShootOpponentMessageRecieve(coordinate, new HitMastField(coordinate));
+
+        logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
+    }
+
+    private void sendShootMessageToServer(Coordinate coordinate) {
+        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
+        Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
+    }
+
+    private void makePlayerInactiveAndUnreadyAfterShoot() {
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
     }
 
     public void placeShipsRandomly(Event event) {
@@ -118,7 +129,9 @@ public class GameWindowController {
         if (boardSetupValid && Connection.INSTANCE.getPlayerActive()) {
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
+
             Connection.INSTANCE.sendToServer(new Message(CommandType.SETUP_COMPLETED, ""));
+
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
             turnLabel.setVisible(true);
         }

@@ -9,6 +9,7 @@ public class ServerCommandsFactory {
     public static AbstractServerCommand getCommandImpl(Message message) {
         CommandType commandType = message.getCommandType();
         Object value = message.getValue();
+
         switch (commandType) {
             case PLAYER_REGISTERED_SUCCESSFULLY:
                 return new PlayerRegistered(value);

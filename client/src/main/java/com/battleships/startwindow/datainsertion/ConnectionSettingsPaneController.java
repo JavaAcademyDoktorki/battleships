@@ -96,9 +96,9 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         Connection.INSTANCE.establishConnection(connectionInfo);
-        if (!Connection.INSTANCE.isConnected())
+        if (!Connection.INSTANCE.isConnected()) {
             showConnectionFailedDialog();
-        else {
+        } else {
             Message setNameCommand = new Message(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
             nameTextField.setEditable(false);
             Connection.INSTANCE.sendToServer(setNameCommand);
@@ -114,13 +114,15 @@ public class ConnectionSettingsPaneController {
             stage.setScene(new Scene(root, WIDTH, HEIGHT));
             stage.show();
             stage.setOnCloseRequest(event1 -> disconnect());
-            stage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-                if (e.getCode() == KeyCode.ESCAPE) {
+
+            stage.addEventHandler(KeyEvent.KEY_RELEASED, nextEvent -> {
+                if (nextEvent.getCode() == KeyCode.ESCAPE) {
                     logger.info(LogMessages.QUIT_WITH_ESCAPE);
                     disconnect();
                     Platform.exit();
                 }
             });
+
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -21,6 +21,7 @@ class Server {
     private volatile int setupCount = 0;
     private volatile int roomCount = 0;
     private final int MAX_ROOMS = 2;
+    public static final int SETUP_COMPLETED = 2;
 
     Server() {
     }
@@ -113,7 +114,7 @@ class Server {
         if (commandType.equals(CommandType.SETUP_COMPLETED)) {
             setupCount++;
         }
-        if (setupCount == 2) {
+        if (setupCount == SETUP_COMPLETED) {
             connectedPlayers.sendToActive(new Message(CommandType.YOU_ARE_READY, true));
             logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, message.getValue()));
             setupCount = 0;
