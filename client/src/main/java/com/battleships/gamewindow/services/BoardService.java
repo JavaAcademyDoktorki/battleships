@@ -1,9 +1,11 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.fieldStates.BoardField;
-import com.battleships.gamewindow.fieldStates.SeaField;
-import com.battleships.gamewindow.fieldStates.MastField;
+import com.battleships.gamewindow.board.BoardSize;
+import com.battleships.gamewindow.board.OpponentBoard;
+import com.battleships.gamewindow.board.PlayerBoard;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fieldStates.SeaField;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
 import com.battleships.models.board.Coordinate;
@@ -13,59 +15,21 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class BoardService {
-
-    private Map<Coordinate, BoardField> myBoard;
-    private Map<Coordinate, BoardField> opponentBoard;
-    private GridPane myGridPaneBoard;
-    private final int rows;
-    private final int cols;
-    private final RandomFleetPlacement randomFleetPlacement;
+    private PlayerBoard playerBoard;
+    private OpponentBoard opponentBoard;
+    private BoardSize boardSize;
 
 
-    public BoardService(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
-        this.myBoard = new HashMap<>();
-        this.opponentBoard = new HashMap<>();
-        this.randomFleetPlacement = new RandomFleetPlacement();
+    public BoardService(BoardSize boardSize) {
+        this.boardSize = boardSize;
+        this.playerBoard = new PlayerBoard();
+        this.opponentBoard = new OpponentBoard();
     }
 
-    public void addShipCoord(Coordinate buttonCoordinates) {
-        Coordinate cord = Coordinate.fromIntCoords(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        myBoard.put(cord, new MastField()); // TODO - will be used later
-    }
-
-    private void changeAllFieldsToSea(GridPane myBoard) {
-        for (int row = 1; row <= rows; row++) {
-            for (int col = 1; col <= cols; col++) {
-                Coordinate cord = Coordinate.fromIntCoords(row, col);
-                BoardField seaField = new SeaField();
-                myBoard.add(seaField, col, row);
-                this.myBoard.put(cord, seaField);
-            }
-        }
-    }
-
-    public void placeShipsRandomly(GridPane myBoard) {
-        changeAllFieldsToSea(myBoard);
-        placeShips(randomFleetPlacement.getRandomBoards(), myBoard);
-    }
-
-    private void placeShips(List<Coordinate> cords, GridPane myBoard) {
-        for (int i = 0; i < cords.size(); i++) {
-            BoardField boardField = new MastField();
-            Coordinate fieldCord = cords.get(i);
-            int fieldColumn = fieldCord.getColumn();
-            int fieldRow = fieldCord.getRow();
-
-            this.myBoard.put(fieldCord, boardField);
-            myBoard.add(boardField, fieldColumn, fieldRow);
-        }
+    public void createNewRandomConfig(GridPane gridPaneForBoard) {
+        playerBoard.changeAllFieldsToSea(boardSize, gridPaneForBoard);
+        playerBoard.placeFleetRandomly(gridPaneForBoard);
     }
 
     public void fillBoardsWithFields(Boards boards, Events events) {
@@ -74,7 +38,7 @@ public class BoardService {
                 Coordinate coordinate = Coordinate.fromIntCoords(row, col);
                 // TODO 30/07/18 damian - is events.getPlaceShipEvent() needed ?
                 initializeBoard(coordinate, boards.getMyBoard(), events.getPlaceShipEvent(), true);
-                initializeBoard(coordinate, boards.getOpponentsBoard() , events.getShotEvent(), false);
+                initializeBoard(coordinate, boards.getOpponentsBoard(), events.getShotEvent(), false);
             }
         }
     }
@@ -85,10 +49,10 @@ public class BoardService {
         boardField.setDisable(isMyBoard);
 
         if (isMyBoard) {
-            myBoard.put(coordinate, boardField);
+            playerBoard.addNewField(coordinate, boardField);
         } else {
             boardField.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
-            opponentBoard.put(coordinate, boardField);
+            opponentBoard.addNewField(coordinate, boardField);
         }
 
         boardField.setId(coordinate.getRow() + " " + coordinate.getRow()); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class

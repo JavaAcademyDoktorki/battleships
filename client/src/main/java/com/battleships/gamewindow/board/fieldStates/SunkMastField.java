@@ -1,4 +1,4 @@
-package com.battleships.gamewindow.fieldStates;
+package com.battleships.gamewindow.board.fieldStates;
 
 public class SunkMastField extends BoardField {
     @Override

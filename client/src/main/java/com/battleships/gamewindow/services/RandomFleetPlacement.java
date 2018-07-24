@@ -117,7 +117,7 @@ public class RandomFleetPlacement {
         return boards;
     }
 
-    public List<Coordinate> getRandomBoards(){
+    public List<Coordinate> getRandomCoords(){
         System.out.println("Kombinacja nr " + lastCombinationProvided%6);
         return boards.get(++lastCombinationProvided%6);
     }

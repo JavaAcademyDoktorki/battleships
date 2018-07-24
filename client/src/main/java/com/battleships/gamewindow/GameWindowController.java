@@ -6,13 +6,15 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.fieldStates.BoardField;
+import com.battleships.gamewindow.board.BoardSize;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.Events;
 import com.battleships.models.board.Boards;
 import com.battleships.models.board.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,21 +44,8 @@ public class GameWindowController {
     private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
-        readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
-        Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
-            else
-                readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
-        });
-        turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
-        Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
-            else
-                turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
-        });
-        turnLabel.setVisible(false);
+        initListenerForTextInfoAboutGameReadiness();
+        initListenerForTextInfoAboutPlayerTurn();
 
         yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
         opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
@@ -67,7 +56,34 @@ public class GameWindowController {
         readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
         Boards boards = new Boards(myBoard, opponentBoard);
         Events events = new Events(this::placeShipsRandomly, this::shot);
-        boardService = new BoardService(10, 10);
+
+        initBoardService(boards, events);
+    }
+
+    private void initListenerForTextInfoAboutPlayerTurn() {
+        turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+        Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
+            else
+                turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+        });
+        turnLabel.setVisible(false);
+    }
+
+    private void initListenerForTextInfoAboutGameReadiness() {
+        readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+        Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
+            else
+                readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+        });
+    }
+
+    private void initBoardService(Boards boards, Events events) {
+        BoardSize boardSize = new BoardSize(10, 10);
+        boardService = new BoardService(boardSize);
         boardService.fillBoardsWithFields(boards, events);
     }
 
@@ -88,8 +104,8 @@ public class GameWindowController {
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
     }
 
-    public void placeShipsRandomly(ActionEvent event) {
-        boardService.placeShipsRandomly(myBoard);
+    public void placeShipsRandomly(Event event) {
+        boardService.createNewRandomConfig(myBoard);
         boardService.showMyBoardToPlayer(myBoard.getChildren());
         logger.info(LogMessages.SHIP_PLACED);
     }
