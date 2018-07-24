@@ -8,6 +8,7 @@ import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fieldStates.HitMastField;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
@@ -24,9 +25,9 @@ import org.apache.logging.log4j.Logger;
 
 public class GameWindowController {
     @FXML
-    private GridPane myBoard;
+    private GridPane playerGridPaneBoard;
     @FXML
-    private GridPane opponentBoard;
+    private GridPane opponentGridPaneBoard;
     @FXML
     private Label readyLabel;
     @FXML
@@ -88,7 +89,7 @@ public class GameWindowController {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
 
-        BoardGridPanes boardGridPanes = new BoardGridPanes(myBoard, opponentBoard);
+        BoardGridPanes boardGridPanes = new BoardGridPanes(playerGridPaneBoard, opponentGridPaneBoard);
         boardService.initBoards(boardGridPanes, shotEvent);
     }
 
@@ -102,10 +103,13 @@ public class GameWindowController {
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
+
+        // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING
+        boardService.onShootOpponentMessageRecieve(coordinate, new HitMastField(coordinate));
     }
 
     public void placeShipsRandomly(Event event) {
-        boardService.createNewRandomConfig(myBoard);
+        boardService.createNewRandomConfig(playerGridPaneBoard);
         logger.info(LogMessages.SHIP_PLACED);
     }
 

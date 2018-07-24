@@ -9,20 +9,8 @@ public class Coordinate {
         this.column = column;
     }
 
-
-    public static Coordinate fromButtonId(String buttonId){
-        String [] parse = parse(buttonId);
-        int row = Integer.valueOf(parse[0]);
-        int col = Integer.valueOf(parse[1]);
-        return Coordinate.fromIntCoords(row, col);
-    }
-
     public static Coordinate fromIntCoords(int row, int col){
         return new Coordinate(row, col);
-    }
-
-    private static String[] parse(String id) {
-        return id.split(" ");
     }
 
     public int getRow() {
@@ -31,6 +19,14 @@ public class Coordinate {
 
     public int getColumn() {
         return column;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
     }
 
     @Override

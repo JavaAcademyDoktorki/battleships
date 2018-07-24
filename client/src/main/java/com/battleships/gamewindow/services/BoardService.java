@@ -6,6 +6,7 @@ import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.EmptyField;
+import com.battleships.gamewindow.board.fieldStates.HitMastField;
 import com.battleships.gamewindow.board.fieldStates.SeaField;
 import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
@@ -53,5 +54,9 @@ public class BoardService {
         opponentBoard.addNewField(coordinate, boardField);
         boardField.setOnAction(event);
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
+    }
+
+    public void onShootOpponentMessageRecieve(Coordinate coordinate, HitMastField hitMastField) {
+        opponentBoard.changeFieldAtCooord(coordinate, hitMastField);
     }
 }
