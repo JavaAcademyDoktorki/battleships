@@ -84,7 +84,7 @@ public class GameWindowController {
     private void initBoardService(BoardGridPanes boardGridPanes, Events events) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
-        boardService.initBoards(boardGridPanes);
+        boardService.initBoards(boardGridPanes, events);
     }
 
     private void placeShip(ActionEvent event) {
@@ -106,7 +106,6 @@ public class GameWindowController {
 
     public void placeShipsRandomly(Event event) {
         boardService.createNewRandomConfig(myBoard);
-        boardService.showMyBoardToPlayer(myBoard.getChildren());
         logger.info(LogMessages.SHIP_PLACED);
     }
 

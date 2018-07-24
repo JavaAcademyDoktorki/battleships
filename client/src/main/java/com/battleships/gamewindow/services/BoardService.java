@@ -10,10 +10,8 @@ import com.battleships.gamewindow.board.fieldStates.SeaField;
 import com.battleships.models.Events;
 import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 public class BoardService {
@@ -63,14 +61,5 @@ public class BoardService {
         boardField.setId(coordinate.getRow() + " " + coordinate.getRow()); // TODO 30/07/18 damian - this should not be ID, it should be Coordinates class
         boardField.setOnAction(event);
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
-    }
-
-    public void showMyBoardToPlayer(ObservableList<Node> myBoardChildren) {
-        for (Node node : myBoardChildren) {
-            BoardField boardField = (BoardField) node;
-//            Coordinate fieldCoordinate = Coordinate.fromButtonId(boardField.getId());
-//            System.out.println(boardField);
-            boardField.refreshColor();
-        }
     }
 }
