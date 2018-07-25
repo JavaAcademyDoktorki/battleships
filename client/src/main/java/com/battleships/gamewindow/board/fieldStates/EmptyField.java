@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.board.fieldStates;
 
-import com.battleships.models.board.Coordinate;
+import com.battleships.gamewindow.board.Coordinate;
 
 public class EmptyField extends BoardField {
     public EmptyField(Coordinate coordinate) {

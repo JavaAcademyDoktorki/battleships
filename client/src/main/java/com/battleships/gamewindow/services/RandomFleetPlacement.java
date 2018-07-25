@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.services;
 
-import com.battleships.models.board.Coordinate;
+import com.battleships.gamewindow.board.Coordinate;
 
 import java.util.Arrays;
 import java.util.HashMap;

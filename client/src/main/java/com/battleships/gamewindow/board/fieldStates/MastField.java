@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.board.fieldStates;
 
-import com.battleships.models.board.Coordinate;
+import com.battleships.gamewindow.board.Coordinate;
 
 public class MastField extends BoardField {
     public MastField(Coordinate coordinate) {

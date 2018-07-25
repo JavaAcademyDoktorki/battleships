@@ -1,4 +1,4 @@
-package com.battleships.models.board;
+package com.battleships.gamewindow.board;
 
 public class Coordinate {
     private final int row;

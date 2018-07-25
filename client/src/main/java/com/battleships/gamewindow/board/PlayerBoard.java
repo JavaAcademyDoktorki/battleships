@@ -4,7 +4,6 @@ import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.MastField;
 import com.battleships.gamewindow.board.fieldStates.SeaField;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
-import com.battleships.models.board.Coordinate;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;

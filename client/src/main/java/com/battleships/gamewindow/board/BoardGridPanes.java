@@ -1,4 +1,4 @@
-package com.battleships.models.board;
+package com.battleships.gamewindow.board;
 
 import javafx.scene.layout.GridPane;
 
