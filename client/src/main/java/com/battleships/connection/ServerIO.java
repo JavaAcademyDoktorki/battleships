@@ -19,10 +19,10 @@ class ServerIO {
     }
 
 
-    Message<?> getMessage() {
-        Message<?> messageFromServer = null;
+    Message getMessage() {
+        Message messageFromServer = null;
         try {
-            messageFromServer = (Message<?>) socketReader.readObject();
+            messageFromServer = (Message) socketReader.readObject();
         } catch (IOException | ClassNotFoundException e) {
             logger.info("odłączono od serwera");
             logger.error(() -> e.getMessage());

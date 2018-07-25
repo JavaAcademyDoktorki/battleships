@@ -16,55 +16,66 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 class Server {
-    private final ServerSocket serverSocket;
-    private final ConnectedPlayers connectedPlayers;
+    private ServerSocket serverSocket;
     private static final Logger logger = LogManager.getLogger(Server.class.getName());
-    private volatile int setupCount=0;
+    private volatile int setupCount = 0;
+    private volatile int roomCount = 0;
+    private final int MAX_ROOMS = 2;
+    public static final int SETUP_COMPLETED = 2;
 
-    Server() throws IOException {
+    Server() {
+    }
+
+    public void start() throws IOException {
         logger.info(LogMessages.TRY_TO_RUN_SERVER);
         this.serverSocket = new ServerSocket(50000);
         logger.info(LogMessages.SERVER_RUNS);
-        this.connectedPlayers = new ConnectedPlayers();
-        infiniteLoopAcceptingPlayers(); // todo ( na razie zapełnianie pokoju)
-        connectedPlayers.sendToActive(new Message<>(CommandType.START_PLAYING, true));  // todo (na razie rozgrywka tylko dwóch graczy)
-        connectedPlayers.sendToInactive(new Message<>(CommandType.START_PLAYING, false));
+        new Thread(() -> {
+            while (true) {
+                if (roomCount < MAX_ROOMS) {
+                    roomCount++;
+                    ConnectedPlayers connectedPlayers = new ConnectedPlayers();
+                    infiniteLoopAcceptingPlayers(connectedPlayers); // todo ( na razie zapełnianie pokoju)
+                }
+            }
+        }).start();
     }
 
-    private void infiniteLoopAcceptingPlayers() {
+    private void infiniteLoopAcceptingPlayers(ConnectedPlayers connectedPlayers) {
         while (connectedPlayers.notFull()) {
             try {
-                Player newPlayer = acceptNewPlayer();
-                startHandlingPlayerCommandsLoop(newPlayer);
+                acceptNewPlayer(connectedPlayers);
             } catch (IOException e) {
                 logger.error(LogMessages.PROBLEM_WHEN_ADDING_PLAYER + e.getMessage());
             }
         }
+        connectedPlayers.sendToActive(new Message(CommandType.START_PLAYING, true));  // todo (na razie rozgrywka tylko dwóch graczy)
+        connectedPlayers.sendToInactive(new Message(CommandType.START_PLAYING, false));
     }
 
-    private void startHandlingPlayerCommandsLoop(final Player newPlayer) {
-        new Thread(() -> handlePlayerCommandsUntilDisconnected(newPlayer)).start();
+    private void startHandlingPlayerCommandsLoop(final Player newPlayer, ConnectedPlayers connectedPlayers) {
+        new Thread(() -> handlePlayerCommandsUntilDisconnected(newPlayer, connectedPlayers)).start();
     }
 
-    private void handlePlayerCommandsUntilDisconnected(Player newPlayer) {
-        handlePlayerInput(newPlayer);
-        tryToDisconnectPlayer(newPlayer);
+    private void handlePlayerCommandsUntilDisconnected(Player newPlayer, ConnectedPlayers connectedPlayers) {
+        handlePlayerInput(newPlayer, connectedPlayers);
+        tryToDisconnectPlayer(newPlayer, connectedPlayers);
     }
 
-    private Player acceptNewPlayer() throws IOException {
-        Player player = acceptPlayer();
-        assignNameToNewUser(player);
+    private void acceptNewPlayer(ConnectedPlayers connectedPlayers) throws IOException {
+        Player player = acceptPlayer(connectedPlayers);
+        assignNameToNewUser(player, connectedPlayers);
         logger.info(String.format(LogMessages.NEW_PLAYER_CONNECTED, player));
-        registerPlayer(player);
-        return player;
+        registerPlayer(player, connectedPlayers);
+        startHandlingPlayerCommandsLoop(player, connectedPlayers);
     }
 
-    private Player acceptPlayer() throws IOException {
+    private Player acceptPlayer(ConnectedPlayers connectedPlayers) throws IOException {
         Socket socket = serverSocket.accept();
         return connectedPlayers.playerForSocket(socket);
     }
 
-    private void assignNameToNewUser(Player player) {
+    private void assignNameToNewUser(Player player, ConnectedPlayers connectedPlayers) {
         Message userRequest = player.nextCommand();
         String name = (String) userRequest.getValue();
         if (usernameIsCorrect(name, connectedPlayers)) {
@@ -80,61 +91,66 @@ class Server {
         return name != null && !name.equals("") && connectedPlayers.isNameAvailable(name.trim());
     }
 
-    private void registerPlayer(Player player) {
+    private void registerPlayer(Player player, ConnectedPlayers connectedPlayers) {
         connectedPlayers.add(player);
         PlayerRegisteredValue playerRegisteredValue =
                 new PlayerRegisteredValue(player.getPlayerName(), player.isPlayerNameDifferentThanGiven());
-        player.sendCommand(new Message<>(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
+        player.sendCommand(new Message(CommandType.PLAYER_REGISTERED_SUCCESSFULLY, playerRegisteredValue));
         logger.info(String.format("Komenda została wysłana do gracza: %s", CommandType.PLAYER_REGISTERED_SUCCESSFULLY.toString()));
     }
 
-    private <V> void handlePlayerInput(Player player) {
+    private void handlePlayerInput(Player player, ConnectedPlayers connectedPlayers) {
         CommandType commandType = CommandType.START_PLAYING;
         while (!commandType.equals(CommandType.STOP_PLAYING)) {
-            Message<V> message = player.nextCommand();
+            Message message = player.nextCommand();
             commandType = message.getCommandType();
-            handlePlayerCommands(player, message);
+            handlePlayerCommands(player, message, connectedPlayers);
 
-            sendYouAreReadyMessage(player, commandType, message);
+            sendYouAreReadyMessage(player, commandType, message, connectedPlayers);
         }
     }
 
-    private <V> void sendYouAreReadyMessage(Player player, CommandType commandType, Message<V> message) {
-        if(commandType.equals(CommandType.SETUP_COMPLETED)){
+    private void sendYouAreReadyMessage(Player player, CommandType commandType, Message message, ConnectedPlayers connectedPlayers) {
+        if (commandType.equals(CommandType.SETUP_COMPLETED)) {
             setupCount++;
         }
-        if(setupCount==2){
-            connectedPlayers.sendToActive(new Message<>(CommandType.YOU_ARE_READY,true));
+        if (setupCount == SETUP_COMPLETED) {
+            connectedPlayers.sendToActive(new Message(CommandType.YOU_ARE_READY, true));
             logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, message.getValue()));
-            setupCount=0;
+            setupCount = 0;
         }
     }
 
-    private <V> void handlePlayerCommands(Player player, Message<V> message) {
-        executePlayerCommand(message);
+    private void handlePlayerCommands(Player player, Message message, ConnectedPlayers connectedPlayers) {
+        executePlayerCommand(message, connectedPlayers);
         //logging
         CommandType commandType = message.getCommandType();
         String commandValue = message.getValue().toString();
         logger.info(String.format(LogMessages.PLAYER_SENT_COMMAND, player, commandType, commandValue));
     }
 
-    private <V> void executePlayerCommand(Message<V> message) {
+    private void executePlayerCommand(Message message, ConnectedPlayers connectedPlayers) {
         AbstractCommand commandImpl = CommandFactory.getCommandImpl(message);
         commandImpl.execute(connectedPlayers);
     }
 
-    private void tryToDisconnectPlayer(Player player) {
+    private void tryToDisconnectPlayer(Player player, ConnectedPlayers connectedPlayers) {
         try {
-            disconnect(player);
+            disconnect(player, connectedPlayers);
         } catch (IOException e) {
             String logMessage = String.format(LogMessages.UNSUCCESSFUL_TRY_TO_DISCONNECT_PLAYER, player);
             logger.info(logMessage, e.getMessage());
         }
     }
 
-    private void disconnect(Player player) throws IOException {
+    private void disconnect(Player player, ConnectedPlayers connectedPlayers) throws IOException {
         connectedPlayers.remove(player);
         player.disconnect();
+        if (connectedPlayers.areThereAnyPlayer()) {
+            connectedPlayers.sendToActive(new Message(CommandType.SHUT_DOWN, "room orphaned"));
+            roomCount--;
+        }
         logger.info(String.format(LogMessages.DISCONNECT_PLAYER, player));
+        System.out.println("CURRENT ROOM COUNT " + roomCount);
     }
 }

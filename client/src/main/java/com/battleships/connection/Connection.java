@@ -5,6 +5,7 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.connection.commands.AbstractServerCommand;
 import com.battleships.connection.commands.ServerCommandsFactory;
+import com.battleships.startwindow.datainsertion.PlayerName;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.logging.log4j.LogManager;
@@ -29,19 +30,44 @@ public enum Connection {
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private final BooleanProperty playerActive = new SimpleBooleanProperty(false);
     private final BooleanProperty playerReadyProperty = new SimpleBooleanProperty(false);
+    private final PlayerName playerName = new PlayerName();
 
+    /**
+     * @return PlayerName JavaFX property to read from connection pane
+     * and update from the server's response on connection
+     */
+    public PlayerName getPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * @return boolean value of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     */
     public boolean getPlayerActive() {
         return playerActive.get();
     }
 
+    /**
+     * @return JavaFX PlayerActiveProperty used to control the buttons activity in the UI (for property bindings)
+     */
     public BooleanProperty playerActiveProperty() {
         return playerActive;
     }
 
+    /**
+     * setting of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     *
+     * @param playerActive boolean parameter if player is active
+     */
     public void setPlayerActive(boolean playerActive) {
         this.playerActive.set(playerActive);
     }
 
+    /**
+     * setting of the JavaFX PlayerReadyProperty used to control the buttons activity flow in the UI
+     *
+     * @param playerReady boolean parameter informing if player is ready
+     */
     public void setPlayerReady(boolean playerReady) {
         this.playerReadyProperty.setValue(playerReady);
     }
@@ -55,13 +81,15 @@ public enum Connection {
      *
      * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
      */
-
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
             tryToEstablishConnection(connectionInfo);
         }
     }
 
+    /**
+     * @return JavaFX BooleanProperty
+     */
     public BooleanProperty connectedProperty() {
         return connected;
     }
@@ -70,6 +98,9 @@ public enum Connection {
         this.connected.set(connected);
     }
 
+    /**
+     * @return connection state
+     */
     public boolean isConnected() {
         checkConnected();
         return connected.get();
@@ -95,7 +126,6 @@ public enum Connection {
     /**
      * Disconnects client from the server
      */
-
     public void disconnect() {
         if (isConnected()) {
             tryToDisconnectFromServer();
@@ -104,7 +134,7 @@ public enum Connection {
 
     private void tryToDisconnectFromServer() {
         try {
-            Message<String> message = new Message<>(CommandType.STOP_PLAYING, "");
+            Message message = new Message(CommandType.STOP_PLAYING, "");
             sendToServer(message);
             disconnectPlayer();
         } catch (IOException e) {
@@ -119,8 +149,7 @@ public enum Connection {
      *
      * @param message - <code>Message</code> Player command object with specified command kind and value
      */
-
-    public <V> void sendToServer(Message<V> message) {
+    public void sendToServer(Message message) {
         if (isConnected()) {
             serverIO.trySend(message);
             logger.info(String.format(LogMessages.COMMAND_SEND_SUCCEEDED, message.getCommandType()));
@@ -140,8 +169,7 @@ public enum Connection {
     }
 
     private void initThreadReadingCommandsFromServer() {
-        readCommandsFromUserThread = new Thread(() ->
-                readFromServerUntilDisconnected());
+        readCommandsFromUserThread = new Thread(() -> readFromServerUntilDisconnected());
         readCommandsFromUserThread.setDaemon(true);
     }
 
@@ -150,7 +178,7 @@ public enum Connection {
     }
 
     private void readFromServerUntilDisconnected() {
-        Message<?> message;
+        Message message;
         while ((message = serverIO.getMessage()) != null) {
             AbstractServerCommand commandImpl = ServerCommandsFactory.getCommandImpl(message);
             commandImpl.execute();
@@ -158,7 +186,7 @@ public enum Connection {
         }
     }
 
-    private void logInfoFromServerIfAvailable(Message<?> message) {
+    private void logInfoFromServerIfAvailable(Message message) {
         logger.info(String.format("Klient odebrał komendę od serwera: %s. Wartość komendy: %s",
                 message.getCommandType().toString(),
                 message.getValue().toString()));

@@ -1,9 +1,9 @@
 package com.battleships.connection.commands;
 
-public abstract class AbstractServerCommand<V> {
-    protected final V value;
+public abstract class AbstractServerCommand {
+    protected final Object value;
 
-    protected AbstractServerCommand(V value) {
+    protected AbstractServerCommand(Object value) {
         this.value = value;
     }
 

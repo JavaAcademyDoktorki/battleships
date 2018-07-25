@@ -29,7 +29,10 @@ import java.net.URL;
 import java.util.Optional;
 
 public class ConnectionSettingsPaneController {
-    private final PlayerName playerName = new PlayerName();
+    private PlayerName playerName = Connection.INSTANCE.getPlayerName();
+
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 450;
 
     @FXML
     private Button connectToServerButton;
@@ -48,7 +51,6 @@ public class ConnectionSettingsPaneController {
      * Sets text on buttons <b>connectToServerButton</b> and <b>disconnectFromServerButton</b> depending on chosen language settings and assigns action to each button
      * and sets text on <b>nameTextField</b>
      */
-    @FXML
     public void initialize() {
         bindTextFieldsWithTranslation();
         bindConnectToServerButton();
@@ -68,14 +70,19 @@ public class ConnectionSettingsPaneController {
     }
 
     private void setOnActionToButtons() {
-        connectToServerButton.setOnAction(e -> connectToServerButtonAction());
         connectToServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty());
-        disconnectFromServerButton.setOnAction(e -> Connection.INSTANCE.disconnect());
         disconnectFromServerButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
         startGameButton.disableProperty().bind(Connection.INSTANCE.connectedProperty().not());
         startGameButton.setOnAction(e -> startGame(e));
     }
 
+    @FXML
+    private void disconnect() {
+        Connection.INSTANCE.disconnect();
+        nameTextField.setEditable(true);
+    }
+
+    @FXML
     private void connectToServerButtonAction() {
         if (isPortAndIPPresent()) {
             String ip = getOptionalIPIfInsertedCorrectly().get();
@@ -89,10 +96,11 @@ public class ConnectionSettingsPaneController {
 
     private void handleConnectButtonAction(ConnectionInfo connectionInfo) {
         Connection.INSTANCE.establishConnection(connectionInfo);
-        if (!Connection.INSTANCE.isConnected())
+        if (!Connection.INSTANCE.isConnected()) {
             showConnectionFailedDialog();
-        else {
-            Message<String> setNameCommand = new Message<>(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+        } else {
+            Message setNameCommand = new Message(CommandType.REGISTER_NEW_PLAYER, nameTextField.getText());
+            nameTextField.setEditable(false);
             Connection.INSTANCE.sendToServer(setNameCommand);
         }
     }
@@ -103,16 +111,18 @@ public class ConnectionSettingsPaneController {
             Parent root = FXMLLoader.load(resource);
             Stage stage = new Stage();
             stage.titleProperty().bind(Translator.createStringBinding("game_window"));
-            stage.setScene(new Scene(root, 600, 450));
+            stage.setScene(new Scene(root, WIDTH, HEIGHT));
             stage.show();
-            stage.setOnCloseRequest(event1 -> Connection.INSTANCE.disconnect());
-            stage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-                if (e.getCode() == KeyCode.ESCAPE) {
+            stage.setOnCloseRequest(event1 -> disconnect());
+
+            stage.addEventHandler(KeyEvent.KEY_RELEASED, nextEvent -> {
+                if (nextEvent.getCode() == KeyCode.ESCAPE) {
                     logger.info(LogMessages.QUIT_WITH_ESCAPE);
-                    Connection.INSTANCE.disconnect();
+                    disconnect();
                     Platform.exit();
                 }
             });
+
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -137,7 +147,7 @@ public class ConnectionSettingsPaneController {
     }
 
     private void initPlayerName() {
-        playerName.playerNameProperty().bind(nameTextField.textProperty());
+        playerName.playerNameProperty().bindBidirectional(nameTextField.textProperty());
         nameTextField.textProperty()
                 .addListener((observableValue, oldValue, newValue) ->
                         nameTextField.setText(String.valueOf(newValue)));
@@ -173,7 +183,7 @@ public class ConnectionSettingsPaneController {
     }
 
     public void startGame(ActionEvent event) {
-        Message<String> message = new Message<>(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName());
+        Message message = new Message(CommandType.MOVE_TO_GAME_STATE, playerName.getPlayerName());
         Connection.INSTANCE.sendToServer(message);
         openGameWindow(event);
     }

@@ -3,9 +3,9 @@ package com.battleships.Commands;
 import com.battleships.commands.AbstractCommand;
 import com.battleships.player.ConnectedPlayers;
 
-public class MoveToGameState<V> extends AbstractCommand {
+public class MoveToGameState extends AbstractCommand {
 
-    public MoveToGameState(V value) {
+    public MoveToGameState(Object value) {
         super(value);
     }
 

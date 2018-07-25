@@ -4,25 +4,24 @@ import com.battleships.commands.Message;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Objects;
 
 public class Player {
     private final Socket playerSocket;
     private String playerName;
     private PlayerIO playerIO;
-    private PlayerStatus playerStatus;
     private boolean playerNameDifferentThanGiven;
 
-    public Player(Socket playerSocket, PlayerStatus playerStatus) throws IOException {
+    public Player(Socket playerSocket) throws IOException {
         this.playerSocket = playerSocket;
         this.playerIO = new PlayerIO(playerSocket);
-        this.playerStatus = playerStatus;
     }
 
-    public void sendCommand(Message<?> command) {
+    public void sendCommand(Message command) {
         playerIO.sendCommand(command);
     }
 
-    public <V> Message<V> nextCommand() {
+    public Message nextCommand() {
         return playerIO.nextUserCommand();
     }
 
@@ -43,14 +42,6 @@ public class Player {
         return playerName.equals(name);
     }
 
-    public boolean isActive() {
-        return playerStatus == PlayerStatus.ACTIVE;
-    }
-
-    public boolean isInActive() {
-        return !isActive();
-    }
-
     public String getPlayerName() {
         return playerName;
     }
@@ -63,7 +54,16 @@ public class Player {
         this.playerNameDifferentThanGiven = playerNameDifferentThanGiven;
     }
 
-    public void switchActive() {
-        this.playerStatus = playerStatus.other();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(playerName, player.playerName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerName);
     }
 }

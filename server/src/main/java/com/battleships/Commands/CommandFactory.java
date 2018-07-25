@@ -26,20 +26,20 @@ public class CommandFactory {
      * @param message Player given command to execute
      */
 
-    public static <V> AbstractCommand getCommandImpl(Message<V> message) {
+    public static AbstractCommand getCommandImpl(Message message) {
         CommandType commandType = message.getCommandType();
-        V value = message.getValue();
+        Object value = message.getValue();
         switch (commandType) {
             case SHOT:
-                return new PlayersShootCommand<>(value);
+                return new PlayersShootCommand(value);
             case PLAYER_READY:
-                return new PlayerReadyCommand<>(value);
+                return new PlayerReadyCommand(value);
             case SETUP_COMPLETED:
-                return new SetupCompletedCommand<>(value);
+                return new SetupCompletedCommand(value);
             case MOVE_TO_GAME_STATE:
-                return new MoveToGameState<>(value);
+                return new MoveToGameState(value);
             default:
-                return new EmptyCommand<>(null);
+                return new EmptyCommand(null);
         }
     }
 }

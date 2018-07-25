@@ -4,9 +4,9 @@ import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 
-public class YouAreReady<V> extends AbstractServerCommand {
+public class YouAreReady extends AbstractServerCommand {
 
-    public YouAreReady(V value) {
+    public YouAreReady(Object value) {
         super(value);
     }
 

@@ -2,21 +2,21 @@ package com.battleships.models.board;
 
 import javafx.scene.layout.GridPane;
 
-public class Boards {
+public class BoardGridPanes {
 
     private final GridPane myBoard;
     private final GridPane opponentsBoard;
 
-    public Boards(GridPane myBoard, GridPane opponentsBoard) {
+    public BoardGridPanes(GridPane myBoard, GridPane opponentsBoard) {
         this.myBoard = myBoard;
         this.opponentsBoard = opponentsBoard;
     }
 
-    public GridPane getMyBoard() {
+    public GridPane playerGridPane() {
         return myBoard;
     }
 
-    public GridPane getOpponentsBoard() {
+    public GridPane opponentGridPane() {
         return opponentsBoard;
     }
 }

@@ -4,21 +4,20 @@ import com.battleships.commands.Message;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectedPlayers {
     private final List<Player> playerList;
     private int anonymousPlayersCounter = 0;
-    private PlayerStatus playerStatus = PlayerStatus.ACTIVE;
 
     public ConnectedPlayers() {
         this.playerList = new CopyOnWriteArrayList<>();
     }
 
     public Player playerForSocket(Socket socket) throws IOException {
-        Player player = new Player(socket, playerStatus);
-        playerStatus = playerStatus.other();
+        Player player = new Player(socket);
         return player;
     }
 
@@ -48,32 +47,32 @@ public class ConnectedPlayers {
         return playerList.size() < 2;
     }
 
-    public void sendToActive(Message<Boolean> playerCommand) {
+    public void sendToActive(Message playerCommand) {
         Player active = getActive();
         active.sendCommand(playerCommand);
     }
 
     public Player getActive() {
-        if (playerList.get(0).isActive())
-            return playerList.get(0);
-        else
-            return playerList.get(1);
+        return playerList.get(0);
     }
 
-    public <V> void sendToInactive(Message<V> stringPlayerCommand) {
+    public void sendToInactive(Message stringPlayerCommand) {
         Player inactive = getInactive();
         inactive.sendCommand(stringPlayerCommand);
     }
 
     private Player getInactive() {
-        if (playerList.get(0).isInActive())
-            return playerList.get(0);
-        else
+        if (playerList.size() == 2)
             return playerList.get(1);
+        else
+            throw new IllegalStateException();
     }
 
     public void switchActive() {
-        playerList.get(0).switchActive();
-        playerList.get(1).switchActive();
+        Collections.reverse(playerList);
+    }
+
+    public boolean areThereAnyPlayer() {
+        return playerList.size() > 0;
     }
 }

@@ -1,27 +1,33 @@
 package com.battleships.gamewindow;
 
+import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.values.Shot;
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.models.ButtonCoordinates;
+import com.battleships.gamewindow.board.BoardSize;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fieldStates.HitMastField;
 import com.battleships.gamewindow.services.BoardService;
-import com.battleships.models.Events;
-import com.battleships.models.board.Boards;
+import com.battleships.models.board.BoardGridPanes;
 import com.battleships.models.board.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GameWindowController {
     @FXML
-    private GridPane myBoard;
+    private GridPane playerGridPaneBoard;
     @FXML
-    private GridPane opponentBoard;
+    private GridPane opponentGridPaneBoard;
     @FXML
     private Label readyLabel;
     @FXML
@@ -35,59 +41,87 @@ public class GameWindowController {
     @FXML
     private Label turnLabel;
 
-    private BoardService service;
+    private BoardService boardService;
+    private final static Logger logger = LogManager.getLogger(Connection.class);
 
     public void initialize() {
-        readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
-        Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
-            else
-                readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
-        });
-        turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
-        Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
-            else
-                turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
-        });
-        turnLabel.setVisible(false);
-
-        yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
-        opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
-        randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
-
-        readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
-
-        readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
-        Boards boards = new Boards(myBoard, opponentBoard);
-        Events events = new Events(this::placeShip, this::shot);
-        service = new BoardService(10, 10);
-        service.createButtonsInBothBoards(boards, events);
+        initListeners();
+        bindGUIComponents();
+        initBoardService(this::shot);
     }
 
-    private void placeShip(ActionEvent event) {
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(((Button) event.getSource()).getId());
-        System.out.printf("ship placement on coordinates...: %s %s\n", buttonCoordinates.getRow(), buttonCoordinates.getColumn());  //todo ship placement
+    private void initListeners() {
+        initListenerForTextInfoAboutGameReadiness();
+        initListenerForTextInfoAboutPlayerTurn();
+    }
+
+    private void initListenerForTextInfoAboutPlayerTurn() {
+        turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+        Connection.INSTANCE.playerActiveProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                turnLabel.textProperty().bind(Translator.createStringBinding("your_turn"));
+            } else {
+                turnLabel.textProperty().bind(Translator.createStringBinding("not_your_turn"));
+            }
+        });
+        turnLabel.setVisible(false);
+    }
+
+    private void initListenerForTextInfoAboutGameReadiness() {
+        readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+        Connection.INSTANCE.playerReadyProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                readyLabel.textProperty().bind(Translator.createStringBinding("ready_to_play_label"));
+            } else {
+                readyLabel.textProperty().bind(Translator.createStringBinding("not_ready"));
+            }
+        });
+    }
+
+    private void bindGUIComponents() {
+        yourBoardLabel.textProperty().bind(Translator.createStringBinding("your_board"));
+        opponentBoardLabel.textProperty().bind(Translator.createStringBinding("opponent_board"));
+
+        randomShipPlacementButton.textProperty().bind(Translator.createStringBinding("random_ship_placement"));
+        readyToPlayButton.textProperty().bind(Translator.createStringBinding("ready_to_play"));
+        readyToPlayButton.disableProperty().bind(Connection.INSTANCE.playerActiveProperty().not());
+    }
+
+    private void initBoardService(EventHandler<ActionEvent> shotEvent) {
+        BoardSize boardSize = new BoardSize(10, 10);
+        boardService = new BoardService(boardSize);
+
+        BoardGridPanes boardGridPanes = new BoardGridPanes(playerGridPaneBoard, opponentGridPaneBoard);
+        boardService.initBoards(boardGridPanes, shotEvent);
     }
 
     private void shot(ActionEvent event) {
-        Button clickedButton = (Button) event.getSource();
-        ButtonCoordinates buttonCoordinates = new ButtonCoordinates(clickedButton.getId());
-        Coordinate coord = new Coordinate(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
-        service.colourButton(clickedButton, coord);
-        System.out.println("Fired shot on: " + buttonCoordinates.getRow() + " " + buttonCoordinates.getColumn());
-        Shot shot = new Shot(buttonCoordinates.getRow(), buttonCoordinates.getColumn());
+        BoardField clickedButton = (BoardField) event.getSource();
+        Coordinate coordinate = clickedButton.getCoordinate();
+        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed
 
-        Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT, shot));
+        sendShootMessageToServer(coordinate);
+        makePlayerInactiveAndUnreadyAfterShoot();
+
+        // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING
+        boardService.onShootOpponentMessageRecieve(coordinate, new HitMastField(coordinate));
+
+        logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
+    }
+
+    private void sendShootMessageToServer(Coordinate coordinate) {
+        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
+        Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
+    }
+
+    private void makePlayerInactiveAndUnreadyAfterShoot() {
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(false));
     }
 
-    public void placeShipsRandomly(ActionEvent event) {
-        service.placeShipsRandomly();
-        System.out.println("ships placed");
+    public void placeShipsRandomly(Event event) {
+        boardService.createNewRandomConfig(playerGridPaneBoard);
+        logger.info(LogMessages.SHIP_PLACED);
     }
 
     public void confirmReady(ActionEvent event) {
@@ -95,7 +129,9 @@ public class GameWindowController {
         if (boardSetupValid && Connection.INSTANCE.getPlayerActive()) {
             readyToPlayButton.setVisible(false);
             randomShipPlacementButton.setVisible(false);
-            Connection.INSTANCE.sendToServer(new Message<>(CommandType.SETUP_COMPLETED, ""));
+
+            Connection.INSTANCE.sendToServer(new Message(CommandType.SETUP_COMPLETED, ""));
+
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(false));
             turnLabel.setVisible(true);
         }
