@@ -112,7 +112,7 @@ public class GameWindowController {
 
     private void logAllShootCoordinates(Shot shot) {
         for (Coordinate coordinate:shot.getCoordinates()) {
-            logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate));
+            logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
         }
     }
 
