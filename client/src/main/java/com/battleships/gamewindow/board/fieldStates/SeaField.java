@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.board.fieldStates;
 
-import com.battleships.gamewindow.board.Coordinate;
+import com.battleships.shot.Coordinate;
 
 public class SeaField extends BoardField {
     public SeaField(Coordinate coordinate) {

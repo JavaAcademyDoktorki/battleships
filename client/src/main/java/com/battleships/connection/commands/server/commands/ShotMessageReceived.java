@@ -1,6 +1,6 @@
 package com.battleships.connection.commands.server.commands;
 
-import com.battleships.gamewindow.board.Shot;
+import com.battleships.shot.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;

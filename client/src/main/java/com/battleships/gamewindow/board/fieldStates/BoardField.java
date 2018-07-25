@@ -1,7 +1,7 @@
 package com.battleships.gamewindow.board.fieldStates;
 
 
-import com.battleships.gamewindow.board.Coordinate;
+import com.battleships.shot.Coordinate;
 import javafx.scene.control.Button;
 
 public abstract class BoardField extends Button {

@@ -1,5 +1,6 @@
 package com.battleships.gamewindow.board;
 
+import com.battleships.shot.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 
 import java.util.HashMap;

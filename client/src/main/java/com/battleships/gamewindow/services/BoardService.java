@@ -8,7 +8,7 @@ import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.EmptyField;
 import com.battleships.gamewindow.board.fieldStates.SeaField;
 import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.gamewindow.board.Coordinate;
+import com.battleships.shot.Coordinate;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;

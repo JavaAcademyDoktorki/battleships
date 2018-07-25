@@ -1,4 +1,4 @@
-package com.battleships.gamewindow.board;
+package com.battleships.shot;
 
 import java.io.Serializable;
 
