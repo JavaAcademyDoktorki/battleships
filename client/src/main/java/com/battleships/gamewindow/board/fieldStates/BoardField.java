@@ -12,7 +12,7 @@ public abstract class BoardField extends Button {
         refreshColor();
     }
 
-    public abstract BoardField hit();
+    public abstract void hit();
     public abstract void refreshColor();
 
     public Coordinate getCoordinate() {

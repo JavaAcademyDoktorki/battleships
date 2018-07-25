@@ -41,9 +41,6 @@ public class PlayerBoard extends Board {
 
     public void markButtonsAsHit(Coordinate[] coordinates) {
         BoardField boardField = board.get(coordinates[0]);
-        boardField.setStyle("-fx-background-color: #66ffcc");
-        boardField.setEffect(boardField.getEffect());
-
-
+        boardField.hit();
     }
 }

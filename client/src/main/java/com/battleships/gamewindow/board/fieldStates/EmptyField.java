@@ -8,9 +8,7 @@ public class EmptyField extends BoardField {
     }
 
     @Override
-    public BoardField hit() {
-        // TODO 30/07/18 damian -  handle info from server about hit field and proper field to show to user
-        return new SunkMastField(this.coordinate);
+    public void hit() {
     }
 
     @Override

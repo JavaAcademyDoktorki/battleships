@@ -8,8 +8,8 @@ public class SeaField extends BoardField {
     }
 
     @Override
-    public BoardField hit() {
-        return null; //TODO
+    public void hit() {
+        this.setStyle(FieldStyles.Missed.getStyle());
     }
 
     @Override

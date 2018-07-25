@@ -8,8 +8,8 @@ public class MastField extends BoardField {
     }
 
     @Override
-    public BoardField hit() {
-        return new HitMastField(this.coordinate);
+    public void hit() {
+        this.setStyle(FieldStyles.HitMast.getStyle());
     }
 
     @Override

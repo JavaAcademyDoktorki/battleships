@@ -8,8 +8,7 @@ public class HitMastField extends BoardField {
     }
 
     @Override
-    public BoardField hit() {
-        return this;
+    public void hit() {
     }
 
     @Override
