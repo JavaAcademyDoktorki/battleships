@@ -1,4 +1,6 @@
-package com.battleships.gamewindow.board;
+package com.battleships.commands;
+
+import com.battleships.Coordinate;
 
 import java.io.Serializable;
 

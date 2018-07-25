@@ -1,6 +1,6 @@
 package com.battleships.gamewindow.board.fieldStates;
 
-import com.battleships.gamewindow.board.Coordinate;
+import com.battleships.Coordinate;
 
 public class MissedField extends BoardField {
     public MissedField(Coordinate coordinate) {

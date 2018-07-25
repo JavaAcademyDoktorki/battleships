@@ -2,7 +2,7 @@ package com.battleships.connection.commands.server.commands;
 
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
-import com.battleships.gamewindow.board.Shot;
+import com.battleships.commands.Shot;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
 

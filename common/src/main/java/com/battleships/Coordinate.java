@@ -1,6 +1,8 @@
-package com.battleships.gamewindow.board;
+package com.battleships;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
     private final int row;
     private final int column;
 
