@@ -90,6 +90,7 @@ public class GameWindowController {
     private void initBoardService(EventHandler<ActionEvent> shotEvent) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
+        Connection.INSTANCE.boardService = boardService;
 
         BoardGridPanes boardGridPanes = new BoardGridPanes(playerGridPaneBoard, opponentGridPaneBoard);
         boardService.initBoards(boardGridPanes, shotEvent);
@@ -112,7 +113,7 @@ public class GameWindowController {
 
     private void logAllShootCoordinates(Shot shot) {
         for (Coordinate coordinate:shot.getCoordinates()) {
-            logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate));
+            logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
         }
     }
 

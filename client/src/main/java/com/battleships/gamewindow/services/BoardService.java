@@ -62,4 +62,8 @@ public class BoardService {
     public void onShootOpponentMessageRecieve(Coordinate coordinate, BoardField boardField) {
         opponentBoard.applyStyleForCoordinate(coordinate, boardField.getStyle());
     }
+
+    public void markButtonsAsHit(Coordinate[] coordinates) {
+        playerBoard.markButtonsAsHit(coordinates);
+    }
 }
