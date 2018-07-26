@@ -25,7 +25,8 @@ public class BoardService {
     }
 
     public void createNewRandomConfig(GridPane gridPaneForBoard) {
-        playerBoard.changeAllFieldsToSea(boardSize, gridPaneForBoard);
+        playerBoard.changeAllFieldsToSea(boardSize);
+        playerBoard.addToGridPane(gridPaneForBoard);
         playerBoard.placeFleetRandomly(gridPaneForBoard);
     }
 
