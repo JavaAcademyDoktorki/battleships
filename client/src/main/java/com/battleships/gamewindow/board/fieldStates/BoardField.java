@@ -34,6 +34,10 @@ public class BoardField extends Button {
         this.fieldState = FieldState.MAST;
     }
 
+    public boolean isSea() {
+        return fieldState == FieldState.SEA;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,5 +50,14 @@ public class BoardField extends Button {
     @Override
     public int hashCode() {
         return Objects.hash(coordinate, fieldState);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("BoardField{");
+        sb.append("coordinate=").append(coordinate);
+        sb.append(", fieldState=").append(fieldState);
+        sb.append('}');
+        return sb.toString();
     }
 }

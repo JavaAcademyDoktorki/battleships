@@ -1,18 +1,18 @@
 package com.battleships.gamewindow.services;
 
-import com.battleships.Coordinate;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 public class Ship {
-    private final List<Coordinate> masts;
+    private final Set<BoardField> masts;
 
-    public Ship(List<Coordinate> masts) {
-        this.masts = Collections.unmodifiableList((masts));
+    public Ship(Set<BoardField> masts) {
+        this.masts = Collections.unmodifiableSet(masts);
     }
 
-    public List<Coordinate> getMasts() {
+    public Set<BoardField> getMasts() {
         return masts;
     }
 }
