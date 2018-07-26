@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="connectionSettingsPane" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleships.startwindow.datainsertion.ConnectionSettingsPaneController">
+<GridPane fx:id="connectionSettingsPane" hgap="10" vgap="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleships.startwindow.datainsertion.ConnectionSettingsPaneController">
     <TextField fx:id="ipTextField" promptText="127.0.0.1:50000" text="127.0.0.1:50000" GridPane.columnIndex="0" GridPane.rowIndex="0" />
     <Button fx:id="connectToServerButton" onAction="#connectToServerButtonAction" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     <Button fx:id="disconnectFromServerButton" onAction="#disconnect" GridPane.columnIndex="2" GridPane.rowIndex="0" />
