@@ -27,3 +27,4 @@ public class BoardField extends Button {
         this.setStyle(fieldState.getStyle());
     }
 }
+
