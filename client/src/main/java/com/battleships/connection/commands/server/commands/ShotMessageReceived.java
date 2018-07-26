@@ -21,8 +21,6 @@ public class ShotMessageReceived extends AbstractServerCommand {
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(missed));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(missed));
 
-        System.out.println("received shot: " + shot + "-MISSED"); // TODO usunac sout
-
         boardService.markButtonsAsHit(shot.getCoordinates());
 
         //TODO after validation send the result to the opponent to block/unblock his opponent board

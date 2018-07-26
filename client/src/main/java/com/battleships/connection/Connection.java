@@ -128,7 +128,6 @@ public enum Connection {
     /**
      * Disconnects client from the server
      */
-
     public void disconnect() {
         if (isConnected()) {
             tryToDisconnectFromServer();
@@ -152,7 +151,6 @@ public enum Connection {
      *
      * @param message - <code>Message</code> Player command object with specified command kind and value
      */
-
     public void sendToServer(Message message) {
         if (isConnected()) {
             serverIO.trySend(message);
