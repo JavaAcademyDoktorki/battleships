@@ -51,7 +51,7 @@ public class BoardService {
     }
 
     private void addFieldToOpponentBoard(Coordinate coordinate, GridPane boardGridPane, EventHandler<ActionEvent> event) {
-        BoardField boardField = new BoardField(coordinate, FieldState.FOGG);
+        BoardField boardField = new BoardField(coordinate, FieldState.FOG);
         boardField.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
         opponentBoard.addNewField(coordinate, boardField);
         boardField.setOnAction(event);

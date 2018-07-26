@@ -31,14 +31,14 @@ public enum FieldState {
             return SUNK_MAST;
         }
     },
-    FOGG{
+    FOG {
         @Override
         public String getStyle() {
             return "-fx-background-color: #00ffd3";
         }
         @Override
         public FieldState afterHitState() {
-            return FOGG;
+            return FOG;
         }
     },
     SEA{
