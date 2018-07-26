@@ -99,7 +99,6 @@ public class GameWindowController {
     private void shot(ActionEvent event) {
         BoardField clickedButton = (BoardField) event.getSource();
         Coordinate[] coordinates = new Coordinate[]{clickedButton.getCoordinate()};
-//        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed?
 
         Shot shot = new Shot(coordinates);
         sendShootMessageToServer(shot);
@@ -145,7 +144,7 @@ public class GameWindowController {
     }
 
     private boolean validateBoard() {
-        System.out.println("zwalidowane"); // TODO krzychu
+        logger.info(LogMessages.SHIP_VALIDATED);
         return true;
     }
 }

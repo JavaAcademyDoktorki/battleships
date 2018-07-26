@@ -4,14 +4,19 @@ import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Ship {
-    private final List<BoardField> masts = new ArrayList<>();
-    private final List<BoardField> buffers = new ArrayList<>();
+    private final Set<BoardField> masts;
 
-    public void addMast(BoardField mastField) {
-        masts.add(mastField);
+    public Ship(Set<BoardField> masts) {
+        this.masts = Collections.unmodifiableSet(masts);
+    }
+
+    public Set<BoardField> getMasts() {
+        return masts;
     }
 
     public boolean isMastHit(Coordinate coordinate) {

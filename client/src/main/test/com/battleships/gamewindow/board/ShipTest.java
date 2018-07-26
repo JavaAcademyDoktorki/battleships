@@ -1,3 +1,5 @@
+package com.battleships.gamewindow.board;
+
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.Ship;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
@@ -5,6 +7,9 @@ import com.battleships.gamewindow.board.fieldStates.FieldState;
 import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -15,10 +20,11 @@ public class ShipTest {
 
     @BeforeMethod
     public void setUp(){
-        ship = new Ship();
-        ship.addMast(new BoardField(Coordinate.fromIntCoords(1, 1), FieldState.MAST));
-        ship.addMast(new BoardField(Coordinate.fromIntCoords(1, 2), FieldState.MAST));
-        ship.addMast(new BoardField(Coordinate.fromIntCoords(1, 3), FieldState.MAST));
+        Set<BoardField> masts = new HashSet<>();
+        masts.add(new BoardField(Coordinate.fromIntCoords(1, 1), FieldState.MAST));
+        masts.add(new BoardField(Coordinate.fromIntCoords(1, 2), FieldState.MAST));
+        masts.add(new BoardField(Coordinate.fromIntCoords(1, 3), FieldState.MAST));
+        ship = new Ship(masts);
     }
 
     @Test
