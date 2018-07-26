@@ -26,16 +26,23 @@ public class PlayerBoard extends Board {
     }
 
     public void placeFleetRandomly (GridPane gridPaneBoard) {
-        List<Coordinate> shipsFleetCoords = randomFleetPlacement.getRandomCoords();
-        for (Coordinate mastCoord : shipsFleetCoords) {
-            BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
+        List<Coordinate[]> fleetCoords = randomFleetPlacement.getRandomCoords();
+        for (Coordinate [] shipCoordinates : fleetCoords) {
+            Ship ship = new Ship();
+            for (Coordinate mastCoord : shipCoordinates){
+                BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
 
-            int fieldColumn = mastCoord.getColumn();
-            int fieldRow = mastCoord.getRow();
-
-            this.board.put(mastCoord, boardField);
-            gridPaneBoard.add(boardField, fieldColumn, fieldRow);
+                ship.addMast(boardField);
+                board.put(mastCoord, boardField);
+                addBoardFieldToView(gridPaneBoard, mastCoord, boardField);
+            }
         }
+    }
+
+    private void addBoardFieldToView(GridPane gridPaneBoard, Coordinate mastCoord, BoardField boardField) {
+        int fieldColumn = mastCoord.getColumn();
+        int fieldRow = mastCoord.getRow();
+        gridPaneBoard.add(boardField, fieldColumn, fieldRow);
     }
 
     public void markButtonsAsHit(Coordinate[] coordinates) {

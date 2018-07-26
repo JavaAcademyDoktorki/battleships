@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class Board {
     Map<Coordinate, BoardField> board;
+    private Fleet fleet;
 
     Board() {
         this.board = new HashMap<>();
