@@ -22,4 +22,8 @@ public class Ship {
     public boolean isMastHit(Coordinate coordinate) {
         return masts.stream().anyMatch(m -> m.getCoordinate().equals(coordinate));
     }
+
+    public String toString(){
+        return masts.toString();
+    }
 }

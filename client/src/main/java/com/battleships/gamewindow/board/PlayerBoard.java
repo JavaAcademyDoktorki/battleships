@@ -30,16 +30,17 @@ public class PlayerBoard extends Board {
 
     public void placeFleetRandomly(GridPane gridPaneBoard) {
         List<Coordinate[]> fleetCoords = randomFleetPlacement.getRandomCoords();
+        fleet.clear();
         for (Coordinate[] shipCoordinates : fleetCoords) {
             Set<BoardField> masts = new HashSet<>();
             for (Coordinate mastCoord : shipCoordinates) {
-                BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
-                masts.add(boardField);
                 board.get(mastCoord).setMast();
+                masts.add(board.get(mastCoord));
             }
             Ship ship = new Ship(masts);
             fleet.addShip(ship);
         }
+        System.out.println(fleet);
     }
 
     private void addBoardFieldToView(GridPane gridPaneBoard, Coordinate mastCoord, BoardField boardField) {
