@@ -8,10 +8,12 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 
 public class PlayerBoard extends Board {
+    private final Fleet fleet;
     private final RandomFleetPlacement randomFleetPlacement;
 
     public PlayerBoard() {
         this.randomFleetPlacement = new RandomFleetPlacement();
+        fleet = new Fleet();
     }
 
     public void changeAllFieldsToSea(BoardSize boardSize, GridPane gridPaneForBoard) {
@@ -31,11 +33,11 @@ public class PlayerBoard extends Board {
             Ship ship = new Ship();
             for (Coordinate mastCoord : shipCoordinates){
                 BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
-
                 ship.addMast(boardField);
                 board.put(mastCoord, boardField);
                 addBoardFieldToView(gridPaneBoard, mastCoord, boardField);
             }
+            fleet.addShip(ship);
         }
     }
 
