@@ -8,7 +8,7 @@ import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.HitMastField;
+import com.battleships.gamewindow.board.fieldStates.FieldState;
 import com.battleships.gamewindow.services.BoardService;
 import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.Coordinate;
@@ -99,14 +99,14 @@ public class GameWindowController {
     private void shot(ActionEvent event) {
         BoardField clickedButton = (BoardField) event.getSource();
         Coordinate[] coordinates = new Coordinate[]{clickedButton.getCoordinate()};
-        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed
+//        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed?
 
         Shot shot = new Shot(coordinates);
         sendShootMessageToServer(shot);
         makePlayerInactiveAndUnreadyAfterShoot();
 
         // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING - test method
-        boardService.onShootOpponentMessageRecieve(coordinates[0], new HitMastField(coordinates[0]));
+        boardService.onShootOpponentMessageRecieve(coordinates[0], FieldState.BUFFER);
 
         logAllShootCoordinates(shot);
     }

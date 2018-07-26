@@ -18,8 +18,7 @@ public class PlayerBoard extends Board {
         for (int row = 1; row <= boardSize.rowsAmount(); row++) {
             for (int col = 1; col <= boardSize.colAmount(); col++) {
                 Coordinate cord = Coordinate.fromIntCoords(row, col);
-                BoardField seaField = new SeaField(cord);
-
+                BoardField seaField = new BoardField(cord, FieldState.SEA);
                 gridPaneForBoard.add(seaField, col, row);
                 board.put(cord, seaField);
             }
@@ -29,7 +28,7 @@ public class PlayerBoard extends Board {
     public void placeFleetRandomly (GridPane gridPaneBoard) {
         List<Coordinate> shipsFleetCoords = randomFleetPlacement.getRandomCoords();
         for (Coordinate mastCoord : shipsFleetCoords) {
-            BoardField boardField = new MastField(mastCoord);
+            BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
 
             int fieldColumn = mastCoord.getColumn();
             int fieldRow = mastCoord.getRow();
