@@ -1,21 +1,29 @@
 package com.battleships.gamewindow.board.fieldStates;
 
 
-import com.battleships.models.board.Coordinate;
+import com.battleships.Coordinate;
 import javafx.scene.control.Button;
 
-public abstract class BoardField extends Button {
+public class BoardField extends Button {
     protected Coordinate coordinate;
+    private FieldState fieldState;
 
-    public BoardField(Coordinate coordinate) {
+    public BoardField(Coordinate coordinate, FieldState fieldState) {
         this.coordinate = coordinate;
-        refreshColor();
+        this.fieldState = fieldState;
+        refreshStyle();
     }
-
-    public abstract BoardField hit();
-    public abstract void refreshColor();
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public void hit() {
+        fieldState = fieldState.afterHitState();
+        this.refreshStyle();
+    }
+
+    private void refreshStyle() {
+        this.setStyle(fieldState.getStyle());
     }
 }

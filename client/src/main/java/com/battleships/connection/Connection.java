@@ -5,6 +5,7 @@ import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.connection.commands.AbstractServerCommand;
 import com.battleships.connection.commands.ServerCommandsFactory;
+import com.battleships.gamewindow.services.BoardService;
 import com.battleships.startwindow.datainsertion.PlayerName;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,6 +23,7 @@ import java.net.Socket;
  */
 public enum Connection {
     INSTANCE;
+    public BoardService boardService;
     private Socket socket;
     private ServerIO serverIO;
     private final static Logger logger = LogManager.getLogger(Connection.class);
@@ -39,7 +41,6 @@ public enum Connection {
     public PlayerName getPlayerName() {
         return playerName;
     }
-
     /**
      * @return boolean value of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
      */
@@ -81,6 +82,7 @@ public enum Connection {
      *
      * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
      */
+
     public void establishConnection(ConnectionInfo connectionInfo) {
         if (!isConnected()) {
             tryToEstablishConnection(connectionInfo);

@@ -1,10 +1,8 @@
 package com.battleships.gamewindow.board;
 
-import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.MastField;
-import com.battleships.gamewindow.board.fieldStates.SeaField;
+import com.battleships.Coordinate;
+import com.battleships.gamewindow.board.fieldStates.*;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
-import com.battleships.models.board.Coordinate;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
@@ -20,8 +18,7 @@ public class PlayerBoard extends Board {
         for (int row = 1; row <= boardSize.rowsAmount(); row++) {
             for (int col = 1; col <= boardSize.colAmount(); col++) {
                 Coordinate cord = Coordinate.fromIntCoords(row, col);
-                BoardField seaField = new SeaField(cord);
-
+                BoardField seaField = new BoardField(cord, FieldState.SEA);
                 gridPaneForBoard.add(seaField, col, row);
                 board.put(cord, seaField);
             }
@@ -31,7 +28,7 @@ public class PlayerBoard extends Board {
     public void placeFleetRandomly (GridPane gridPaneBoard) {
         List<Coordinate> shipsFleetCoords = randomFleetPlacement.getRandomCoords();
         for (Coordinate mastCoord : shipsFleetCoords) {
-            BoardField boardField = new MastField(mastCoord);
+            BoardField boardField = new BoardField(mastCoord, FieldState.MAST);
 
             int fieldColumn = mastCoord.getColumn();
             int fieldRow = mastCoord.getRow();
@@ -39,5 +36,10 @@ public class PlayerBoard extends Board {
             this.board.put(mastCoord, boardField);
             gridPaneBoard.add(boardField, fieldColumn, fieldRow);
         }
+    }
+
+    public void markButtonsAsHit(Coordinate[] coordinates) {
+        BoardField boardField = board.get(coordinates[0]);
+        boardField.hit();
     }
 }

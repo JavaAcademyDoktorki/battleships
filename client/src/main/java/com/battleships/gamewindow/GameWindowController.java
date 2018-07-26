@@ -4,14 +4,14 @@ import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
-import com.battleships.commands.values.Shot;
+import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.HitMastField;
+import com.battleships.gamewindow.board.fieldStates.FieldState;
 import com.battleships.gamewindow.services.BoardService;
-import com.battleships.models.board.BoardGridPanes;
-import com.battleships.models.board.Coordinate;
+import com.battleships.gamewindow.board.BoardGridPanes;
+import com.battleships.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -90,6 +90,7 @@ public class GameWindowController {
     private void initBoardService(EventHandler<ActionEvent> shotEvent) {
         BoardSize boardSize = new BoardSize(10, 10);
         boardService = new BoardService(boardSize);
+        Connection.INSTANCE.boardService = boardService;
 
         BoardGridPanes boardGridPanes = new BoardGridPanes(playerGridPaneBoard, opponentGridPaneBoard);
         boardService.initBoards(boardGridPanes, shotEvent);
@@ -97,20 +98,26 @@ public class GameWindowController {
 
     private void shot(ActionEvent event) {
         BoardField clickedButton = (BoardField) event.getSource();
-        Coordinate coordinate = clickedButton.getCoordinate();
-        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed
+        Coordinate[] coordinates = new Coordinate[]{clickedButton.getCoordinate()};
+//        clickedButton.refreshColor(); // TODO 24/07/18 damian -  is it neeed?
 
-        sendShootMessageToServer(coordinate);
+        Shot shot = new Shot(coordinates);
+        sendShootMessageToServer(shot);
         makePlayerInactiveAndUnreadyAfterShoot();
 
-        // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING
-        boardService.onShootOpponentMessageRecieve(coordinate, new HitMastField(coordinate));
+        // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING - test method
+        boardService.onShootOpponentMessageRecieve(coordinates[0], FieldState.HIT_MAST);
 
-        logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
+        logAllShootCoordinates(shot);
     }
 
-    private void sendShootMessageToServer(Coordinate coordinate) {
-        Shot shot = new Shot(coordinate.getRow(), coordinate.getColumn());
+    private void logAllShootCoordinates(Shot shot) {
+        for (Coordinate coordinate:shot.getCoordinates()) {
+            logger.info(String.format(LogMessages.FIRED_SHOT_ON, coordinate.getRow(), coordinate.getColumn()));
+        }
+    }
+
+    private void sendShootMessageToServer(Shot shot) {
         Connection.INSTANCE.sendToServer(new Message(CommandType.SHOT, shot));
     }
 
