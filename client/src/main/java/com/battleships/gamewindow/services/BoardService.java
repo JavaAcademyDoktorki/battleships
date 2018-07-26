@@ -58,8 +58,8 @@ public class BoardService {
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }
 
-    public void onShootOpponentMessageRecieve(Coordinate coordinate, FieldState boardField) {
-        opponentBoard.applyStyleForCoordinate(coordinate, boardField.getStyle());
+    public void onShootOpponentMessageRecieve(Coordinate coordinate, FieldState fieldState) {
+        opponentBoard.applyStyleForCoordinate(coordinate, fieldState.getStyle());
     }
 
     public void markButtonsAsHit(Coordinate[] coordinates) {
