@@ -1,5 +1,6 @@
 package com.battleships.gamewindow.board;
 
+import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 
 import java.util.ArrayList;
@@ -11,5 +12,9 @@ public class Ship {
 
     public void addMast(BoardField mastField) {
         masts.add(mastField);
+    }
+
+    public boolean isMastHit(Coordinate coordinate) {
+        return masts.stream().anyMatch(m -> m.getCoordinate().equals(coordinate));
     }
 }
