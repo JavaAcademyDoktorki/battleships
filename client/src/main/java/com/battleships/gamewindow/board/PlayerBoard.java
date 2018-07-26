@@ -2,7 +2,6 @@ package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 import javafx.scene.layout.GridPane;
 
@@ -40,7 +39,6 @@ public class PlayerBoard extends Board {
             Ship ship = new Ship(masts);
             fleet.addShip(ship);
         }
-        System.out.println(fleet);
     }
 
     private void addBoardFieldToView(GridPane gridPaneBoard, Coordinate mastCoord, BoardField boardField) {
