@@ -27,6 +27,8 @@ public class ServerCommandsFactory {
                 return new YouAreReady(value);
             case SHUT_DOWN:
                 return new ShutDown(value);
+            case END_GAME:
+                return new EndGame(value);
             default:
                 return new EmptyCommand(null);
         }

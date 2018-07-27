@@ -38,6 +38,8 @@ public class CommandFactory {
                 return new SetupCompletedCommand(value);
             case MOVE_TO_GAME_STATE:
                 return new MoveToGameState(value);
+            case END_GAME:
+                return new EndGame(value);
             default:
                 return new EmptyCommand(null);
         }

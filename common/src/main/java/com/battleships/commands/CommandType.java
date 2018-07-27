@@ -11,5 +11,6 @@ public enum CommandType {
     SETUP_COMPLETED,
     MOVE_TO_GAME_STATE,
     YOU_ARE_READY,
-    SHUT_DOWN
+    SHUT_DOWN,
+    END_GAME
 }

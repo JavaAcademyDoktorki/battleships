@@ -17,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -151,13 +150,8 @@ public class GameWindowController {
         return true;
     }
 
-    public void endGame(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("WYGRANA JUPIIII!!!");
-        alert.headerTextProperty().bind(Translator.createStringBinding("won_header"));
-        alert.titleProperty().bind(Translator.createStringBinding("won"));
-        alert.contentTextProperty().bind(Translator.createStringBinding("won_info"));
-        alert.getDialogPane().setMinHeight(200);
-        alert.showAndWait();
+    public void endGame(ActionEvent actionEvent) { // TODO KRZYSIEK
+        Message message = new Message(CommandType.END_GAME, "");
+        Connection.INSTANCE.sendToServer(message);
     }
 }
