@@ -28,8 +28,6 @@
                     -fx-margin: 4 4 4 4 "/>
             <Button fx:id="readyToPlayButton" GridPane.rowIndex="4" GridPane.columnIndex="0"
                     onAction="#confirmReady"/>
-            <Button fx:id="endGameTempButton" GridPane.rowIndex="5" GridPane.columnIndex="0"
-                    onAction="#endGame" text="Temporary button - other player wins"/>
         </GridPane>
     </center>
     <bottom>

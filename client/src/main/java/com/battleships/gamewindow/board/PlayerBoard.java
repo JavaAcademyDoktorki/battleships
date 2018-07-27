@@ -47,11 +47,6 @@ public class PlayerBoard extends Board {
         }
     }
 
-    public void markButtonsAsHit(List<BoardField> hitResult) {
-//        board.get(hitResult[0]).hit();
-
-    }
-
     public void placeShip(Ship ship) {
         ship.getMasts().forEach(boardField -> board.put(boardField.getCoordinate(), boardField));
     }
@@ -78,5 +73,9 @@ public class PlayerBoard extends Board {
         }
         hitResult.addAll(buffer);
         return hitResult;
+    }
+
+    public boolean isFleetSunk() {
+        return fleet.isSunk();
     }
 }

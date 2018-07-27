@@ -84,4 +84,8 @@ public class BoardService {
     public void markHitOnOppnentBoard(List<RawBoardField> result) {
         opponentBoard.markHitOnOpponentBoard(result);
     }
+
+    public boolean isFleetSunk() {
+        return playerBoard.isFleetSunk();
+    }
 }

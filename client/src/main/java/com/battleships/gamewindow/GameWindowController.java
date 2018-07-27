@@ -149,9 +149,4 @@ public class GameWindowController {
         logger.info(LogMessages.SHIP_VALIDATED);
         return true;
     }
-
-    public void endGame(ActionEvent actionEvent) { // TODO KRZYSIEK
-        Message message = new Message(CommandType.END_GAME, "");
-        Connection.INSTANCE.sendToServer(message);
-    }
 }

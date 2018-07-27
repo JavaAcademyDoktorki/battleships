@@ -13,6 +13,7 @@ public enum CommandType {
     MOVE_TO_GAME_STATE,
     YOU_ARE_READY,
     SHUT_DOWN,
-    END_GAME
+    END_GAME,
+    FLEET_SUNK;
 }
 

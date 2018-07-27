@@ -40,6 +40,8 @@ public class CommandFactory {
                 return new SetupCompletedCommand(value);
             case MOVE_TO_GAME_STATE:
                 return new MoveToGameState(value);
+            case FLEET_SUNK:
+                return new FleetSunkMessage(value);
             case END_GAME:
                 return new EndGame(value);
             default:
