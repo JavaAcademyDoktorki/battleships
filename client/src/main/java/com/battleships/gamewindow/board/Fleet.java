@@ -29,4 +29,8 @@ public class Fleet {
                 .flatMap(ship -> ship.getMasts().stream())
                 .anyMatch(boardField -> boardField.getCoordinate().equals(coordinate));
     }
+
+    public boolean isSunk() {
+        return ships.stream().allMatch(Ship::isSunk);
+    }
 }
