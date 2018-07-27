@@ -2,20 +2,27 @@ package com.battleships.gamewindow.board.fieldStates;
 
 
 import com.battleships.Coordinate;
+import com.battleships.FieldState;
+import com.battleships.RawBoardField;
 import javafx.scene.control.Button;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class BoardField extends Button implements Serializable {
-    protected Coordinate coordinate;
+public class BoardField extends Button {
+    private RawBoardField rawBoardField;
+    private final Coordinate coordinate;
     private FieldState fieldState;
 
     public BoardField(Coordinate coordinate, FieldState fieldState) {
         this.coordinate = coordinate;
         this.fieldState = fieldState;
         refreshStyle();
+    }
 
+    public BoardField(RawBoardField rawBoardField) {
+        this.coordinate = rawBoardField.getCoordinate();
+        this.fieldState = rawBoardField.getFieldState();
+        refreshStyle();
     }
 
     public boolean isHit() {
@@ -73,6 +80,10 @@ public class BoardField extends Button implements Serializable {
 
     public FieldState getFieldState() {
         return fieldState;
+    }
+
+    public static RawBoardField getRawBoardField(BoardField boardField) {
+        return new RawBoardField(boardField.getCoordinate(), boardField.getFieldState());
     }
 }
 

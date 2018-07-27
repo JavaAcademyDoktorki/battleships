@@ -2,8 +2,7 @@ package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
+import com.battleships.FieldState;
 
 import java.util.*;
 
@@ -30,15 +29,7 @@ public class Ship {
     }
 
     boolean isSunk() {
-        if (masts.stream().allMatch(BoardField::isHit)) {
-            setSunk();
-            return true;
-        }
-        return false;
-    }
-
-    private void setSunk() {
-        masts.stream().forEach(boardField -> boardField.setFieldState(FieldState.SUNK_MAST));
+        return masts.stream().allMatch(BoardField::isHit);
     }
 
     public String toString() {

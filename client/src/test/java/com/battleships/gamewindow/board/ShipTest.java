@@ -2,7 +2,7 @@ package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
+import com.battleships.FieldState;
 import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

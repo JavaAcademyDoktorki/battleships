@@ -1,21 +1,21 @@
 package com.battleships.gamewindow.services;
 
+import com.battleships.Coordinate;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
+import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.Coordinate;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
+import com.battleships.FieldState;
+import com.battleships.RawBoardField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BoardService {
     private PlayerBoard playerBoard;
@@ -67,19 +67,21 @@ public class BoardService {
         opponentBoard.applyStyleForCoordinate(coordinate, fieldState.getStyle());
     }
 
-    public void markButtonsAsHit(List<BoardField> hitResult) {
-        playerBoard.markButtonsAsHit(hitResult);
-    }
+//    public void markButtonsAsHit(List<BoardField> hitResult) {
+//        playerBoard.markButtonsAsHit(hitResult);
+//    }
 
     public boolean verifyShot(Shot shot) {
         return playerBoard.verifyShot(shot);
     }
 
-    public List<BoardField> getHitMastCoordinates(Shot shot) {
-        return playerBoard.getHitMastsCoordinates(shot);
+    public List<RawBoardField> getHitMastCoordinates(Shot shot) {
+        return playerBoard.getHitMastsCoordinates(shot).stream()
+                .map(BoardField::getRawBoardField)
+                .collect(Collectors.toList());
     }
 
-    public void markHitOnOppnentBoard(List<BoardField> result) {
+    public void markHitOnOppnentBoard(List<RawBoardField> result) {
         opponentBoard.markHitOnOpponentBoard(result);
     }
 }

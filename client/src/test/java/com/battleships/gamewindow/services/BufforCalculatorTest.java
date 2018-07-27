@@ -4,7 +4,7 @@ import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.Ship;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
+import com.battleships.FieldState;
 import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;

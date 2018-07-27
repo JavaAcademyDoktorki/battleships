@@ -1,4 +1,4 @@
-package com.battleships.gamewindow.board.fieldStates;
+package com.battleships;
 
 public enum FieldState {
     MAST{

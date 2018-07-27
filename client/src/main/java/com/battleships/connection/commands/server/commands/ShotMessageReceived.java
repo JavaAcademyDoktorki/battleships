@@ -5,7 +5,7 @@ import com.battleships.commands.Message;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.RawBoardField;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
 
@@ -27,7 +27,7 @@ public class ShotMessageReceived extends AbstractServerCommand {
 //        boardService.markButtonsAsHit(shot.getCoordinates());  //playerboar
 
         if (hitSuccessful) {
-            List<BoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
+            List<RawBoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
             Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
         } else {    // pudło, odmrażamy interejs
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
