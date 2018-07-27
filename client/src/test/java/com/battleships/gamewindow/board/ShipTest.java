@@ -17,14 +17,19 @@ import static org.testng.Assert.assertTrue;
 public class ShipTest {
     private JFXPanel jfxPanel = new JFXPanel();
     private Ship ship;
+    private Ship sunkenShip;
 
     @BeforeMethod
     public void setUp() {
         Set<BoardField> masts = new HashSet<>();
         masts.add(new BoardField(Coordinate.fromIntCoords(1, 1), FieldState.MAST));
-        masts.add(new BoardField(Coordinate.fromIntCoords(1, 2), FieldState.MAST));
+        masts.add(new BoardField(Coordinate.fromIntCoords(1, 2), FieldState.HIT_MAST));
         masts.add(new BoardField(Coordinate.fromIntCoords(1, 3), FieldState.MAST));
         ship = new Ship(masts);
+        Set<BoardField> masts2 = new HashSet<>();
+        masts2.add(new BoardField(Coordinate.fromIntCoords(5, 5), FieldState.HIT_MAST));
+        masts2.add(new BoardField(Coordinate.fromIntCoords(5, 4), FieldState.HIT_MAST));
+        sunkenShip = new Ship(masts2);
     }
 
     @Test
@@ -35,10 +40,8 @@ public class ShipTest {
 
     @Test
     public void isMastShot_whenHitMast_shouldReturnTrue() {
-        ship.hit(Coordinate.fromIntCoords(1, 1));
-
-        Coordinate itIsNotAFuckingMast = Coordinate.fromIntCoords(1, 1);
-        assertTrue(ship.isMastHit(itIsNotAFuckingMast));
+        Coordinate hitMastCoordinates = Coordinate.fromIntCoords(1, 2);
+        assertTrue(ship.isMastHit(hitMastCoordinates));
     }
 
     @Test
@@ -51,13 +54,19 @@ public class ShipTest {
     public void shouldSinkSelectedMast() {
         Coordinate hitCoordinate = Coordinate.fromIntCoords(1, 2);
 
-        ship.hit(hitCoordinate);
-
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(ship.isMastHit(hitCoordinate));
         softAssert.assertFalse(ship.isSunk());
         softAssert.assertFalse(ship.isMastHit(Coordinate.fromIntCoords(1, 1)));
         softAssert.assertFalse(ship.isMastHit(Coordinate.fromIntCoords(1, 3)));
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void shouldMarkShipAsSunken() {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(sunkenShip.isSunk());
+        softAssert.assertFalse(ship.isSunk());
         softAssert.assertAll();
     }
 }

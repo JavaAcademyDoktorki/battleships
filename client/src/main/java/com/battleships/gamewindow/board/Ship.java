@@ -37,9 +37,4 @@ public class Ship {
     public String toString() {
         return masts.toString();
     }
-
-    public void hit(Coordinate hitCoordinate) {
-        getMastForCoordinate(hitCoordinate)
-                .ifPresent(boardField -> boardField.hit());
-    }
 }
