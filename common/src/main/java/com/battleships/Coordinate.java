@@ -1,6 +1,7 @@
 package com.battleships;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Coordinate implements Serializable {
     private final int row;
@@ -11,7 +12,7 @@ public class Coordinate implements Serializable {
         this.column = column;
     }
 
-    public static Coordinate fromIntCoords(int row, int col){
+    public static Coordinate fromIntCoords(int row, int col) {
         return new Coordinate(row, col);
     }
 
@@ -33,23 +34,15 @@ public class Coordinate implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (!(o instanceof Coordinate)) {
-            return false;
-        } else {
-            Coordinate that = (Coordinate)o;
-            return (this.row == that.row && this.column == that.column);
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinate that = (Coordinate) o;
+        return row == that.row &&
+                column == that.column;
     }
 
     @Override
     public int hashCode() {
-        int h = 1;
-        h = h * 1000003;
-        h ^= this.row;
-        h *= 1000003;
-        h ^= this.column;
-        return h;
+        return Objects.hash(row, column);
     }
 }

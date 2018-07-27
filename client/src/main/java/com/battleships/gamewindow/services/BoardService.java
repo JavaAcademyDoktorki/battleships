@@ -24,9 +24,9 @@ public class BoardService {
         this.opponentBoard = new OpponentBoard();
     }
 
-    public void createNewRandomConfig(GridPane gridPaneForBoard) {
-        playerBoard.changeAllFieldsToSea(boardSize, gridPaneForBoard);
-        playerBoard.placeFleetRandomly(gridPaneForBoard);
+    public void createNewRandomConfig() {
+        playerBoard.changeAllFieldsToSea();
+        playerBoard.placeFleetRandomly();
     }
 
     public void initBoards(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent) {
@@ -45,7 +45,7 @@ public class BoardService {
 
     private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane) {
         BoardField boardField = new BoardField(coordinate, FieldState.SEA);
-        boardField.setDisable(true);
+        boardField.setDisable(false); //TODO - Aga: decide whether leave it disabled or not
         playerBoard.addNewField(coordinate, boardField);
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }

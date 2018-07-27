@@ -3,7 +3,6 @@ package com.battleships.commands;
 import com.battleships.Coordinate;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
