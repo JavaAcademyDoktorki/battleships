@@ -3,9 +3,7 @@ package com.battleships.gamewindow.board;
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class Ship {
