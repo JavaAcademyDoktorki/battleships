@@ -1,12 +1,11 @@
 package com.battleships.gamewindow.services;
 
+import com.battleships.Coordinate;
 import com.battleships.connection.Connection;
-import com.battleships.gamewindow.board.BoardSize;
+import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.FieldState;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,11 +14,9 @@ import javafx.scene.layout.GridPane;
 public class BoardService {
     private PlayerBoard playerBoard;
     private OpponentBoard opponentBoard;
-    private BoardSize boardSize;
 
 
-    public BoardService(BoardSize boardSize) {
-        this.boardSize = boardSize;
+    public BoardService() {
         this.playerBoard = new PlayerBoard();
         this.opponentBoard = new OpponentBoard();
     }
@@ -64,5 +61,9 @@ public class BoardService {
 
     public void markButtonsAsHit(Coordinate[] coordinates) {
         playerBoard.markButtonsAsHit(coordinates);
+    }
+
+    public boolean isEndOfGame() {
+        return playerBoard.isFleetSunk();
     }
 }

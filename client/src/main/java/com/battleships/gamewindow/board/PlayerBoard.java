@@ -55,4 +55,8 @@ public class PlayerBoard extends Board {
         return board.get(coordinate);
     }
 
+    public boolean isFleetSunk() {
+        return fleet.isSunk();
+    }
+
 }

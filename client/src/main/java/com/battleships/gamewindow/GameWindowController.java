@@ -91,7 +91,7 @@ public class GameWindowController {
 
     private void initBoardService(EventHandler<ActionEvent> shotEvent) {
         BoardSize boardSize = new BoardSize(10, 10);
-        boardService = new BoardService(boardSize);
+        boardService = new BoardService();
         Connection.INSTANCE.boardService = boardService;
 
         BoardGridPanes boardGridPanes = new BoardGridPanes(playerGridPaneBoard, opponentGridPaneBoard);
