@@ -19,7 +19,9 @@ public class PlayerBoard extends Board {
     }
 
     public void changeAllFieldsToSea() {
-        board.keySet().forEach(coordinate -> board.get(coordinate).setFieldState(FieldState.SEA));
+        board.keySet()
+                .forEach(coordinate -> board.get(coordinate)
+                        .setFieldState(FieldState.SEA));
     }
 
     public void placeFleetRandomly() {
@@ -27,12 +29,16 @@ public class PlayerBoard extends Board {
         fleet.clear();
         for (Coordinate[] shipCoordinates : fleetCoords) {
             Set<BoardField> masts = new HashSet<>();
-            for (Coordinate mastCoord : shipCoordinates) {
-                board.get(mastCoord).setFieldState(FieldState.MAST);
-                masts.add(board.get(mastCoord));
-            }
+            setFieldsAsShipMasts(shipCoordinates, masts);
             Ship ship = new Ship(masts);
             fleet.addShip(ship);
+        }
+    }
+
+    private void setFieldsAsShipMasts(Coordinate[] shipCoordinates, Set<BoardField> masts) {
+        for (Coordinate mastCoord : shipCoordinates) {
+            board.get(mastCoord).setFieldState(FieldState.MAST);
+            masts.add(board.get(mastCoord));
         }
     }
 

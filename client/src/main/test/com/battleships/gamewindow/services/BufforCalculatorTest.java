@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import static org.testng.Assert.assertEquals;
 
@@ -29,13 +30,11 @@ public class BufforCalculatorTest {
     }
 
     private void initBoardWithSea() {
-        for (int row = 1; row <= 10; row++) {
-            for (int col = 1; col <= 10; col++) {
-                Coordinate coordinate = Coordinate.fromIntCoords(row, col);
-                BoardField boardField = new BoardField(coordinate, FieldState.SEA);
-                playerBoard.addNewField(coordinate, boardField);
-            }
-        }
+        IntStream.range(1, 11).forEach(row -> IntStream.range(1, 11).forEach(column -> {
+            Coordinate coordinate = Coordinate.fromIntCoords(row, column);
+            BoardField boardField = new BoardField(coordinate, FieldState.SEA);
+            playerBoard.addNewField(coordinate, boardField);
+        }));
     }
 
     @DataProvider
