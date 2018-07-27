@@ -57,9 +57,10 @@ public class BufforCalculatorTest {
         // given
         Ship ship = new Ship(fields);
         playerBoard.placeShip(ship);
+        BufforCalculator bufforCalculator = new BufforCalculator(playerBoard);
 
         // when
-        Set<BoardField> buffer = playerBoard.calculateBuffer(ship);
+        Set<BoardField> buffer = bufforCalculator.calculateBuffer(ship);
 
         // then
         assertEquals(buffer, expectedBuffer);
