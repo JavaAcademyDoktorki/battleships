@@ -24,9 +24,9 @@ public class BoardService {
         this.opponentBoard = new OpponentBoard();
     }
 
-    public void createNewRandomConfig(GridPane gridPaneForBoard) {
-        playerBoard.changeAllFieldsToSea(boardSize);
-        playerBoard.placeFleetRandomly(gridPaneForBoard);
+    public void createNewRandomConfig() {
+        playerBoard.changeAllFieldsToSea();
+        playerBoard.placeFleetRandomly();
     }
 
     public void initBoards(BoardGridPanes boardGridPanes, EventHandler<ActionEvent> shotEvent) {

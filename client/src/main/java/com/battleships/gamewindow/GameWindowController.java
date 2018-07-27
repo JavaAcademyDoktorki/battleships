@@ -126,7 +126,7 @@ public class GameWindowController {
     }
 
     public void placeShipsRandomly(Event event) {
-        boardService.createNewRandomConfig(playerGridPaneBoard);
+        boardService.createNewRandomConfig();
         logger.info(LogMessages.SHIP_PLACED);
     }
 

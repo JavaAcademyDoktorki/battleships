@@ -2,6 +2,7 @@ package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fieldStates.FieldState;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 import javafx.scene.layout.GridPane;
 
@@ -18,22 +19,17 @@ public class PlayerBoard extends Board {
         fleet = new Fleet();
     }
 
-    public void changeAllFieldsToSea(BoardSize boardSize) {
-        for (int row = 1; row <= boardSize.rowsAmount(); row++) {
-            for (int col = 1; col <= boardSize.colAmount(); col++) {
-                Coordinate cord = Coordinate.fromIntCoords(row, col);
-                board.get(cord).setSea();
-            }
-        }
+    public void changeAllFieldsToSea() {
+        board.keySet().forEach(coordinate -> board.get(coordinate).setFieldState(FieldState.SEA));
     }
 
-    public void placeFleetRandomly(GridPane gridPaneBoard) {
+    public void placeFleetRandomly() {
         List<Coordinate[]> fleetCoords = randomFleetPlacement.getRandomCoords();
         fleet.clear();
         for (Coordinate[] shipCoordinates : fleetCoords) {
             Set<BoardField> masts = new HashSet<>();
             for (Coordinate mastCoord : shipCoordinates) {
-                board.get(mastCoord).setMast();
+                board.get(mastCoord).setFieldState(FieldState.MAST);
                 masts.add(board.get(mastCoord));
             }
             Ship ship = new Ship(masts);

@@ -30,13 +30,8 @@ public class BoardField extends Button {
         this.setStyle(fieldState.getStyle());
     }
 
-    public void setMast() {
-        this.fieldState = FieldState.MAST;
-        this.refreshStyle();
-    }
-
-    public void setSea() {
-        this.fieldState = FieldState.SEA;
+    public void setFieldState(FieldState fieldState) {
+        this.fieldState = fieldState;
         this.refreshStyle();
     }
 
