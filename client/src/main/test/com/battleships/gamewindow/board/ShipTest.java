@@ -1,7 +1,6 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
-import com.battleships.gamewindow.board.Ship;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.FieldState;
 import javafx.embed.swing.JFXPanel;
@@ -37,5 +36,11 @@ public class ShipTest {
     public void isMastShot_whenHitMast_shouldReturnTrue() {
         Coordinate itIsNotAFuckingMast = Coordinate.fromIntCoords(1, 1);
         assertTrue(ship.isMastHit(itIsNotAFuckingMast));
+    }
+
+    @Test
+    public void isMastSunk_whenAllMastsHit_shouldReturnTrue() {
+        ship.getMasts().forEach(BoardField::hit);
+        assertTrue(ship.isSunk());
     }
 }

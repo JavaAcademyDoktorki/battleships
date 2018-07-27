@@ -17,8 +17,12 @@ public class Ship {
         return masts;
     }
 
-    public boolean isMastHit(Coordinate coordinate) {
+    boolean isMastHit(Coordinate coordinate) {
         return masts.stream().anyMatch(m -> m.getCoordinate().equals(coordinate));
+    }
+
+    boolean isSunk() {
+        return masts.stream().allMatch(BoardField::isHit);
     }
 
     public String toString(){

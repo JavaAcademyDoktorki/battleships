@@ -17,6 +17,10 @@ public class BoardField extends Button {
 
     }
 
+    public boolean isHit() {
+        return fieldState == FieldState.HIT_MAST;
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
