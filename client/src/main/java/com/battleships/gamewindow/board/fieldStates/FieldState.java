@@ -18,7 +18,7 @@ public enum FieldState {
         }
         @Override
         public FieldState afterHitState() {
-            return SUNK_MAST;
+            return HIT_MAST;
         }
     },
     SUNK_MAST{

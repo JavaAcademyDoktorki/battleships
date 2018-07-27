@@ -2,8 +2,10 @@ package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fieldStates.FieldState;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 public class Ship {
@@ -17,11 +19,22 @@ public class Ship {
         return masts;
     }
 
-    public boolean isMastHit(Coordinate coordinate) {
-        return masts.stream().anyMatch(m -> m.getCoordinate().equals(coordinate));
+    boolean isMastHit(Coordinate coordinate) {
+        return getMastForCoordinate(coordinate)
+                .orElseGet(() -> new BoardField(Coordinate.fromIntCoords(0, 0), FieldState.SEA))
+                .isHit();
     }
 
-    public String toString(){
+    private Optional<BoardField> getMastForCoordinate(Coordinate coordinate) {
+        return masts.stream().filter(boardField -> boardField.getCoordinate().equals(coordinate))
+                .findFirst();
+    }
+
+    boolean isSunk() {
+        return masts.stream().allMatch(BoardField::isHit);
+    }
+
+    public String toString() {
         return masts.toString();
     }
 }
