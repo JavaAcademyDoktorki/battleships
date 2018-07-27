@@ -1,10 +1,15 @@
 package com.battleships.connection.commands.server.commands;
 
+import com.battleships.commands.CommandType;
+import com.battleships.commands.Message;
+import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
-import com.battleships.commands.Shot;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
+
+import java.util.List;
 
 public class ShotMessageReceived extends AbstractServerCommand {
     public ShotMessageReceived(Object value) {
@@ -14,16 +19,20 @@ public class ShotMessageReceived extends AbstractServerCommand {
     @Override
     public void execute() {
         BoardService boardService = Connection.INSTANCE.boardService;
-
         Shot shot = (Shot) value;
-        //TODO if hit, then receiver is set inactive and unready, assume always missed to show that turn changes
-        boolean missed = true;
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(missed));
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(missed));
 
-        boardService.markButtonsAsHit(shot.getCoordinates());
+        //TODO if hitSuccessful, then receiver is set inactive and unready, assume always missed to show that turn changes
+        boolean hitSuccessful = boardService.verifyShot(shot);
 
-        //TODO after validation send the result to the opponent to block/unblock his opponent board
-        //TODO Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT_EVALUATION,false));
+//        boardService.markButtonsAsHit(shot.getCoordinates());  //playerboar
+
+        if (hitSuccessful) {
+            List<BoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
+            Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
+        } else {    // pudło, odmrażamy interejs
+            Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
+            Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
+        }
+
     }
 }

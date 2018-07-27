@@ -19,6 +19,8 @@ public class ServerCommandsFactory {
                 return new PlayerMessageReceived(value);
             case SHOT:
                 return new ShotMessageReceived(value);
+            case HIT:
+                return new HitMessage(value);
             case PLAYER_READY:
                 return new PlayerReadyMessage(value);
             case SETUP_COMPLETED:

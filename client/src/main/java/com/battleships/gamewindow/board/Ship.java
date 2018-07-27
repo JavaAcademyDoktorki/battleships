@@ -3,10 +3,9 @@ package com.battleships.gamewindow.board;
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.FieldState;
+import com.sun.corba.se.spi.orbutil.fsm.FSM;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Ship {
     private final Set<BoardField> masts;
@@ -31,10 +30,30 @@ public class Ship {
     }
 
     boolean isSunk() {
-        return masts.stream().allMatch(BoardField::isHit);
+        if (masts.stream().allMatch(BoardField::isHit)) {
+            setSunk();
+            return true;
+        }
+        return false;
+    }
+
+    private void setSunk() {
+        masts.stream().forEach(boardField -> boardField.setFieldState(FieldState.SUNK_MAST));
     }
 
     public String toString() {
         return masts.toString();
+    }
+
+    public Collection<? extends BoardField> hit(Coordinate coordinate) {
+        Set<BoardField> result = new HashSet<>();
+        getMastForCoordinate(coordinate).ifPresent(boardField -> {
+            boardField.hit();
+            if (isSunk()) {
+                result.addAll(masts);
+            }
+            result.add(boardField);
+        });
+        return result;
     }
 }

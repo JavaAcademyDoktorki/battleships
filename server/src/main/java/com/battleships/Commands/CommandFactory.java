@@ -32,6 +32,8 @@ public class CommandFactory {
         switch (commandType) {
             case SHOT:
                 return new PlayersShootCommand(value);
+            case HIT:
+                return new PlayerHitResult(value);
             case PLAYER_READY:
                 return new PlayerReadyCommand(value);
             case SETUP_COMPLETED:

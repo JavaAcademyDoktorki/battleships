@@ -4,9 +4,10 @@ package com.battleships.gamewindow.board.fieldStates;
 import com.battleships.Coordinate;
 import javafx.scene.control.Button;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BoardField extends Button {
+public class BoardField extends Button implements Serializable {
     protected Coordinate coordinate;
     private FieldState fieldState;
 
@@ -18,7 +19,7 @@ public class BoardField extends Button {
     }
 
     public boolean isHit() {
-        return fieldState == FieldState.HIT_MAST;
+        return fieldState == FieldState.HIT_MAST || fieldState == FieldState.SUNK_MAST;
     }
 
     public Coordinate getCoordinate() {
@@ -64,6 +65,14 @@ public class BoardField extends Button {
         sb.append(", fieldState=").append(fieldState);
         sb.append('}');
         return sb.toString();
+    }
+
+    public boolean isSunk() {
+        return fieldState == FieldState.SUNK_MAST;
+    }
+
+    public FieldState getFieldState() {
+        return fieldState;
     }
 }
 

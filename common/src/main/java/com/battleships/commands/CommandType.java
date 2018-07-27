@@ -6,6 +6,7 @@ public enum CommandType {
     PLAYER_REGISTERED_SUCCESSFULLY,
     REGISTER_NEW_PLAYER,
     SHOT,
+    HIT,
     MESSAGE,
     PLAYER_READY,
     SETUP_COMPLETED,
@@ -14,3 +15,4 @@ public enum CommandType {
     SHUT_DOWN,
     END_GAME
 }
+
