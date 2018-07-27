@@ -12,6 +12,7 @@ import java.util.Set;
 public class PlayerBoard extends Board {
     private final Fleet fleet;
     private final RandomFleetPlacement randomFleetPlacement;
+    private final int MASTS_ON_BOARD_SUM = 20;
 
     public PlayerBoard() {
         this.randomFleetPlacement = new RandomFleetPlacement();
@@ -55,4 +56,9 @@ public class PlayerBoard extends Board {
         return board.get(coordinate);
     }
 
+    public boolean isBoardInited() {
+        return board.values().stream()
+                .filter(boardField -> !boardField.isSea())
+                .count() >= MASTS_ON_BOARD_SUM;
+    }
 }

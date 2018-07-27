@@ -21,5 +21,5 @@ public class LogMessages {
     public static final String QUIT_WITH_ESCAPE = "Wyjście przy użyciu Escape";
     public static final String SHIP_PLACED = "Flota została rozlosowana";
     public static final String FIRED_SHOT_ON ="Starzał oddany (wiersz: %d, kolumna: %d)";
-    public static final String SHIP_VALIDATED ="Ustawiennie floty zwalidowane" ;
+    public static final String SHIP_VALIDATED = "Ustawiennie floty zwalidowane. Poprawność: %s";
 }

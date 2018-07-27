@@ -1,17 +1,17 @@
 package com.battleships.gamewindow;
 
+import com.battleships.Coordinate;
 import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
+import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.board.fieldStates.FieldState;
 import com.battleships.gamewindow.services.BoardService;
-import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -144,7 +144,8 @@ public class GameWindowController {
     }
 
     private boolean validateBoard() {
-        logger.info(LogMessages.SHIP_VALIDATED);
-        return true;
+        boolean playersBoardInited = boardService.isPlayersBoardInited();
+        logger.info(String.format(LogMessages.SHIP_VALIDATED, playersBoardInited));
+        return playersBoardInited;
     }
 }

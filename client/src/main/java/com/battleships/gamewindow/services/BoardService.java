@@ -1,12 +1,12 @@
 package com.battleships.gamewindow.services;
 
+import com.battleships.Coordinate;
 import com.battleships.connection.Connection;
+import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.FieldState;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -64,5 +64,9 @@ public class BoardService {
 
     public void markButtonsAsHit(Coordinate[] coordinates) {
         playerBoard.markButtonsAsHit(coordinates);
+    }
+
+    public boolean isPlayersBoardInited() {
+        return playerBoard.isBoardInited();
     }
 }
