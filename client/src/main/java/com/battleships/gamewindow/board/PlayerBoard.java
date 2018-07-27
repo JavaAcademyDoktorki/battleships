@@ -7,6 +7,7 @@ import com.battleships.FieldState;
 import com.battleships.gamewindow.services.BufforCalculator;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,14 +67,16 @@ public class PlayerBoard extends Board {
 
     public List<BoardField> getHitMastsCoordinates(Shot shot) {
         List<BoardField> hitResult = fleet.returnBoardFieldsAfterShot(Coordinate.fromShot(shot));
+        List<BoardField> buffer = new ArrayList<>();
         for (BoardField boardField : hitResult) {
             if (boardField.isSunk()) {
-                hitResult.addAll(
+                buffer.addAll(
                         bufforCalculator.calculateBuffer(
                                 fleet.getShipForCoordinate(
                                         boardField.getCoordinate())));
             }
         }
+        hitResult.addAll(buffer);
         return hitResult;
     }
 }

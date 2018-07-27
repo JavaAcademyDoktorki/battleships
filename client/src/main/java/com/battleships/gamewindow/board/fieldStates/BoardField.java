@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import java.util.Objects;
 
 public class BoardField extends Button {
-    private RawBoardField rawBoardField;
     private final Coordinate coordinate;
     private FieldState fieldState;
 

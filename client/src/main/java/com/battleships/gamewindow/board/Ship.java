@@ -29,7 +29,14 @@ public class Ship {
     }
 
     boolean isSunk() {
-        return masts.stream().allMatch(BoardField::isHit);
+        boolean isSunk = masts.stream().allMatch(BoardField::isHit);
+        if (isSunk)
+            sunkShip();
+        return isSunk;
+    }
+
+    private void sunkShip() {
+        masts.stream().forEach(boardField -> boardField.setFieldState(FieldState.SUNK_MAST));
     }
 
     public String toString() {
