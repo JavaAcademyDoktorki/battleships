@@ -39,24 +39,14 @@ public class Fleet {
 
     public List<BoardField> returnBoardFieldsAfterShot(Coordinate[] coordinates) {
         List<BoardField> result = new ArrayList<>();
-        for (Coordinate coordinate : coordinates) {
-            for (Ship ship : ships) {
-                result.addAll(ship.hit(coordinate));
-            }
-        }
+        Arrays.stream(coordinates).forEach(coordinate -> ships.forEach(ship -> result.addAll(ship.hit(coordinate))));
         return result;
     }
 
     public Ship getShipForCoordinate(Coordinate coordinate) {
-        Ship toReturn = null;
-        for (Ship ship : ships) {
-            for (BoardField mast : ship.getMasts()) {
-                if (mast.getCoordinate().equals(coordinate)) {
-                    toReturn = ship;
-                    return toReturn;
-                }
-            }
-        }
-        return toReturn;
+        return ships.stream()
+                .filter(ship -> ship.getMasts().stream().anyMatch(mast -> mast.getCoordinate().equals(coordinate)))
+                .findFirst()
+                .get();
     }
 }
