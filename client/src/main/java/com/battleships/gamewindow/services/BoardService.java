@@ -67,10 +67,6 @@ public class BoardService {
         opponentBoard.applyStyleForCoordinate(coordinate, fieldState.getStyle());
     }
 
-//    public void markButtonsAsHit(List<BoardField> hitResult) {
-//        playerBoard.markButtonsAsHit(hitResult);
-//    }
-
     public boolean verifyShot(Shot shot) {
         return playerBoard.verifyShot(shot);
     }

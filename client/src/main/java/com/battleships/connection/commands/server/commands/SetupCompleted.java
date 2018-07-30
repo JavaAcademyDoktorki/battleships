@@ -14,6 +14,7 @@ public class SetupCompleted extends AbstractServerCommand {
     @Override
     public void execute() {
         Boolean value = (Boolean) this.value;
+
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(value));
     }
 }

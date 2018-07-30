@@ -25,8 +25,6 @@ import org.apache.logging.log4j.Logger;
 
 public class GameWindowController {
     @FXML
-    public Button endGameTempButton;
-    @FXML
     private GridPane playerGridPaneBoard;
     @FXML
     private GridPane opponentGridPaneBoard;

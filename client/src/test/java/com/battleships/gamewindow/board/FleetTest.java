@@ -62,4 +62,5 @@ public class FleetTest {
         softAssert.assertTrue(sunkenFleet.isSunk());
         softAssert.assertAll();
     }
+
 }

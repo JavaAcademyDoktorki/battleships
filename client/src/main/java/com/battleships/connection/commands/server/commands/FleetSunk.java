@@ -1,7 +1,8 @@
-package com.battleships.connection.commands;
+package com.battleships.connection.commands.server.commands;
 
 import com.battleships.Translator;
 import com.battleships.connection.Connection;
+import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -15,18 +16,22 @@ public class FleetSunk extends AbstractServerCommand {
 
     @Override
     public void execute() {
-        Platform.runLater(() -> showWinnerAlert());
+        Platform.runLater(() -> showWinnerAlertAndDisconnectPlayerOnPressedButtonOk());
     }
 
-    private void showWinnerAlert() {
+    private void showWinnerAlertAndDisconnectPlayerOnPressedButtonOk() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.titleProperty().bind(Translator.createStringBinding("game_won"));
         alert.contentTextProperty().bind(Translator.createStringBinding("game_won_info"));
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Connection.INSTANCE.disconnect();
+            Platform.exit();
+        }else{
             Connection.INSTANCE.disconnect();
             Platform.exit();
         }
     }
 }
+

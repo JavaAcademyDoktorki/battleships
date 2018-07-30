@@ -15,14 +15,10 @@ public class ServerCommandsFactory {
                 return new PlayerRegistered(value);
             case START_PLAYING:
                 return new StartGameWindow(value);
-            case MESSAGE:
-                return new PlayerMessageReceived(value);
             case SHOT:
                 return new ShotMessageReceived(value);
             case HIT:
                 return new HitMessage(value);
-            case PLAYER_READY:
-                return new PlayerReadyMessage(value);
             case SETUP_COMPLETED:
                 return new SetupCompleted(value);
             case YOU_ARE_READY:
@@ -31,8 +27,6 @@ public class ServerCommandsFactory {
                 return new ShutDown(value);
             case FLEET_SUNK:
                 return new FleetSunk(value);
-            case END_GAME:
-                return new EndGame(value);
             default:
                 return new EmptyCommand(null);
         }

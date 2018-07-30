@@ -33,7 +33,7 @@ public class ShotMessageReceived extends AbstractServerCommand {
                 Connection.INSTANCE.sendToServer(new Message(CommandType.FLEET_SUNK, ""));
                 Platform.runLater(() -> showLostAlert());
             }
-        } else {    // pudło, odmrażamy interejs
+        } else {
             Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
             Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
         }
