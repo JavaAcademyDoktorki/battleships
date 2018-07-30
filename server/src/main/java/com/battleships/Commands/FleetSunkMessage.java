@@ -14,7 +14,7 @@ public class FleetSunkMessage extends AbstractCommand {
     @Override
     public void execute(ConnectedPlayers connectedPlayers) {
         Message message = new Message(CommandType.FLEET_SUNK, value);
-        connectedPlayers.sendToInactive(message);
+        connectedPlayers.sendToActive(message);
         connectedPlayers.switchActive();
     }
 }
