@@ -1,0 +1,6 @@
+.board-button {
+    -fx-background-radius: 0px;
+    -fx-border-color: black;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+}

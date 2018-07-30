@@ -15,6 +15,7 @@ public class BoardField extends Button {
     public BoardField(Coordinate coordinate, FieldState fieldState) {
         this.coordinate = coordinate;
         this.fieldState = fieldState;
+        this.getStyleClass().add("board-button");
         refreshStyle();
     }
 
