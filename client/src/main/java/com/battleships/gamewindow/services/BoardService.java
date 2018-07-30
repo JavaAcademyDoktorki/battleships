@@ -1,6 +1,8 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
+import com.battleships.FieldState;
+import com.battleships.RawBoardField;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardGridPanes;
@@ -8,8 +10,6 @@ import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.FieldState;
-import com.battleships.RawBoardField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;

@@ -1,9 +1,9 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
+import com.battleships.FieldState;
 import com.battleships.commands.Shot;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.FieldState;
 import com.battleships.gamewindow.services.BufforCalculator;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 
