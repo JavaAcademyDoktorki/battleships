@@ -16,15 +16,24 @@ public class FleetSunk extends AbstractServerCommand {
 
     @Override
     public void execute() {
-        Platform.runLater(() -> showWinnerAlertAndDisconnectPlayerOnPressedButtonOk());
+        Platform.runLater(() -> showWinnerAlertAndDisconnectPlayerOnButtonPressed());
     }
 
-    private void showWinnerAlertAndDisconnectPlayerOnPressedButtonOk() {
+    private void showWinnerAlertAndDisconnectPlayerOnButtonPressed() {
+        Alert alert = prepareAlert();
+        Optional<ButtonType> result = alert.showAndWait();
+        disconnectPlayerOnButtonPressed(result);
+    }
+
+    private Alert prepareAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.titleProperty().bind(Translator.createStringBinding("game_won"));
         alert.contentTextProperty().bind(Translator.createStringBinding("game_won_info"));
-        Optional<ButtonType> result = alert.showAndWait();
+        return alert;
+    }
+
+    private void disconnectPlayerOnButtonPressed(Optional<ButtonType> result) {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Connection.INSTANCE.disconnect();
             Platform.exit();

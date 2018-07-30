@@ -1,8 +1,8 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.FieldState;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
 import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -21,22 +21,20 @@ public class FleetTest {
     @BeforeMethod
     public void setUp() {
         testFleet = new Fleet();
-        Set<BoardField> oneMastAt11 = new HashSet<>();
-        oneMastAt11.add(new BoardField(Coordinate.fromIntCoords(1, 1), FieldState.MAST));
-        Set<BoardField> twoMastAt2526 = new HashSet<>();
-        twoMastAt2526.add(new BoardField(Coordinate.fromIntCoords(2, 5), FieldState.MAST));
-        twoMastAt2526.add(new BoardField(Coordinate.fromIntCoords(2, 6), FieldState.MAST));
-        testFleet.addShip(new Ship(oneMastAt11));
-        testFleet.addShip(new Ship(twoMastAt2526));
-
+        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{1,1}}));
+        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{2,5},{2,6}}));
 
         sunkenFleet = new Fleet();
-        Set<BoardField> fourMastAt41424344 = new HashSet<>();
-        fourMastAt41424344.add(new BoardField(Coordinate.fromIntCoords(4, 1), FieldState.HIT_MAST));
-        fourMastAt41424344.add(new BoardField(Coordinate.fromIntCoords(4, 2), FieldState.HIT_MAST));
-        fourMastAt41424344.add(new BoardField(Coordinate.fromIntCoords(4, 3), FieldState.HIT_MAST));
-        fourMastAt41424344.add(new BoardField(Coordinate.fromIntCoords(4, 4), FieldState.HIT_MAST));
-        sunkenFleet.addShip(new Ship(fourMastAt41424344));
+        sunkenFleet.addShip(generetaShipFromArrayCoords(new int[][]{{4, 1},{4, 2},{4, 3},{4, 4}}));
+    }
+
+    private Ship generetaShipFromArrayCoords(int[][] coordsForMasts) {
+        Set<BoardField> mastsSetForShip = new HashSet<>();
+        for (int [] mastCoord : coordsForMasts){
+            Coordinate coordinateForMast = Coordinate.fromIntCoords(mastCoord[0], mastCoord[1]);
+            mastsSetForShip.add(new BoardField(coordinateForMast, FieldState.HIT_MAST));
+        }
+        return new Ship(mastsSetForShip);
     }
 
     @Test
@@ -61,6 +59,12 @@ public class FleetTest {
         softAssert.assertFalse(testFleet.isSunk());
         softAssert.assertTrue(sunkenFleet.isSunk());
         softAssert.assertAll();
+    }
+
+
+    @Test
+    public void getShipsForCoordinate() {
+
     }
 
 }
