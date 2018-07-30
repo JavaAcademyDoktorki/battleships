@@ -18,9 +18,8 @@ public class Ship {
     }
 
     boolean isMastHit(Coordinate coordinate) {
-        return getMastForCoordinate(coordinate)
-                .orElseGet(() -> new BoardField(Coordinate.fromIntCoords(0, 0), FieldState.SEA))
-                .isHit();
+        Optional<BoardField> mastForCoordinate = getMastForCoordinate(coordinate);
+        return mastForCoordinate.isPresent() ? mastForCoordinate.get().isHit() : false;
     }
 
     private Optional<BoardField> getMastForCoordinate(Coordinate coordinate) {
@@ -30,8 +29,9 @@ public class Ship {
 
     boolean isSunk() {
         boolean isSunk = masts.stream().allMatch(BoardField::isHit);
-        if (isSunk)
+        if (isSunk) {
             sunkShip();
+        }
         return isSunk;
     }
 
