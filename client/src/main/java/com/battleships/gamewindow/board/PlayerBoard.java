@@ -16,6 +16,7 @@ public class PlayerBoard extends Board {
     private final Fleet fleet;
     private final RandomFleetPlacement randomFleetPlacement;
     private final BufforCalculator bufforCalculator;
+    private final int MASTS_ON_BOARD_SUM = 20;
 
     public PlayerBoard() {
         this.randomFleetPlacement = new RandomFleetPlacement();
@@ -55,7 +56,6 @@ public class PlayerBoard extends Board {
         return board.get(coordinate);
     }
 
-
     public boolean verifyShot(Shot shot) {
         return fleet.isHit(Coordinate.fromShot(shot));
     }
@@ -77,5 +77,11 @@ public class PlayerBoard extends Board {
 
     public boolean isFleetSunk() {
         return fleet.isSunk();
+    }
+
+    public boolean isBoardInited() {
+        return board.values().stream()
+                .filter(boardField -> !boardField.isSea())
+                .count() >= MASTS_ON_BOARD_SUM;
     }
 }

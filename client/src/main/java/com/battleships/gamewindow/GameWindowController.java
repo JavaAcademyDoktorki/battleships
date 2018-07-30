@@ -144,7 +144,8 @@ public class GameWindowController {
     }
 
     private boolean validateBoard() {
-        logger.info(LogMessages.SHIP_VALIDATED);
-        return true;
+        boolean playersBoardInited = boardService.isPlayersBoardInited();
+        logger.info(String.format(LogMessages.SHIP_VALIDATED, playersBoardInited));
+        return playersBoardInited;
     }
 }

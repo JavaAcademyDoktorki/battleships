@@ -84,4 +84,8 @@ public class BoardService {
     public boolean isFleetSunk() {
         return playerBoard.isFleetSunk();
     }
+
+    public boolean isPlayersBoardInited() {
+        return playerBoard.isBoardInited();
+    }
 }
