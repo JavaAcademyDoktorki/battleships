@@ -16,8 +16,16 @@ public class HitMessage extends AbstractServerCommand {
     public void execute() {
         List<RawBoardField> result = (List<RawBoardField>) value;
 
-        Connection.INSTANCE.boardService.markHitOnOppnentBoard(result);
+        markHitResultOnOpponentBoard(result);
 
+        activatePlayerTurnAfterSuccesfullShot();
+    }
+
+    private void markHitResultOnOpponentBoard(List<RawBoardField> result) {
+        Connection.INSTANCE.boardService.markHitOnOpponentBoard(result);
+    }
+
+    private void activatePlayerTurnAfterSuccesfullShot() {
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
     }

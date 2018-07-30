@@ -22,22 +22,27 @@ public class ShotMessageReceived extends AbstractServerCommand {
     public void execute() {
         BoardService boardService = Connection.INSTANCE.boardService;
         Shot shot = (Shot) value;
-
-        //TODO if hitSuccessful, then receiver is set inactive and unready, assume always missed to show that turn changes
         boolean hitSuccessful = boardService.verifyShot(shot);
 
         if (hitSuccessful) {
-            List<RawBoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
-            Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
-            if (boardService.isFleetSunk()) {
-                Connection.INSTANCE.sendToServer(new Message(CommandType.FLEET_SUNK, ""));
-                Platform.runLater(() -> showLostAlert());
-            }
+            sendReplyToOpponentThatShotWasSuccessful(boardService, shot);
+            afterFleetSunkSendMessageToTheOpponent(boardService);
         } else {
-            Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
-            Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
+            activatePlayerTurnOnOpponentMiss();
         }
 
+    }
+
+    private void sendReplyToOpponentThatShotWasSuccessful(BoardService boardService, Shot shot) {
+        List<RawBoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
+        Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
+    }
+
+    private void afterFleetSunkSendMessageToTheOpponent(BoardService boardService) {
+        if (boardService.isFleetSunk()) {
+            Connection.INSTANCE.sendToServer(new Message(CommandType.FLEET_SUNK, ""));
+            Platform.runLater(() -> showLostAlert());
+        }
     }
 
     private void showLostAlert() {
@@ -46,5 +51,10 @@ public class ShotMessageReceived extends AbstractServerCommand {
         alert.titleProperty().bind(Translator.createStringBinding("game_lost"));
         alert.contentTextProperty().bind(Translator.createStringBinding("game_lost_info"));
         alert.show();
+    }
+
+    private void activatePlayerTurnOnOpponentMiss() {
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
     }
 }

@@ -77,7 +77,7 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public void markHitOnOppnentBoard(List<RawBoardField> result) {
+    public void markHitOnOpponentBoard(List<RawBoardField> result) {
         opponentBoard.markHitOnOpponentBoard(result);
     }
 

@@ -15,7 +15,7 @@ import java.util.Set;
 public class PlayerBoard extends Board {
     private final Fleet fleet;
     private final RandomFleetPlacement randomFleetPlacement;
-    private BufforCalculator bufforCalculator;
+    private final BufforCalculator bufforCalculator;
 
     public PlayerBoard() {
         this.randomFleetPlacement = new RandomFleetPlacement();
