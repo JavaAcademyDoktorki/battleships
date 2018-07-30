@@ -7,12 +7,10 @@ import com.battleships.FieldState;
 import com.battleships.gamewindow.services.BufforCalculator;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PlayerBoard extends Board {
+
     private final Fleet fleet;
     private final RandomFleetPlacement randomFleetPlacement;
     private final BufforCalculator bufforCalculator;
@@ -23,28 +21,19 @@ public class PlayerBoard extends Board {
         bufforCalculator = new BufforCalculator(this);
     }
 
+    public Fleet getFleet() {
+        return fleet;
+    }
+
+    public Map<Coordinate, BoardField> getPlayerBoard() {
+        return board;
+    }
+
+
     public void changeAllFieldsToSea() {
         board.keySet()
                 .forEach(coordinate -> board.get(coordinate)
                         .setFieldState(FieldState.SEA));
-    }
-
-    public void placeFleetRandomly() {
-        List<Coordinate[]> fleetCoords = randomFleetPlacement.getRandomCoords();
-        fleet.clear();
-        for (Coordinate[] shipCoordinates : fleetCoords) {
-            Set<BoardField> masts = new HashSet<>();
-            setFieldsAsShipMasts(shipCoordinates, masts);
-            Ship ship = new Ship(masts);
-            fleet.addShip(ship);
-        }
-    }
-
-    private void setFieldsAsShipMasts(Coordinate[] shipCoordinates, Set<BoardField> masts) {
-        for (Coordinate mastCoord : shipCoordinates) {
-            board.get(mastCoord).setFieldState(FieldState.MAST);
-            masts.add(board.get(mastCoord));
-        }
     }
 
     public void placeShip(Ship ship) {
@@ -65,14 +54,17 @@ public class PlayerBoard extends Board {
         List<BoardField> buffer = new ArrayList<>();
         for (BoardField boardField : hitResult) {
             if (boardField.isSunk()) {
-                buffer.addAll(
-                        bufforCalculator.calculateBuffer(
-                                fleet.getShipForCoordinate(
-                                        boardField.getCoordinate())));
+                buffer.addAll(calculateBuffer(boardField));
             }
         }
         hitResult.addAll(buffer);
         return hitResult;
+    }
+
+    private Set<BoardField> calculateBuffer(BoardField boardField) {
+        return bufforCalculator.calculateBuffer(
+                fleet.getShipForCoordinate(
+                        boardField.getCoordinate()));
     }
 
     public boolean isFleetSunk() {

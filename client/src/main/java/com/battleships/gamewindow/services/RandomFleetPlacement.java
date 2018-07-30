@@ -1,11 +1,12 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
+import com.battleships.FieldState;
+import com.battleships.gamewindow.board.PlayerBoard;
+import com.battleships.gamewindow.board.Ship;
+import com.battleships.gamewindow.board.fieldStates.BoardField;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RandomFleetPlacement {
 
@@ -122,5 +123,23 @@ public class RandomFleetPlacement {
     public List<Coordinate[]> getRandomCoords() {
         System.out.println("Kombinacja nr " + lastCombinationProvided % 6);
         return boards.get(++lastCombinationProvided % 6);
+    }
+
+    public void placeFleetRandomly(PlayerBoard playerBoard) {
+        List<Coordinate[]> fleetCoords = getRandomCoords();
+        playerBoard.getFleet().clear();
+        for (Coordinate[] shipCoordinates : fleetCoords) {
+            Set<BoardField> masts = new HashSet<>();
+            setFieldsAsShipMasts(shipCoordinates, masts, playerBoard.getPlayerBoard());
+            Ship ship = new Ship(masts);
+            playerBoard.getFleet().addShip(ship);
+        }
+    }
+
+    private void setFieldsAsShipMasts(Coordinate[] shipCoordinates, Set<BoardField> masts, Map<Coordinate, BoardField> board) {
+        for (Coordinate mastCoord : shipCoordinates) {
+            board.get(mastCoord).setFieldState(FieldState.MAST);
+            masts.add(board.get(mastCoord));
+        }
     }
 }

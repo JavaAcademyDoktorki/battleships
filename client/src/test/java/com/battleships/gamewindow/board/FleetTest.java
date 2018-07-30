@@ -30,10 +30,12 @@ public class FleetTest {
 
     private Ship generetaShipFromArrayCoords(int[][] coordsForMasts) {
         Set<BoardField> mastsSetForShip = new HashSet<>();
+
         for (int [] mastCoord : coordsForMasts){
             Coordinate coordinateForMast = Coordinate.fromIntCoords(mastCoord[0], mastCoord[1]);
             mastsSetForShip.add(new BoardField(coordinateForMast, FieldState.HIT_MAST));
         }
+
         return new Ship(mastsSetForShip);
     }
 

@@ -19,7 +19,11 @@ public class Ship {
 
     boolean isMastHit(Coordinate coordinate) {
         Optional<BoardField> mastForCoordinate = getMastForCoordinate(coordinate);
-        return mastForCoordinate.isPresent() ? mastForCoordinate.get().isHit() : false;
+        return mastForCoordinate.isPresent() ? getBoardFieldFromOptional(mastForCoordinate).isHit() : false;
+    }
+
+    private BoardField getBoardFieldFromOptional(Optional<BoardField> mastForCoordinate) {
+        return mastForCoordinate.get();
     }
 
     private Optional<BoardField> getMastForCoordinate(Coordinate coordinate) {
