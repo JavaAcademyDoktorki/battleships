@@ -46,11 +46,16 @@ public class ShotMessageReceived extends AbstractServerCommand {
     }
 
     private void showLostAlert() {
+        Alert alert = prepareAlert();
+        alert.show();
+    }
+
+    private Alert prepareAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.titleProperty().bind(Translator.createStringBinding("game_lost"));
         alert.contentTextProperty().bind(Translator.createStringBinding("game_lost_info"));
-        alert.show();
+        return alert;
     }
 
     private void activatePlayerTurnOnOpponentMiss() {

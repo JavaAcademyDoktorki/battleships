@@ -20,13 +20,17 @@ public class FleetSunk extends AbstractServerCommand {
     }
 
     private void showWinnerAlertAndDisconnectPlayerOnButtonPressed() {
+        Alert alert = prepareAlert();
+        Optional<ButtonType> result = alert.showAndWait();
+        disconnectPlayerOnButtonPressed(result);
+    }
+
+    private Alert prepareAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.titleProperty().bind(Translator.createStringBinding("game_won"));
         alert.contentTextProperty().bind(Translator.createStringBinding("game_won_info"));
-        Optional<ButtonType> result = alert.showAndWait();
-
-        disconnectPlayerOnButtonPressed(result);
+        return alert;
     }
 
     private void disconnectPlayerOnButtonPressed(Optional<ButtonType> result) {
