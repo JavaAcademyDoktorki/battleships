@@ -8,15 +8,15 @@ import com.battleships.gamewindow.board.fieldStates.BoardField;
 import java.util.HashSet;
 import java.util.Set;
 
-class BufforCalculator {
+public class BufforCalculator {
 
     private PlayerBoard playerBoard;
 
-    BufforCalculator(PlayerBoard playerBoard) {
+    public BufforCalculator(PlayerBoard playerBoard) {
         this.playerBoard = playerBoard;
     }
 
-    Set<BoardField> calculateBuffer(Ship ship) {
+    public Set<BoardField> calculateBuffer(Ship ship) {
         Set<BoardField> buffer = new HashSet<>();
         Set<BoardField> masts = ship.getMasts();
 

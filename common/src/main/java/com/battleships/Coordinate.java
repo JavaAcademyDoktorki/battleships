@@ -1,7 +1,11 @@
 package com.battleships;
 
+import com.battleships.commands.Shot;
+
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Coordinate implements Serializable {
     private final int row;
@@ -14,6 +18,12 @@ public class Coordinate implements Serializable {
 
     public static Coordinate fromIntCoords(int row, int col) {
         return new Coordinate(row, col);
+    }
+
+    public static Coordinate[] fromShot(Shot shot) {
+        return Arrays.stream(shot.getCoordinates())
+                .map(coordinate -> new Coordinate(coordinate.row, coordinate.column))
+                .toArray(Coordinate[]::new);
     }
 
     public int getRow() {

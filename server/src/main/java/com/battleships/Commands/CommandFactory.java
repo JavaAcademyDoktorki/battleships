@@ -32,12 +32,18 @@ public class CommandFactory {
         switch (commandType) {
             case SHOT:
                 return new PlayersShootCommand(value);
+            case HIT:
+                return new PlayerHitResult(value);
             case PLAYER_READY:
                 return new PlayerReadyCommand(value);
             case SETUP_COMPLETED:
                 return new SetupCompletedCommand(value);
             case MOVE_TO_GAME_STATE:
                 return new MoveToGameState(value);
+            case FLEET_SUNK:
+                return new FleetSunkMessage(value);
+            case END_GAME:
+                return new EndGame(value);
             default:
                 return new EmptyCommand(null);
         }

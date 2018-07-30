@@ -1,17 +1,17 @@
 package com.battleships.gamewindow;
 
+import com.battleships.Coordinate;
 import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
+import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.gamewindow.board.fieldStates.FieldState;
+import com.battleships.FieldState;
 import com.battleships.gamewindow.services.BoardService;
-import com.battleships.gamewindow.board.BoardGridPanes;
-import com.battleships.Coordinate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -24,6 +24,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GameWindowController {
+    @FXML
+    public Button endGameTempButton;
     @FXML
     private GridPane playerGridPaneBoard;
     @FXML
