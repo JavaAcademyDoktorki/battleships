@@ -34,7 +34,7 @@ public class Fleet {
     }
 
     public boolean isSunk() {
-        return ships.stream().allMatch(Ship::isSunk);
+        return ships.stream().allMatch(Ship::sunkIfAllMastsAreHit);
     }
 
     public List<BoardField> returnBoardFieldsAfterShot(Coordinate[] coordinates) {

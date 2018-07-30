@@ -71,14 +71,14 @@ public class BoardService {
         return playerBoard.verifyShot(shot);
     }
 
-    public List<RawBoardField> getHitMastCoordinates(Shot shot) {
+    public List<RawBoardField> getHitMastsCoordinates(Shot shot) {
         return playerBoard.getHitMastsCoordinates(shot).stream()
                 .map(BoardField::getRawBoardField)
                 .collect(Collectors.toList());
     }
 
-    public void markHitOnOpponentBoard(List<RawBoardField> result) {
-        opponentBoard.markHitOnOpponentBoard(result);
+    public void markHitsOnOpponentBoard(List<RawBoardField> result) {
+        opponentBoard.markHitsOnOpponentBoard(result);
     }
 
     public boolean isFleetSunk() {

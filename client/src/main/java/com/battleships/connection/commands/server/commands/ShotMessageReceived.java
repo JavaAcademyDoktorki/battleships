@@ -34,7 +34,7 @@ public class ShotMessageReceived extends AbstractServerCommand {
     }
 
     private void sendReplyToOpponentThatShotWasSuccessful(BoardService boardService, Shot shot) {
-        List<RawBoardField> hitCoordinates = boardService.getHitMastCoordinates(shot);
+        List<RawBoardField> hitCoordinates = boardService.getHitMastsCoordinates(shot);
         Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
     }
 

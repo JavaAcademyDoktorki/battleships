@@ -47,7 +47,7 @@ public class ShipTest {
     @Test
     public void isMastSunk_whenAllMastsHit_shouldReturnTrue() {
         ship.getMasts().forEach(BoardField::hit);
-        assertTrue(ship.isSunk());
+        assertTrue(ship.sunkIfAllMastsAreHit());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ShipTest {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(ship.isMastHit(hitCoordinate));
-        softAssert.assertFalse(ship.isSunk());
+        softAssert.assertFalse(ship.sunkIfAllMastsAreHit());
         softAssert.assertFalse(ship.isMastHit(Coordinate.fromIntCoords(1, 1)));
         softAssert.assertFalse(ship.isMastHit(Coordinate.fromIntCoords(1, 3)));
         softAssert.assertAll();
@@ -65,8 +65,8 @@ public class ShipTest {
     @Test
     public void shouldMarkShipAsSunken() {
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(sunkenShip.isSunk());
-        softAssert.assertFalse(ship.isSunk());
+        softAssert.assertTrue(sunkenShip.sunkIfAllMastsAreHit());
+        softAssert.assertFalse(ship.sunkIfAllMastsAreHit());
         softAssert.assertAll();
     }
 }

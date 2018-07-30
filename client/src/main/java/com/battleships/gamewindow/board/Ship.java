@@ -27,7 +27,7 @@ public class Ship {
                 .findFirst();
     }
 
-    boolean isSunk() {
+    boolean sunkIfAllMastsAreHit() {
         boolean isSunk = masts.stream().allMatch(BoardField::isHit);
         if (isSunk) {
             sunkShip();
@@ -46,12 +46,16 @@ public class Ship {
     public Collection<? extends BoardField> hit(Coordinate coordinate) {
         Set<BoardField> result = new HashSet<>();
         getMastForCoordinate(coordinate).ifPresent(boardField -> {
-            boardField.hit();
-            if (isSunk()) {
-                result.addAll(masts);
-            }
-            result.add(boardField);
+            addHitMastOrSunkMasts(result, boardField);
         });
         return result;
+    }
+
+    private void addHitMastOrSunkMasts(Set<BoardField> result, BoardField boardField) {
+        boardField.hit();
+        if (sunkIfAllMastsAreHit()) {
+            result.addAll(masts);
+        }
+        result.add(boardField);
     }
 }

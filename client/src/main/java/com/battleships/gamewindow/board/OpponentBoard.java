@@ -9,7 +9,7 @@ public class OpponentBoard extends Board {
         super();
     }
 
-    public void markHitOnOpponentBoard(List<RawBoardField> result) {
+    public void markHitsOnOpponentBoard(List<RawBoardField> result) {
         for (RawBoardField boardField : result) {
             board.get(boardField.getCoordinate()).setFieldState(boardField.getFieldState());
             board.get(boardField.getCoordinate()).disableProperty().unbind();

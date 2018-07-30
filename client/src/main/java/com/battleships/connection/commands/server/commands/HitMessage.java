@@ -22,7 +22,7 @@ public class HitMessage extends AbstractServerCommand {
     }
 
     private void markHitResultOnOpponentBoard(List<RawBoardField> result) {
-        Connection.INSTANCE.boardService.markHitOnOpponentBoard(result);
+        Connection.INSTANCE.boardService.markHitsOnOpponentBoard(result);
     }
 
     private void activatePlayerTurnAfterSuccesfullShot() {
