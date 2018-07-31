@@ -1,7 +1,7 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardField;
 
 import java.util.ArrayList;
 import java.util.Arrays;

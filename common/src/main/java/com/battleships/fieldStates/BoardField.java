@@ -1,28 +1,24 @@
-package com.battleships.gamewindow.board.fieldStates;
+package com.battleships.fieldStates;
 
 
 import com.battleships.Coordinate;
-import com.battleships.FieldState;
-import com.battleships.RawBoardField;
-import javafx.scene.control.Button;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BoardField extends Button {
+public class BoardField implements Serializable {
     private final Coordinate coordinate;
     private FieldState fieldState;
+    private FieldStatusListener fieldStatusListener;
 
     public BoardField(Coordinate coordinate, FieldState fieldState) {
         this.coordinate = coordinate;
         this.fieldState = fieldState;
-        this.getStyleClass().add("board-button");
-        refreshStyle();
+        fieldStatusListener = new FakeListener();
     }
 
-    public BoardField(RawBoardField rawBoardField) {
-        this.coordinate = rawBoardField.getCoordinate();
-        this.fieldState = rawBoardField.getFieldState();
-        refreshStyle();
+    public void setFieldStatusListener(FieldStatusListener fieldStatusListener) {
+        this.fieldStatusListener = fieldStatusListener;
     }
 
     public boolean isHit() {
@@ -35,16 +31,12 @@ public class BoardField extends Button {
 
     public void hit() {
         fieldState = fieldState.afterHitState();
-        this.refreshStyle();
-    }
-
-    private void refreshStyle() {
-        this.setStyle(fieldState.getStyle());
+        fieldStatusListener.notifyFieldStateChange();
     }
 
     public void setFieldState(FieldState fieldState) {
         this.fieldState = fieldState;
-        this.refreshStyle();
+        fieldStatusListener.notifyFieldStateChange();
     }
 
     public boolean isSea() {
@@ -82,12 +74,11 @@ public class BoardField extends Button {
         return fieldState;
     }
 
-    public static RawBoardField getRawBoardField(BoardField boardField) {
-        return new RawBoardField(boardField.getCoordinate(), boardField.getFieldState());
-    }
-
     public boolean isMast() {
         return fieldState == FieldState.MAST;
     }
-}
 
+    public void unbindAndDisable() {
+        fieldStatusListener.unbindAndDisable();
+    }
+}

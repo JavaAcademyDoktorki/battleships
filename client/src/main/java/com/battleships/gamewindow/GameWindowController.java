@@ -1,7 +1,7 @@
 package com.battleships.gamewindow;
 
 import com.battleships.Coordinate;
-import com.battleships.FieldState;
+import com.battleships.fieldStates.FieldState;
 import com.battleships.LogMessages;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
@@ -10,7 +10,7 @@ import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardFieldButton;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -97,7 +97,7 @@ public class GameWindowController {
     }
 
     private void shot(ActionEvent event) {
-        BoardField clickedButton = (BoardField) event.getSource();
+        BoardFieldButton clickedButton = (BoardFieldButton) event.getSource();
         Coordinate[] coordinates = new Coordinate[]{clickedButton.getCoordinate()};
 
         Shot shot = new Shot(coordinates);

@@ -1,10 +1,10 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
-import com.battleships.FieldState;
+import com.battleships.fieldStates.FieldState;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.Ship;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardField;
 
 import java.util.*;
 

@@ -1,11 +1,10 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
+import com.battleships.fieldStates.BoardField;
+import com.battleships.fieldStates.FieldState;
 import com.battleships.gamewindow.board.PlayerBoard;
 import com.battleships.gamewindow.board.Ship;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
-import com.battleships.FieldState;
-import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -20,7 +19,6 @@ import static org.testng.Assert.assertEquals;
 
 @Test
 public class BufforCalculatorTest {
-    private JFXPanel jfxPanel = new JFXPanel();
     private PlayerBoard playerBoard;
 
     @BeforeMethod

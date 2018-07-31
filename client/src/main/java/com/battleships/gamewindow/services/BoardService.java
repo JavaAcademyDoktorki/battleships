@@ -1,15 +1,15 @@
 package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
-import com.battleships.FieldState;
-import com.battleships.RawBoardField;
+import com.battleships.fieldStates.FieldState;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
 import com.battleships.gamewindow.board.OpponentBoard;
 import com.battleships.gamewindow.board.PlayerBoard;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardFieldButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
@@ -52,34 +52,37 @@ public class BoardService {
 
     private void addFieldToPlayerBoard(Coordinate coordinate, GridPane boardGridPane) {
         BoardField boardField = new BoardField(coordinate, FieldState.SEA);
-        boardField.setDisable(false);
+        BoardFieldButton boardFieldButton = new BoardFieldButton(boardField);
+        boardField.setFieldStatusListener(boardFieldButton);
+        boardFieldButton.setDisable(false);
         playerBoard.addNewField(coordinate, boardField);
-        boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
+        boardGridPane.add(boardFieldButton, coordinate.getColumn(), coordinate.getRow());
     }
 
     private void addFieldToOpponentBoard(Coordinate coordinate, GridPane boardGridPane, EventHandler<ActionEvent> event) {
         BoardField boardField = new BoardField(coordinate, FieldState.FOG);
-        boardField.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
+        BoardFieldButton boardFieldButton = new BoardFieldButton(boardField);
+        boardField.setFieldStatusListener(boardFieldButton);
+        boardFieldButton.disableProperty().bind(Connection.INSTANCE.playerReadyProperty().not());
         opponentBoard.addNewField(coordinate, boardField);
-        boardField.setOnAction(event);
-        boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
+        boardFieldButton.setOnAction(event);
+        boardGridPane.add(boardFieldButton, coordinate.getColumn(), coordinate.getRow());
     }
 
     public void onShootOpponentMessageReceived(Coordinate coordinate, FieldState fieldState) {
-        opponentBoard.applyStyleForCoordinate(coordinate, fieldState.getStyle());
+        opponentBoard.applyStyleForCoordinate(coordinate, fieldState);
     }
 
     public boolean verifyShot(Shot shot) {
         return playerBoard.verifyShot(shot);
     }
 
-    public List<RawBoardField> getHitMastsCoordinates(Shot shot) {
+    public List<BoardField> getHitMastsCoordinates(Shot shot) {
         return playerBoard.getHitMastsCoordinates(shot).stream()
-                .map(BoardField::getRawBoardField)
                 .collect(Collectors.toList());
     }
 
-    public void markHitsOnOpponentBoard(List<RawBoardField> result) {
+    public void markHitsOnOpponentBoard(List<BoardField> result) {
         opponentBoard.markHitsOnOpponentBoard(result);
     }
 

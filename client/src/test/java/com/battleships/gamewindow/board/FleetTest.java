@@ -1,9 +1,8 @@
 package com.battleships.gamewindow.board;
 
 import com.battleships.Coordinate;
-import com.battleships.FieldState;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
-import javafx.embed.swing.JFXPanel;
+import com.battleships.fieldStates.FieldState;
+import com.battleships.fieldStates.BoardField;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -14,7 +13,6 @@ import java.util.Set;
 import static org.testng.Assert.assertEquals;
 
 public class FleetTest {
-    JFXPanel jfxPanel = new JFXPanel();
     private Fleet testFleet;
     private Fleet sunkenFleet;
 

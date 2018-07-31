@@ -1,7 +1,6 @@
 package com.battleships.gamewindow.board;
 
-import com.battleships.RawBoardField;
-import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.fieldStates.BoardField;
 
 import java.util.List;
 
@@ -10,15 +9,14 @@ public class OpponentBoard extends Board {
         super();
     }
 
-    public void markHitsOnOpponentBoard(List<RawBoardField> result) {
-        for (RawBoardField rawBoardField : result) {
-            getBoardFieldFromOpponentBoard(rawBoardField).setFieldState(rawBoardField.getFieldState());
-            getBoardFieldFromOpponentBoard(rawBoardField).disableProperty().unbind();
-            getBoardFieldFromOpponentBoard(rawBoardField).setDisable(true);
+    public void markHitsOnOpponentBoard(List<BoardField> result) {
+        for (BoardField boardField : result) {
+            getBoardFieldFromOpponentBoard(boardField).setFieldState(boardField.getFieldState());
+            getBoardFieldFromOpponentBoard(boardField).unbindAndDisable();
         }
     }
 
-    private BoardField getBoardFieldFromOpponentBoard(RawBoardField boardField) {
+    private BoardField getBoardFieldFromOpponentBoard(BoardField boardField) {
         return board.get(boardField.getCoordinate());
     }
 }

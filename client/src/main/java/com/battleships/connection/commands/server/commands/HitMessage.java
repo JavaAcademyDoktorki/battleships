@@ -1,8 +1,8 @@
 package com.battleships.connection.commands.server.commands;
 
-import com.battleships.RawBoardField;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
+import com.battleships.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
 
@@ -18,7 +18,7 @@ public class HitMessage extends AbstractServerCommand {
 
     @Override
     public void execute() {
-        List<RawBoardField> result = (List<RawBoardField>) value;
+        List<BoardField> result = (List<BoardField>) value;
 
         initBardService();
         markHitResultOnOpponentBoard(result);
@@ -30,7 +30,7 @@ public class HitMessage extends AbstractServerCommand {
         boardService=Connection.INSTANCE.boardService;
     }
 
-    private void markHitResultOnOpponentBoard(List<RawBoardField> result) {
+    private void markHitResultOnOpponentBoard(List<BoardField> result) {
         boardService.markHitsOnOpponentBoard(result);
     }
 

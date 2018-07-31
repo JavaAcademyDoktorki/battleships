@@ -1,4 +1,4 @@
-package com.battleships;
+package com.battleships.fieldStates;
 
 public enum FieldState {
     MAST{

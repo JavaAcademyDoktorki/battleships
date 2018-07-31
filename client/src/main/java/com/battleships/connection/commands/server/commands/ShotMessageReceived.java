@@ -1,12 +1,12 @@
 package com.battleships.connection.commands.server.commands;
 
-import com.battleships.RawBoardField;
 import com.battleships.Translator;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
 import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
+import com.battleships.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -34,7 +34,7 @@ public class ShotMessageReceived extends AbstractServerCommand {
     }
 
     private void sendReplyToOpponentThatShotWasSuccessful(BoardService boardService, Shot shot) {
-        List<RawBoardField> hitCoordinates = boardService.getHitMastsCoordinates(shot);
+        List<BoardField> hitCoordinates = boardService.getHitMastsCoordinates(shot);
         Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
     }
 
