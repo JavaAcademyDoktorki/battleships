@@ -46,7 +46,7 @@ public class PlayerBoard extends Board {
     }
 
     public boolean verifyShot(Shot shot) {
-        return fleet.isHit(Coordinate.fromShot(shot));
+        return fleet.isHitSuccessful(Coordinate.fromShot(shot));
     }
 
     public List<BoardField> getHitMastsCoordinates(Shot shot) {

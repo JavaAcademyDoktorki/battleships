@@ -21,19 +21,19 @@ public class FleetTest {
     @BeforeMethod
     public void setUp() {
         testFleet = new Fleet();
-        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{1,1}}));
-        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{2,5},{2,6}}));
+        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{1,1}}, false));
+        testFleet.addShip(generetaShipFromArrayCoords(new int [][]{{2,5},{2,6}}, false));
 
         sunkenFleet = new Fleet();
-        sunkenFleet.addShip(generetaShipFromArrayCoords(new int[][]{{4, 1},{4, 2},{4, 3},{4, 4}}));
+        sunkenFleet.addShip(generetaShipFromArrayCoords(new int[][]{{4, 1},{4, 2},{4, 3},{4, 4}}, true));
     }
 
-    private Ship generetaShipFromArrayCoords(int[][] coordsForMasts) {
+    private Ship generetaShipFromArrayCoords(int[][] coordsForMasts, boolean isSunk) {
         Set<BoardField> mastsSetForShip = new HashSet<>();
 
         for (int [] mastCoord : coordsForMasts){
             Coordinate coordinateForMast = Coordinate.fromIntCoords(mastCoord[0], mastCoord[1]);
-            mastsSetForShip.add(new BoardField(coordinateForMast, FieldState.HIT_MAST));
+            mastsSetForShip.add(new BoardField(coordinateForMast, isSunk ? FieldState.SUNK_MAST : FieldState.MAST));
         }
 
         return new Ship(mastsSetForShip);
@@ -45,13 +45,13 @@ public class FleetTest {
     }
 
     @Test
-    public void shouldMarkMastAsHit() {
+    public void shouldMarkMastAsHitIfExists() {
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(testFleet.isHit(Coordinate.fromIntCoords(1, 1)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(1, 2)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(2, 2)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(5, 2)));
-        softAssert.assertTrue(testFleet.isHit(Coordinate.fromIntCoords(2, 5)));
+        softAssert.assertTrue(testFleet.isHitSuccessful(Coordinate.fromIntCoords(1, 1)));
+        softAssert.assertFalse(testFleet.isHitSuccessful(Coordinate.fromIntCoords(1, 2)));
+        softAssert.assertFalse(testFleet.isHitSuccessful(Coordinate.fromIntCoords(2, 2)));
+        softAssert.assertFalse(testFleet.isHitSuccessful(Coordinate.fromIntCoords(5, 2)));
+        softAssert.assertTrue(testFleet.isHitSuccessful(Coordinate.fromIntCoords(2, 5)));
         softAssert.assertAll();
     }
 

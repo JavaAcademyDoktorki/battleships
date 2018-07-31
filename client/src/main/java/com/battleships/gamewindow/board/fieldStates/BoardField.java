@@ -85,5 +85,9 @@ public class BoardField extends Button {
     public static RawBoardField getRawBoardField(BoardField boardField) {
         return new RawBoardField(boardField.getCoordinate(), boardField.getFieldState());
     }
+
+    public boolean isMast() {
+        return fieldState == FieldState.MAST;
+    }
 }
 

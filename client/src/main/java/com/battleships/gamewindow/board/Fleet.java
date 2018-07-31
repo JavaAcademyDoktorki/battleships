@@ -26,11 +26,11 @@ public class Fleet {
         return ships.size();
     }
 
-    public boolean isHit(Coordinate... coordinate) {
+    public boolean isHitSuccessful(Coordinate... coordinate) {
         return Arrays.stream(coordinate)
                 .anyMatch(coord -> ships.stream()
                         .flatMap(ship -> ship.getMasts().stream())
-                        .anyMatch(boardField -> boardField.getCoordinate().equals(coord) && !boardField.isHit()));
+                        .anyMatch(boardField -> boardField.getCoordinate().equals(coord) && boardField.isMast()));
     }
 
     public boolean isSunk() {
