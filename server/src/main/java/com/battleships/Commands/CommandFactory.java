@@ -1,7 +1,6 @@
 package com.battleships.Commands;
 
-import com.battleships.Commands.CommandsImpl.EmptyCommand;
-import com.battleships.Commands.CommandsImpl.PlayerReadyCommand;
+import com.battleships.Commands.CommandsImpl.*;
 import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
@@ -32,14 +31,22 @@ public class CommandFactory {
         switch (commandType) {
             case SHOT:
                 return new PlayersShootCommand(value);
+            case HIT:
+                return new PlayerHitResult(value);
             case PLAYER_READY:
                 return new PlayerReadyCommand(value);
             case SETUP_COMPLETED:
                 return new SetupCompletedCommand(value);
             case MOVE_TO_GAME_STATE:
                 return new MoveToGameState(value);
+            case FLEET_SUNK:
+                return new FleetSunkMessage(value);
+            case END_GAME:
+                return new EndGame(value);
+            case STOP_PLAYING:
+                return new StopPlayingCommand(value);
             default:
-                return new EmptyCommand(null);
+                return new UnknownCommand(null);
         }
     }
 }

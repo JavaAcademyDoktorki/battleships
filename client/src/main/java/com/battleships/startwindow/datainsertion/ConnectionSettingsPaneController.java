@@ -111,7 +111,9 @@ public class ConnectionSettingsPaneController {
             Parent root = FXMLLoader.load(resource);
             Stage stage = new Stage();
             stage.titleProperty().bind(Translator.createStringBinding("game_window"));
-            stage.setScene(new Scene(root, WIDTH, HEIGHT));
+            Scene scene = new Scene(root, WIDTH, HEIGHT);
+            scene.getStylesheets().add(Client.class.getResource("gamewindow/style.css").toExternalForm());
+            stage.setScene(scene);
             stage.show();
             stage.setOnCloseRequest(event1 -> disconnect());
 

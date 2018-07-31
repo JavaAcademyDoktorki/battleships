@@ -13,10 +13,6 @@ public class StartGameWindow extends AbstractServerCommand {
     @Override
     public void execute() {
         Boolean value = (Boolean) this.value;
-        if(value)
-            System.out.println("I am moving right now");
-        else
-            System.out.println("starting and waiting for opponents move!");
 
         Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(value));
     }

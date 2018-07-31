@@ -1,7 +1,8 @@
-package com.battleships.connection.commands;
+package com.battleships.connection.commands.server.commands;
 
 import com.battleships.Translator;
 import com.battleships.connection.Connection;
+import com.battleships.connection.commands.AbstractServerCommand;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 

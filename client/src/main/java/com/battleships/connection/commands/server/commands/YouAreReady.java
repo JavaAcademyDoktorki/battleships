@@ -14,6 +14,5 @@ public class YouAreReady extends AbstractServerCommand {
     public void execute() {
         Boolean value = (Boolean) this.value;
         Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(value));
-        System.out.println("ready command executed ");
     }
 }

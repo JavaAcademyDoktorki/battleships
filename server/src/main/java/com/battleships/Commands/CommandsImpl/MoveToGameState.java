@@ -1,4 +1,4 @@
-package com.battleships.Commands;
+package com.battleships.Commands.CommandsImpl;
 
 import com.battleships.commands.AbstractCommand;
 import com.battleships.player.ConnectedPlayers;

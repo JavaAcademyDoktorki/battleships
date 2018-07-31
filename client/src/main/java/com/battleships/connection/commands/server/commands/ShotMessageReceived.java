@@ -1,10 +1,17 @@
 package com.battleships.connection.commands.server.commands;
 
+import com.battleships.RawBoardField;
+import com.battleships.Translator;
+import com.battleships.commands.CommandType;
+import com.battleships.commands.Message;
+import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.connection.commands.AbstractServerCommand;
-import com.battleships.commands.Shot;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
+import java.util.List;
 
 public class ShotMessageReceived extends AbstractServerCommand {
     public ShotMessageReceived(Object value) {
@@ -14,16 +21,45 @@ public class ShotMessageReceived extends AbstractServerCommand {
     @Override
     public void execute() {
         BoardService boardService = Connection.INSTANCE.boardService;
-
         Shot shot = (Shot) value;
-        //TODO if hit, then receiver is set inactive and unready, assume always missed to show that turn changes
-        boolean missed = true;
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(missed));
-        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(missed));
+        boolean hitSuccessful = boardService.verifyShot(shot);
 
-        boardService.markButtonsAsHit(shot.getCoordinates());
+        if (hitSuccessful) {
+            sendReplyToOpponentThatShotWasSuccessful(boardService, shot);
+            afterFleetSunkSendMessageToTheOpponent(boardService);
+        } else {
+            activatePlayerTurnOnOpponentMiss();
+        }
 
-        //TODO after validation send the result to the opponent to block/unblock his opponent board
-        //TODO Connection.INSTANCE.sendToServer(new Message<>(CommandType.SHOT_EVALUATION,false));
+    }
+
+    private void sendReplyToOpponentThatShotWasSuccessful(BoardService boardService, Shot shot) {
+        List<RawBoardField> hitCoordinates = boardService.getHitMastsCoordinates(shot);
+        Connection.INSTANCE.sendToServer(new Message(CommandType.HIT, hitCoordinates));
+    }
+
+    private void afterFleetSunkSendMessageToTheOpponent(BoardService boardService) {
+        if (boardService.isFleetSunk()) {
+            Connection.INSTANCE.sendToServer(new Message(CommandType.FLEET_SUNK, ""));
+            Platform.runLater(() -> showLostAlert());
+        }
+    }
+
+    private void showLostAlert() {
+        Alert alert = prepareAlert();
+        alert.show();
+    }
+
+    private Alert prepareAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.titleProperty().bind(Translator.createStringBinding("game_lost"));
+        alert.contentTextProperty().bind(Translator.createStringBinding("game_lost_info"));
+        return alert;
+    }
+
+    private void activatePlayerTurnOnOpponentMiss() {
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerActive(true));
+        Platform.runLater(() -> Connection.INSTANCE.setPlayerReady(true));
     }
 }
