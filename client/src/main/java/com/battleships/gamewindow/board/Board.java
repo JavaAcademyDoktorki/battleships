@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Board {
-    Map<Coordinate, BoardField> board;
+    final Map<Coordinate, BoardField> board;
 
     Board() {
         this.board = new HashMap<>();
