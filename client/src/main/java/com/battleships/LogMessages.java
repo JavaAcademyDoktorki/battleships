@@ -22,4 +22,7 @@ public class LogMessages {
     public static final String SHIP_PLACED = "Flota została rozlosowana";
     public static final String FIRED_SHOT_ON ="Strzał oddany (wiersz: %d, kolumna: %d)";
     public static final String SHIP_VALIDATED = "Ustawiennie floty zwalidowane. Poprawność: %s";
+    public static String INVALID_BOARD_DIMENSIONS = "Wymiary planszy do inicjalizacji są nieprawidłowe: [%d, %d]. " +
+            "\nMinimalny wymiar to: %d. " +
+            "\nMaksymalny wymiar to: %d.";
 }

@@ -19,9 +19,9 @@ class SceneSizeChangeListener implements ChangeListener<Number> {
     }
 
     /**
-     *Overriden method of ChangeListener interface that controls scalling of the scene
+     *Overriden method tryOf ChangeListener interface that controls scalling tryOf the scene
      *
-     * @param observableValue - observes changes of the value
+     * @param observableValue - observes changes tryOf the value
      * @param oldValue - the old value
      * @param newValue - the new value
      */

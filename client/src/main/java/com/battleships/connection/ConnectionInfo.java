@@ -11,8 +11,8 @@ public class ConnectionInfo {
     /**
      * Server connection's constructor
      *
-     * @param ip - the ip address of the server
-     * @param port - the port of the server
+     * @param ip - the ip address tryOf the server
+     * @param port - the port tryOf the server
      */
 
     public ConnectionInfo(String ip, int port) {

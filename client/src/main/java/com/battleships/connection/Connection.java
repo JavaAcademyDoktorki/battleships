@@ -42,7 +42,7 @@ public enum Connection {
         return playerName;
     }
     /**
-     * @return boolean value of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     * @return boolean value tryOf the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
      */
     public boolean getPlayerActive() {
         return playerActive.get();
@@ -56,7 +56,7 @@ public enum Connection {
     }
 
     /**
-     * setting of the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
+     * setting tryOf the JavaFX PlayerActiveProperty used to control the buttons activity in the UI
      *
      * @param playerActive boolean parameter if player is active
      */
@@ -65,7 +65,7 @@ public enum Connection {
     }
 
     /**
-     * setting of the JavaFX PlayerReadyProperty used to control the buttons activity flow in the UI
+     * setting tryOf the JavaFX PlayerReadyProperty used to control the buttons activity flow in the UI
      *
      * @param playerReady boolean parameter informing if player is ready
      */
@@ -80,7 +80,7 @@ public enum Connection {
     /**
      * Establishes the server's connection
      *
-     * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port of the server
+     * @param connectionInfo - <code>ConnectionInfo</code> object that includes the ip and port tryOf the server
      */
 
     public void establishConnection(ConnectionInfo connectionInfo) {
@@ -195,7 +195,7 @@ public enum Connection {
     }
 
     /**
-     * Initializes input and output of the server client connected to
+     * Initializes input and output tryOf the server client connected to
      */
     private void establishServerIO() {
         ObjectInputStream inputStream = getInputStream();

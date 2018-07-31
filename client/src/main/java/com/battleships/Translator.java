@@ -50,8 +50,8 @@ public class Translator {
      * Translate text on @FXML object according to chosen language settings
      *
      * @param stringProperty - text on @FXML object
-     * @param key - text command of the properties file
-     * @param args - arguments of the properties file
+     * @param key - text command tryOf the properties file
+     * @param args - arguments tryOf the properties file
      */
     public static void bind(StringProperty stringProperty, String key, Object... args) {
         stringProperty.bind(createStringBinding(key, args));

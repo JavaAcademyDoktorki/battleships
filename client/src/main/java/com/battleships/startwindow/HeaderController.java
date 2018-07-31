@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 /**
- * Responsible for a common header of each screen that enables to choose settings a player
+ * Responsible for a common header tryOf each screen that enables to choose settings a player
  */
 public class HeaderController {
     @FXML

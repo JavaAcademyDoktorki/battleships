@@ -11,7 +11,7 @@ import javafx.scene.control.SelectionModel;
 import java.util.Locale;
 
 /**
- * Responsible for a common footer of each screen that enables to change language
+ * Responsible for a common footer tryOf each screen that enables to change language
  */
 public class FooterController {
     @FXML
