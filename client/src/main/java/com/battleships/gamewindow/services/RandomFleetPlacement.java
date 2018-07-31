@@ -121,7 +121,6 @@ public class RandomFleetPlacement {
     }
 
     public List<Coordinate[]> getRandomCoords() {
-        System.out.println("Kombinacja nr " + lastCombinationProvided % 6);
         return boards.get(++lastCombinationProvided % 6);
     }
 

@@ -1,7 +1,6 @@
 package com.battleships.Commands;
 
-import com.battleships.Commands.CommandsImpl.EmptyCommand;
-import com.battleships.Commands.CommandsImpl.PlayerReadyCommand;
+import com.battleships.Commands.CommandsImpl.*;
 import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
 import com.battleships.commands.Message;
@@ -44,8 +43,10 @@ public class CommandFactory {
                 return new FleetSunkMessage(value);
             case END_GAME:
                 return new EndGame(value);
+            case STOP_PLAYING:
+                return new StopPlayingCommand(value);
             default:
-                return new EmptyCommand(null);
+                return new UnknownCommand(null);
         }
     }
 }

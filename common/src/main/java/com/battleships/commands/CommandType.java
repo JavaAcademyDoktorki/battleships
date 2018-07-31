@@ -7,7 +7,6 @@ public enum CommandType {
     REGISTER_NEW_PLAYER,
     SHOT,
     HIT,
-    MESSAGE,
     PLAYER_READY,
     SETUP_COMPLETED,
     MOVE_TO_GAME_STATE,

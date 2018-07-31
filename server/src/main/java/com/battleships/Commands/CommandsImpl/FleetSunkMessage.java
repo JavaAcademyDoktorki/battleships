@@ -1,4 +1,4 @@
-package com.battleships.Commands;
+package com.battleships.Commands.CommandsImpl;
 
 import com.battleships.commands.AbstractCommand;
 import com.battleships.commands.CommandType;
@@ -7,7 +7,7 @@ import com.battleships.player.ConnectedPlayers;
 
 public class FleetSunkMessage extends AbstractCommand {
 
-    protected FleetSunkMessage(Object value) {
+    public FleetSunkMessage(Object value) {
         super(value);
     }
 

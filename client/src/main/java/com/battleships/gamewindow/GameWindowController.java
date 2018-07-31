@@ -105,7 +105,7 @@ public class GameWindowController {
         makePlayerInactiveAndUnreadyAfterShoot();
 
         // TODO 24/07/18 damian - AFTER SERVER RESPONS... DO SOMETHING - test method
-        boardService.onShootOpponentMessageRecieve(coordinates[0], FieldState.HIT_MAST);
+        boardService.onShootOpponentMessageReceived(coordinates[0], FieldState.HIT_MAST);
 
         logAllShootCoordinates(shot);
     }

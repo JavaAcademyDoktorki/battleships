@@ -65,7 +65,7 @@ public class BoardService {
         boardGridPane.add(boardField, coordinate.getColumn(), coordinate.getRow());
     }
 
-    public void onShootOpponentMessageRecieve(Coordinate coordinate, FieldState fieldState) {
+    public void onShootOpponentMessageReceived(Coordinate coordinate, FieldState fieldState) {
         opponentBoard.applyStyleForCoordinate(coordinate, fieldState.getStyle());
     }
 
