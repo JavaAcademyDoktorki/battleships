@@ -1,7 +1,8 @@
-package com.battleships.gamewindow.board;
+package com.battleships.gamewindow.board.fleet;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fleet.ship.Ship;
 
 import java.util.ArrayList;
 import java.util.Arrays;

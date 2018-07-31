@@ -10,7 +10,7 @@ import com.battleships.commands.Shot;
 import com.battleships.connection.Connection;
 import com.battleships.gamewindow.board.BoardGridPanes;
 import com.battleships.gamewindow.board.BoardSize;
-import com.battleships.gamewindow.board.DimensionsToCreateBoardAreInvalid;
+import com.battleships.gamewindow.board.InvalidDimensionsToCreateBoard;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.gamewindow.services.BoardService;
 import javafx.application.Platform;
@@ -94,9 +94,9 @@ public class GameWindowController {
         BoardSize boardSize = null;
         try {
             boardSize = BoardSize.tryOf(rowsAmount, colAmount);
-        } catch (DimensionsToCreateBoardAreInvalid dimensionsToCreateBoardAreInvalid) {
-            dimensionsToCreateBoardAreInvalid.printStackTrace();
-            logger.error(dimensionsToCreateBoardAreInvalid.getMessage());
+        } catch (InvalidDimensionsToCreateBoard invalidDimensionsToCreateBoard) {
+            invalidDimensionsToCreateBoard.printStackTrace();
+            logger.error(invalidDimensionsToCreateBoard.getMessage());
             // TODO show some alert to user
         }
         boardService = new BoardService(boardSize);

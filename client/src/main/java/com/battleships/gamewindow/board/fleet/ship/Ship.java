@@ -1,4 +1,4 @@
-package com.battleships.gamewindow.board;
+package com.battleships.gamewindow.board.fleet.ship;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
@@ -13,11 +13,23 @@ public class Ship {
         this.masts = Collections.unmodifiableSet(masts);
     }
 
+    public static Ship tryCreateFrom(int[][] ints) throws InvalidCoordinatesToCreateShip {
+        final ShipPlacementValidator shipPlacementValidator = new ShipPlacementValidator();
+        if (shipPlacementValidator.isValid(ints)){
+            // TODO 07/08/18 damian - do not return null here, handle it
+            return new Ship(null);
+        }
+        else{
+            throw new InvalidCoordinatesToCreateShip(ints);
+        }
+
+    }
+
     public Set<BoardField> getMasts() {
         return masts;
     }
 
-    boolean isMastHit(Coordinate coordinate) {
+    public boolean isMastHit(Coordinate coordinate) {
         Optional<BoardField> mastForCoordinate = getMastForCoordinate(coordinate);
         return mastForCoordinate.isPresent() ? getBoardFieldFromOptional(mastForCoordinate).isHit() : false;
     }
@@ -31,7 +43,7 @@ public class Ship {
                 .findFirst();
     }
 
-    boolean sunkIfAllMastsAreHit() {
+    public boolean sunkIfAllMastsAreHit() {
         boolean isSunk = masts.stream().allMatch(BoardField::isHit);
         if (isSunk) {
             sunkShip();

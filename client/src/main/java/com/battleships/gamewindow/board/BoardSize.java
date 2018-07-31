@@ -17,10 +17,10 @@ public class BoardSize {
         return colAmount;
     }
 
-    public static BoardSize tryOf(int rowsAmount, int colAmount) throws DimensionsToCreateBoardAreInvalid {
+    public static BoardSize tryOf(int rowsAmount, int colAmount) throws InvalidDimensionsToCreateBoard {
         BoardSizeValidator boardSizeValidator = new BoardSizeValidator();
         if (boardSizeValidator.areDimensionsInvalid(rowsAmount, colAmount)){
-            throw new DimensionsToCreateBoardAreInvalid(rowsAmount, colAmount);
+            throw new InvalidDimensionsToCreateBoard(rowsAmount, colAmount);
         }
         else {
             return new BoardSize(rowsAmount, colAmount);

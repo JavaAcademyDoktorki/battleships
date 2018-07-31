@@ -2,7 +2,7 @@ package com.battleships.gamewindow.services;
 
 import com.battleships.Coordinate;
 import com.battleships.gamewindow.board.PlayerBoard;
-import com.battleships.gamewindow.board.Ship;
+import com.battleships.gamewindow.board.fleet.ship.Ship;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
 import com.battleships.FieldState;
 import javafx.embed.swing.JFXPanel;

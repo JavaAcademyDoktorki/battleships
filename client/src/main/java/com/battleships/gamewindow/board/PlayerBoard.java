@@ -4,6 +4,8 @@ import com.battleships.Coordinate;
 import com.battleships.FieldState;
 import com.battleships.commands.Shot;
 import com.battleships.gamewindow.board.fieldStates.BoardField;
+import com.battleships.gamewindow.board.fleet.Fleet;
+import com.battleships.gamewindow.board.fleet.ship.Ship;
 import com.battleships.gamewindow.services.BufforCalculator;
 import com.battleships.gamewindow.services.RandomFleetPlacement;
 
