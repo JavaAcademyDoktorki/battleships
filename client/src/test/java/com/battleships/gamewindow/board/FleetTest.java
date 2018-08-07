@@ -6,7 +6,6 @@ import com.battleships.gamewindow.board.fieldStates.BoardField;
 import javafx.embed.swing.JFXPanel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,26 +42,6 @@ public class FleetTest {
     public void shoulAddShip() {
         assertEquals(testFleet.size(), 2);
     }
-
-    @Test
-    public void shouldMarkMastAsHit() {
-        SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(testFleet.isHit(Coordinate.fromIntCoords(1, 1)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(1, 2)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(2, 2)));
-        softAssert.assertFalse(testFleet.isHit(Coordinate.fromIntCoords(5, 2)));
-        softAssert.assertTrue(testFleet.isHit(Coordinate.fromIntCoords(2, 5)));
-        softAssert.assertAll();
-    }
-
-    @Test
-    public void shouldMarkFleetSunken() {
-        SoftAssert softAssert = new SoftAssert();
-        softAssert.assertFalse(testFleet.isSunk());
-        softAssert.assertTrue(sunkenFleet.isSunk());
-        softAssert.assertAll();
-    }
-
 
     @Test
     public void getShipsForCoordinate() {
